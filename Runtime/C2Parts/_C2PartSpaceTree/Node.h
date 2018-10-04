@@ -1,5 +1,5 @@
 /*!
- * \file Glued.h
+ * \file Node.h
  * \date 2018/10/04 12:29
  *
  * \author houstond
@@ -7,25 +7,25 @@
  *
  * \brief 
  *
- * 类似Unity3d的GameObject，用来粘贴各种零件（Part，相当于Unity3D的Component）
+ * 类似Unity3d的GameObject，用来粘贴各种零件（而Part，相当于Unity3D的Component）
  *
  * \note
  * 本类不允许被继承
 */
 
-#ifndef C2ENGINE_GLUED_H_
-#define C2ENGINE_GLUED_H_
+#ifndef C2ENGINE_NODE_H_
+#define C2ENGINE_NODE_H_
 namespace C2engine {
 //==============================================================================
 
-class Glued : public Part
+class Node : public Part
 {
-	C2DefineClass(Glued)
+	C2DefineClass(Node)
 private:
-	Glued();
-	~Glued();
+	Node();
+	~Node();
 };
 
 //==============================================================================
 }//namespace C2engine
-#endif// C2ENGINE_GLUED_H_
+#endif// C2ENGINE_NODE_H_
