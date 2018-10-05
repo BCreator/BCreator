@@ -1,7 +1,8 @@
 
 
-int main()
-{
+int main() {
 	Event te;
-	while( c2WaitEvent() )
+	while (c2WaitEvent(&te)) {
+
+	}
 }
