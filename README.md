@@ -35,8 +35,9 @@
 - 依赖关系是一个DAG，尽量按近似树的方式进行绘制，方便人类脑理解。
 
 ## Thinking In Nature
-- Simpler, simpler and simpler! More simple, more easy. 而且也要考虑团队成员良莠不齐这个现实问题。
+- Simpler, simpler and simpler! More simple, more easy. 而且也要考虑团队成员良莠不齐这个现实问题。返璞归真。
 - Engineering Structure: Human brain & Code architecture.
+- 一切从简。函数少有返回值，成功失败返回值不要错误码。
 - Glossary里的概念也尽量按最朴素的无专业领域人为感染的自然思维来进行定义。
 - 尽量用c方式写，而不是c++。就像go语言，把一整个代码文件看成一个类，内部函数用static，暴露给外面的才放到h中。
 - 依赖关系（h文件、包的依赖）最好是个TREE，顶多只能是DAG，绝对不能有环。

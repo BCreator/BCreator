@@ -1,6 +1,5 @@
-#ifndef C2_PACKAGE_H_
-#define C2_PACKAGE_H_
-namespace C2{
+#ifndef C2_EVENT_H_
+#define C2_EVENT_H_
 //============================================================
 
 enum 
@@ -9,13 +8,14 @@ enum
 };
 
 //============================================================
-struct Event {
+struct c2Event {
 Uint16	_nType;
 }
 
 //============================================================
-bool WaitEvent
+bool c2WaitEvent(c2Event &te) {
+
+}
 
 //============================================================
-}//namespace C2
-#endif//C2_PACKAGE_H_
+#endif//C2_EVENT_H_

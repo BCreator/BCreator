@@ -1,8 +1,8 @@
 
 
 int main() {
-	Event te;
-	while (c2WaitEvent(&te)) {
+	c2Event te;
+	while (c2PumpEvent(&te)) {
 
 	}
 }
