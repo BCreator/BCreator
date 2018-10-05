@@ -19,10 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Examples\ExampleFramework.cpp" />
+    <ClCompile Include="..\Creator\Main.cpp" />
+    <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Creator\README.md" />
     <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Runtime\c2Event.h" />
+    <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
+    <ClInclude Include="..\Runtime\Metas\Part.h" />
+    <ClInclude Include="..\Runtime\Metas\_defined.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -24,7 +24,7 @@
 #define	ATOMINCRE	//暂时是假的
 #define	ATOMDECRE	//暂时是假的
 #define	ATOMRESET	//暂时是假的
-//AUTOREF也还没有，对外界完全禁止使用指针。确保重用性？
+//PARTAUTOREF也还没有，对外界完全禁止使用指针。确保重用性？
 
 class Part {
 	C2DefineClass(Part)
@@ -71,7 +71,8 @@ bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C, Part::Destruct
 	if (!sClass || !C || !D)
 		return false;
 	Part::LifeFuncs fs(C, D);
-	return Part::_FuncsDict.insert(Part::LifeFuncsDict::value_type(sClass, fs)).second;
+	return Part::_FuncsDict.insert(			//如果已存在同样类名注册，则返回false。
+				Part::LifeFuncsDict::value_type(sClass, fs)).second;
 }
 
 Part* c2CreatePart(const char *sClass, const char *sName = NULL) {
