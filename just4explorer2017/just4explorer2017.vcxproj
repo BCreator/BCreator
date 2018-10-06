@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Creator\Main.cpp" />
+    <ClCompile Include="..\Runtime\Metas\_Factory.cpp" />
     <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp" />
   </ItemGroup>
   <ItemGroup>

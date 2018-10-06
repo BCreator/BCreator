@@ -1,10 +1,18 @@
 #ifndef C2ENGINE__DEFINED_H_
 #define C2ENGINE__DEFINED_H_
-namespace C2engine {
 ////////////////////////////////////////////////////////////////////////////////
 
 #define _C2Interface
 
+typedef __int8 Sint8;
+typedef unsigned __int8 Uint8;
+typedef __int16 Sint16;
+typedef unsigned __int16 Uint16;
+typedef __int32 Sint32;
+typedef unsigned __int32 Uint32;
+typedef __int64 Sint64;
+typedef unsigned __int64 Uint64;
+
+
 ////////////////////////////////////////////////////////////////////////////////
-}//namespace C2engine
 #endif// C2ENGINE__DEFINED_H_

@@ -1,16 +1,18 @@
-#include"../Runtime/c2Event.h"
 #include"../Runtime/Metas/Part.h"
+#include"../Runtime/c2Event.h"
+#include"../Runtime/c2Factory.h"
 
-#include"./GPanelAnimation/GPanelAnimation.h"
+#include"./GPanelAssets/GPanelAssets.h"
+////////////////////////////////////////////////////////////////////////////////
 
-/************************************************************/
 int main() {
-	bool b = C2RegistPartClass(GPanelAnimation);
+	bool b = C2RegistPartClass(GPanelAssets);
 	if (!b)
 		return 0;
-	Part *p = c2CreatePart("GPanelAnimation");
-	return 1;
+	c2::ARPart ar = c2CreatePart("GPanelAssets");
+	c2ListenEvent(ar, c2ETRL_UPDATEFIX);
 
+	/*------------------------------------------------------------------------*/
 	int current_frame = 0;
 	c2Event te;
 	while (true) {
@@ -23,7 +25,7 @@ int main() {
 //			root.updateFix(current_frame++);
 			break;
 		}
-		root.draw(elapsed);
+//		root.draw(elapsed);
 
 	}
 	return 0;
