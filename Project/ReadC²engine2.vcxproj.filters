@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\README.md" />
+    <None Include="..\Creator\README.md">
+      <Filter>Creator</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Creator\Main.cpp">
+      <Filter>Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp">
+      <Filter>Runtime\_c2Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\Metas\_Factory.cpp">
+      <Filter>Runtime\Metas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Creator\GPanelAssets\GPanelAssets.cpp">
+      <Filter>Creator\GPanelAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\Basics\MemQueue.cpp">
+      <Filter>Runtime\Basics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Debugger\Logger.cpp">
+      <Filter>Runtime\_c2Debugger</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Creator">
+      <UniqueIdentifier>{6cbf54f4-3e01-4cd7-b6aa-2029e23ac61a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime">
+      <UniqueIdentifier>{9464ae04-ab26-44ca-9561-2abeeb8e790b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Metas">
+      <UniqueIdentifier>{5555ead9-23ba-4ce0-b02e-9f6b36e38a58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\_c2Event">
+      <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\GPanelAssets">
+      <UniqueIdentifier>{457e174e-cb98-4a93-a856-b7f3a9b92bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\Basics">
+      <UniqueIdentifier>{dba8a583-4837-40bb-9eee-b5e172f47b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\_c2Debugger">
+      <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Runtime\Metas\OneRoute.h">
+      <Filter>Runtime\Metas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Metas\Part.h">
+      <Filter>Runtime\Metas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Event.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h">
+      <Filter>Creator\GPanelAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Basics\MemPool.h">
+      <Filter>Runtime\Basics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Basics\SwapChain.h">
+      <Filter>Runtime\Basics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Basics\Interplation.h">
+      <Filter>Runtime\Basics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Basics\Matrix.h">
+      <Filter>Runtime\Basics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Basics\MemQueue.h">
+      <Filter>Runtime\Basics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Metas\PreDefined.h">
+      <Filter>Runtime\Metas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2CMDProtocol.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Debugger.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Factory.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2VFS.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Creator\GPanelAssets\CMakeLists.txt">
+      <Filter>Creator\GPanelAssets</Filter>
+    </Text>
+    <Text Include="..\Runtime\_c2Event\CMakeLists.txt">
+      <Filter>Runtime\_c2Event</Filter>
+    </Text>
+    <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt">
+      <Filter>Runtime\_c2Debugger</Filter>
+    </Text>
+    <Text Include="..\Runtime\Metas\CMakeLists.txt">
+      <Filter>Runtime\Metas</Filter>
+    </Text>
+    <Text Include="..\Runtime\Basics\CMakeLists.txt">
+      <Filter>Runtime\Basics</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

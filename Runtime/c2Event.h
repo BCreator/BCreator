@@ -35,16 +35,17 @@ struct c2Event {
 };
 
 /******************************************************************************/
-_C2Interface void c2WaitEvent(c2Event *pEvent);
-_C2Interface void c2PumpEvent(c2Event *pEvent);
-_C2Interface void c2ProcessEventQueue(c2Event *pEvent);
+C2Interface void c2WaitEvent(c2Event *pEvent);
+C2Interface void c2WaitEvent(c2Event *pEvent);
+C2Interface void c2PumpEvent(c2Event *pEvent);
+C2Interface void c2ProcessEventQueue(c2Event *pEvent);
 
 /******************************************************************************/
 class c2::Part;
 typedef std::list<const c2::Part*>						c2ListenerList;
 typedef stdext::hash_map<c2EventType, c2ListenerList>	c2ListenMap;
-_C2Interface void c2ListenEvent(const c2::ARPart &AR, c2EventType EType);
-_C2Interface void c2DislistenEvent(const c2::ARPart &AR, c2EventType EType);
+C2Interface void c2SubscribeEvent(const c2::ARPart &AR, c2EventType EType);
+C2Interface void c2UnsubscribeEvent(const c2::ARPart &AR, c2EventType EType);
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif//C2_EVENT_H_
