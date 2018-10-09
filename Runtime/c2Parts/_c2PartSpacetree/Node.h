@@ -18,7 +18,7 @@
 namespace C2engine {
 //==============================================================================
 
-class Node : public Part
+class Node final : public Part
 {
 	C2DefineClass(Node)
 private:

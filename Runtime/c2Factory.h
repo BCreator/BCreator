@@ -5,7 +5,7 @@
 #include"./Metas/Part.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-C2Interface c2::ARPart c2CreatePart(const char *sClass, const char *sName = 0);
+C2Interface c2::ARPart c2CreatePart(const char *sClass, const char *sName = nullptr);
 C2Interface bool _c2RegistPartClass(const char *sClass, 
 						c2::Part::CreationFunc C, c2::Part::DestructionFunc D);
 #define C2RegistPartClass(classname)	\

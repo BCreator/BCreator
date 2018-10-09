@@ -29,7 +29,7 @@ public:
 	static IAppender*	APPENDER_MDEBUG;
 	//----------------------------------------------------------------------------------------
 public:
-	bool			addAppender(IAppender* appender, unsigned mode, const char* pFileName= NULL);
+	bool			addAppender(IAppender* appender, unsigned mode, const char* pFileName= nullptr);
 	bool			removeAppender(IAppender* appender);
 	bool			setAppenderMode(IAppender* appender, unsigned mode);
 	bool			getAppenderMode(IAppender* appender, unsigned& mode);

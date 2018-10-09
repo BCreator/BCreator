@@ -69,12 +69,12 @@ public:
 	static LifeFuncsDict		_FuncsDict;
 	//friend bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C,
 	//							Part::DestructionFunc D);
-	//friend ARPart c2CreatePart(const char *sClass, const char *sName = 0);
+	//friend ARPart c2CreatePart(const char *sClass, const char *sName = nullptr);
 	};
 
 //除了继承外，Part不可以在用户态使用。
 struct ARPart {
-	inline ARPart() : _p(0) {}
+	inline ARPart() : _p(nullptr) {}
 	inline ARPart(Part *pP) {
 		if (!pP)
 			return;

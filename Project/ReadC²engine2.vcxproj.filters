@@ -19,12 +19,6 @@
     <ClCompile Include="..\Creator\GPanelAssets\GPanelAssets.cpp">
       <Filter>Creator\GPanelAssets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\Basics\MemQueue.cpp">
-      <Filter>Runtime\Basics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Debugger\Logger.cpp">
-      <Filter>Runtime\_c2Debugger</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Creator">
@@ -47,6 +41,12 @@
     </Filter>
     <Filter Include="Runtime\_c2Debugger">
       <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2Parts">
+      <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2Parts\_c2PartSpacetree">
+      <UniqueIdentifier>{93449683-f696-4dc3-b487-303d937c7fcd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +74,6 @@
     <ClInclude Include="..\Runtime\Basics\Matrix.h">
       <Filter>Runtime\Basics</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\Basics\MemQueue.h">
-      <Filter>Runtime\Basics</Filter>
-    </ClInclude>
     <ClInclude Include="..\Runtime\Metas\PreDefined.h">
       <Filter>Runtime\Metas</Filter>
     </ClInclude>
@@ -91,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\c2VFS.h">
       <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h">
+      <Filter>Runtime\c2Parts\_c2PartSpacetree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,9 @@
     </Text>
     <Text Include="..\Runtime\Basics\CMakeLists.txt">
       <Filter>Runtime\Basics</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2Parts\_c2PartSpacetree\CMakeLists.txt">
+      <Filter>Runtime\c2Parts\_c2PartSpacetree</Filter>
     </Text>
   </ItemGroup>
 </Project>

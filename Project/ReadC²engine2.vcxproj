@@ -21,9 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\Creator\GPanelAssets\GPanelAssets.cpp" />
     <ClCompile Include="..\Creator\Main.cpp" />
-    <ClCompile Include="..\Runtime\Basics\MemQueue.cpp" />
     <ClCompile Include="..\Runtime\Metas\_Factory.cpp" />
-    <ClCompile Include="..\Runtime\_c2Debugger\Logger.cpp" />
     <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,12 +33,12 @@
     <ClInclude Include="..\Runtime\Basics\Interplation.h" />
     <ClInclude Include="..\Runtime\Basics\Matrix.h" />
     <ClInclude Include="..\Runtime\Basics\MemPool.h" />
-    <ClInclude Include="..\Runtime\Basics\MemQueue.h" />
     <ClInclude Include="..\Runtime\Basics\SwapChain.h" />
     <ClInclude Include="..\Runtime\c2CMDProtocol.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2Event.h" />
     <ClInclude Include="..\Runtime\c2Factory.h" />
+    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h" />
     <ClInclude Include="..\Runtime\c2VFS.h" />
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
     <ClInclude Include="..\Runtime\Metas\Part.h" />
@@ -49,6 +47,7 @@
   <ItemGroup>
     <Text Include="..\Creator\GPanelAssets\CMakeLists.txt" />
     <Text Include="..\Runtime\Basics\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2Parts\_c2PartSpacetree\CMakeLists.txt" />
     <Text Include="..\Runtime\Metas\CMakeLists.txt" />
     <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt" />
     <Text Include="..\Runtime\_c2Event\CMakeLists.txt" />
