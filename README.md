@@ -55,9 +55,8 @@
 - 分为用户态、核心态。虽然我们建议完全避免多线程编程，但内核态为了利用多核CPU或者其他原因而仍然会用到多线程。注意，后端应用可以通过多进程的模式来利用多核CPU，而不必一定多线程。
  
 - 只有两种被使用的方式：A被调用；B被继承。B继承会让代码阅读头大，因为当你看着一个继承类时，潜意识会想：我靠，基类里是不是还有哥不知道的东西，阅读代码还得翻来翻去的看，真累。而A中的调用基本形态是很朴素简单的，但因为OO所谓的成员变量方法的封装范式，使得对象元定义时（就是指“写类”的时候，但我不喜欢“类”这种多余人造概念，让人脑子想问题多个“指代弯”而不直观），又出现了关联关系。
-  - Part互相之间的关联关系：包含、引用、继承，同OOD的概念类似。“引用”（学习tinyxml以link为操作方法的动词）、“包含”（？Insert为动词）在运行期对应着前面的A被调用。其中“引用”意味着“实例”内数据会在别处被修改，所有权不排他。我们的关联关注重点同UML的OO定义有所差别，按UML中用到的OO定义的关联关系，无论是成员还是成员函数参数所导致的关联都是关联：l依赖r（虚线线式箭头）、l继承自r（空心三角箭头，接口实现为虚线）、l组合成r（实心菱形箭头），被箭头所指的都是上面动词的rhs。插座线表示法（使用，母头我要我要被插）、棒棒糖表示法（提供，公头表射出）。仅只是个指针的（我们称为引用），不视为有关联关系，因为无需知道其内部细节，对其操作是通过他的父元对象（父类）或者接口级所定义的借口，如存在相关箭头那么应指向其父元对象或者接口。“包含”尽量直接用实例以及&引用，若是指针（有能让h文件能隐藏相应元对象的define，对高效编译有利），则scoped_ptr比unique_ptr更合适，但注意不然能放入容器。
+  - Part互相之间的关联关系：包含、引用、继承，同OOD的概念类似。“引用”（学习tinyxml以link为操作方法的动词）、“包含”（？Insert为动词）在运行期对应着前面的A被调用。其中“引用”意味着“实例”内数据会在别处被修改，所有权不排他。我们的关联关注重点同UML的OO定义有所差别，按UML中用到的OO定义的关联关系，无论是成员还是成员函数参数所导致的关联都是关联：l依赖r（虚线线式箭头）、l继承自r（空心三角箭头，接口实现为虚线）、l组合成r（实心菱形箭头），被箭头所指的都是上面动词的rhs。插座线表示法（使用，母头我要我要被插）、棒棒糖表示法（提供，公头表射出）。仅只是个指针的（我们称为引用），不视为有关联关系，因为无需知道其内部细节，对其操作是通过他的父元对象（父类）或者接口级所定义的借口，如存在相关箭头那么应指向其父元对象或者接口。“包含”尽量直接用实例以及&引用，若是指针（有能让h文件能隐藏相应元对象的define，对高效编译有利）。
   - Part零件元对象（类）兼具着可被继承，同时也是“引用和包含”行为的客体和主体。而Node（继承于Part）兼具这些特性的前提，而断绝了被继承的可能，实质相当于Unity3D的GameObject，胶水黏着物的底料。
-  - Node可以胶水联合上任何Part，例如某个Part也可是个自成体系的某种Space（下面叫做XSpace），从而实现各种不同的空间管理XSpace，通过Node融入到基础空间管理Spacetree中来。而XSpace内部又可能有自己的不可被继承，适合其自身空间管理算法的胶水黏着物的底料，例如叫做XNode。例如Terrain/BSP/骨骼动画/高级组合模型（似乎可以同骨骼动画等同）等都会有自己的Space管理办法和Node需求。
   - 本来在GO等现代语言中，有舍弃继承特性的趋势。而我们仅为了类脚本语言操作而仍用到了继承（于Part，从这一点看Part很像很多工程里的Object，便于序列化、字符串化的创建、属性等)。针对被继承性质的抽象类，放入meta中，极力避免“继承”这一特性污染我们的工程。
   - 关于B继承式，一般是供C类用户使用，开发Extension（比Addons用词更恰当，注意同Utility的区别）是一种特殊的使用模式，我们自己团队部分成员也可以视为C类用户。被用户态继承的类，尽量都只是一些纯H全/半接口。
  
@@ -68,6 +67,8 @@
  
 - Asset、Prefab、Templet等概念在Runtime里并不存在，Unity3D里好像也是如此。在应用开发工序流中存在的一种术语。
 
+- Node可以胶水联合上任何Part，例如某个Part也可是个自成体系的某种Space（下面叫做XSpace），从而实现各种不同的空间管理XSpace，通过Node融入到基础空间管理Spacetree中来。而XSpace内部又可能有自己的不可被继承，适合其自身空间管理算法的胶水黏着物的底料，例如叫做XNode。例如Terrain/BSP/骨骼动画/高级组合模型（似乎可以同骨骼动画等同）等都会有自己的Space管理办法和Node需求。但当前情况下，编辑器内暂时只支持SpaceTree的编辑，虽然骨骼动画、Terrain等某些Space也能同SpaceTree的树结构近似甚至兼容（以至于似乎可以直接展开在Space的Tree中），但为了概念清晰并且统一，在我们没有完全想清楚利弊之前，暂时不要把非SpaceTree的Space在SpaceTree中展开，而是在Spacetree中把它看作某Node的Part而已。对不同种类的Space编辑，就算也能看成一棵树的Space，但宁愿是从基础功能层面和Spacetree用同一个编辑器功能去实现而也不能展开到Spacetree树编辑器中去。这一点同Unity3D不同，Unity3D是可以把骨骼动画展开到场景树的——其实这没有实用性空混淆了概念。
+
 - 在Unity3D中，Prefab同Scene没有实质区别，所以在我们这里概念统一为Spacetree，Spacetree的一部分可以被存储起来（相当于Prefab），Spacetree里面实际上就是Node组成的树。
     - 关于Uniy3D中“Prefab”（我们还是叫Spacetree）同来源实例及使用入"Scene"内的实例之间的关联关系，好像是一旦Scene内的实例自行修改过值后，Prefab数据才会断开联动，否则Prefab的修改会带动Scene内的实例修改。也就是说，似乎有一种隐性的从包含关系到引用关系的转变。
     - 于此我们同Unity3D的规则也不完全相同，我们沿用New3D时代的Cluster节点性质，生成Prefab（Spacetree）时，实际上是从原Spacetree树的一个分支作为源进行拷贝整个分支的所有节点成为一个“Spacetree树枝预制件”，同之前的“源树枝”就再无关系。
@@ -77,11 +78,11 @@
 
 |Layer			|Buzz
 |:-------------:|---------
-|UBUILD			|FSS/BSDK<br>TARGET: Wechat/GF/Facebook/Browser/iOS/Android/MacOS/Windows/AR/VR
-|EDITOR			|Creator/Director/Gizmos/Templet/Asset/Prefab/Extension
-|**LIVELESS**	|INFO COLLECTOR: Navigation/Placemark<br>GEOMETRY: Space/Mesh/Voxel/Terrain/Skeleton/UI/Sketch/Line/Point<br>VISUAL: Particle/Flare/Fog/Halo/Sky/Surface/VolumeLight/Airwave/LOD<br>WORKS: Projector/Wave/Cloth/Hair/Fluid<br>CONTROLLER: Animation/Physical/Camera/Portal/OccVolume/Transform/Conspos<br>RENDERING: DLS/HDR/Bloom/DOF/GI/SamplerProbe<br>RENDER BASICS: *RPath/RChunk/RDevice/Material*/Node<br>AUDIO: *AudDevice*/SFX/BGM
-|**ALIVE**<br>*Presentation Layer Independence*|Activity: Factory/Signal/Observer/Command/BT/Action/Arbitrator<br>Script: C#/Python/Lua/Java/GO/NLP
-|BASICS<br>*Presentation Layer Independence*|Stream: VFS/FileStream/NetStream<br>Math: Matrix/Interplation<br>Debugger: Logger/Dump/UnitTest/Console
+|uBuild			|FSS/BSDK<br>TARGET: Wechat/GF/Facebook/Browser/iOS/Android/MacOS/Windows/AR/VR
+|Editor			|Creator/Director/Gizmos/Templet/Asset/SpacetreePrefab/Extension
+|**LIVELESS**<br>*CG Presentation Layer*|INFO COLLECTOR: Navigation/Placemark/SketchSampler/ReflectProbe<br>GEOMETRY: Spacetree/Mesh/Voxel/Terrain/Skeleton/UI/Sketch/Line/Point<br>VISUAL: Particle/Flare/Fog/Halo/Sky/Surface/VolumeLight/Airwave/LOD/Projector<br>WORKS: Wave/Cloth/Hair/Fluid<br>CONTROLLER: Animation/Physical/Camera/Portal/OccVolume/Transform/Conspos<br>RENDERING: DLS/HDR/Bloom/DOF/GI<br>RENDER BASICS: *RPath/RChunk/RDevice/Material*<br>AUDIO: *AudDevice*/SFX/BGM
+|**ALIVE**<br>*Presentation Layer Independence*|Activity: Factory/Signal/Observer<br>Command: Arbitrator/BT/Action/C#/Python/Lua/Java/GO/NLP
+|BASICS<br>*Presentation Layer Independence*|Stream: Filestream/Netstream<br>Math: Matrix/Interplation<br>Debugger: Logger/Dump/UnitTest/Console
 |META<br>*Presentation Layer Independence*|Part/OneRoute/Serialization/Device/IOStream
 >- Space：挂接到某空间区域根节点，具有自己特定的阻力、重力加速度、浮力等模拟不同空间的物理特性。模拟水下、外星球等。
 >- Surface：水面等表面，自动产生边缘浪花。
@@ -91,7 +92,7 @@
 >- R：Render。
 >- Aud：Audio。
 >- FSS：File Stream Service。
->- UBUILD：User Build。
+>- uBuild：User Build。
 >- BSDK：Blockchain SDK。
 >- OccVolume：辅助用来体积用来快速进行遮挡查询，同Portal一样用来进行。
 >- LIVELESS：非斜体的一般都是用来形成各种公用的Node的Part（Unity3D里的Component）的，这些Part都能被序列化，并且还会引用文件形态的更复杂的数据，此种数据文件在Editor层称为Asset。
