@@ -6,11 +6,11 @@
 class GPanelAssets : private c2::Part {
 	C2DefineClass(GPanelAssets)
 private:
-	PartExplorer	_Exp;
-	PartMenu		_Menu;
-	PartMenu		_ContextMenu;
+	//PartExplorer	_Exp;
+	//PartMenu		_Menu;
+	//PartMenu		_ContextMenu;
 public:
-	void	
+//	void GPanelAssets::updateFix(int nFrame);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

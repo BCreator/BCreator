@@ -7,18 +7,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Creator\Main.cpp">
-      <Filter>Creator</Filter>
-    </ClCompile>
     <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp">
       <Filter>Runtime\_c2Event</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\Metas\_Factory.cpp">
       <Filter>Runtime\Metas</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\GPanelAssets\GPanelAssets.cpp">
-      <Filter>Creator\GPanelAssets</Filter>
+    <ClCompile Include="..\Creator\main.cpp">
+      <Filter>Creator</Filter>
     </ClCompile>
+    <ClCompile Include="..\Examples\templab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Creator">

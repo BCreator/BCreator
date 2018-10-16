@@ -7,25 +7,23 @@
 using namespace c2;
 ////////////////////////////////////////////////////////////////////////////////
 
-Part::LifeFuncsDict		Part::_FuncsDict;
+Part::CreationDict		Part::_CreationDict;
 
 /******************************************************************************/
-bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C,
-						Part::DestructionFunc D) {
-	if (!sClass || !C || !D)
+bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C) {
+	if (!sClass || !C )
 		return false;
-	Part::LifeFuncs fs(C, D);
-	return Part::_FuncsDict.insert(			//如果已存在同样类名注册，则返回false。
-						Part::LifeFuncsDict::value_type(sClass, fs)).second;
+	return Part::_CreationDict.insert(			//如果已存在同样类名注册，则返回false。
+						Part::CreationDict::value_type(sClass, C)).second;
 }
 
-ARPart c2CreatePart(const char *sClass, const char *sName = 0) {
+Part::ARPart c2CreatePart(const char *sClass, const char *sName = 0) {
 	if (!sClass)
 		return NULL;
-	Part::LifeFuncsDict::iterator ci = Part::_FuncsDict.find(sClass);
-	if (ci == Part::_FuncsDict.end())
+	Part::CreationDict::iterator ci = Part::_CreationDict.find(sClass);
+	if (ci == Part::_CreationDict.end())
 		return NULL;
-	Part::CreationFunc	c = ci->second._C;
-	assert(c);
-	return c();
+	Part::CreationFunc	create = ci->second;
+	assert(create);
+	return create();
 }
