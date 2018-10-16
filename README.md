@@ -75,16 +75,28 @@
 
 - 层次及概念：
 
-|Layers			|Concepts
+|Layer			|Buzz
 |:-------------:|---------
-|uBuild			|FileSS/BSDK/TWechat/TFacebook/TBrowser/TiOS/TAndroid/TMacOS/TWindows
-|User			|Creator/Templet/Asset/Prefab
-|Build			|VS2017/CMake/WASM
-|**ALIVE**		|Level/Signal/Observer/Command/Director/Action/C#/Python/Lua
-|**LIVELESS**	|Mesh/Space/Particle/Animation/GUI/Sky/Terrain/Material/Light/Fog/Camera/Halo/Water/PostFX
-|Meta			|Part/OneRoute
-|Basics			|RenderPath/RenderChunk/RenderDevice/AudioDevice
-|3rdParty		|Boost/Nuklear/Angle/GLFW/Emscripten/Lightmapper
+|UBUILD			|FSS/BSDK<br>TARGET: Wechat/GF/Facebook/Browser/iOS/Android/MacOS/Windows/AR/VR
+|EDITOR			|Creator/Director/Gizmos/Templet/Asset/Prefab/Extension
+|**LIVELESS**	|INFO COLLECTOR: Navigation/Placemark<br>GEOMETRY: Space/Mesh/Voxel/Terrain/Skeleton/UI/Sketch/Line/Point<br>VISUAL: Particle/Flare/Fog/Halo/Sky/Surface/VolumeLight/Airwave/LOD<br>WORKS: Projector/Wave/Cloth/Hair/Fluid<br>CONTROLLER: Animation/Physical/Camera/Portal/OccVolume/Transform/Conspos<br>RENDERING: DLS/HDR/Bloom/DOF/GI/SamplerProbe<br>RENDER BASICS: *RPath/RChunk/RDevice/Material*/Node<br>AUDIO: *AudDevice*/SFX/BGM
+|**ALIVE**<br>*Presentation Layer Independence*|Activity: Factory/Signal/Observer/Command/BT/Action/Arbitrator<br>Script: C#/Python/Lua/Java/GO/NLP
+|BASICS<br>*Presentation Layer Independence*|Stream: VFS/FileStream/NetStream<br>Math: Matrix/Interplation<br>Debugger: Logger/Dump/UnitTest/Console
+|META<br>*Presentation Layer Independence*|Part/OneRoute/Serialization/Device/IOStream
+>- Space：挂接到某空间区域根节点，具有自己特定的阻力、重力加速度、浮力等模拟不同空间的物理特性。模拟水下、外星球等。
+>- Surface：水面等表面，自动产生边缘浪花。
+>- META：并不会直接作为API来使用，顶多只有C类用户在制作Extension时用来继承。
+>- CONTROLLER：自身视觉上不会绘制呈现。
+>- DLS：Dynamic Light and Shadow。
+>- R：Render。
+>- Aud：Audio。
+>- FSS：File Stream Service。
+>- UBUILD：User Build。
+>- BSDK：Blockchain SDK。
+>- OccVolume：辅助用来体积用来快速进行遮挡查询，同Portal一样用来进行。
+>- LIVELESS：非斜体的一般都是用来形成各种公用的Node的Part（Unity3D里的Component）的，这些Part都能被序列化，并且还会引用文件形态的更复杂的数据，此种数据文件在Editor层称为Asset。
+>- INFO COLLECTOR：用来收集数据或者信息，例如供交互逻辑等使用，收集调试信息的也可暂时归为此类。
+>- Arbitrator：各自为政，自私的考虑自己的订阅处理。但遇到冲突需要有仲裁——自然思维编程。
 
 ### 4.4 CGS
 - Package、Module等抽象概念，各人内心自定义的含义都不一样。这种模糊的用词并不科学，实质也无非想表达段落层次。但是现实中一般人对层次的理解能力局限于"事不过三"，顶多四（这也是我们组织内万事都惯归纳为ABCD的原因），故仍可选用朴素的自然思维的生活中名词来规范组织内术语。我们使用包的概念，包可以有路径，也就是说包可以有层次，但是为了简便起见，在我们自己项目的范畴，也并不打算把包同多层namespace挂钩。C海关（Customs）级包及逻辑关口（接口Interface）、G国道包及逻辑流、S省道包及逻辑流。再往下X县道包、Y乡道包等更低层次就不讲了，对理解整体脉络影响不那么大，就如同来到一个新城市，记住几个主干道就可在人类脑中快速建立坐标系形成格局脉络。
@@ -113,7 +125,9 @@
 ### 6.1 Build
 #### 6.1.1 第三方库及工具
 ##### 6.1.1.1 第三方库
-- 包括字体、物理（Physx）、纹理资源、导入库用到文件格式（图片，FBX模型等）、图形库、声音处理、压缩、网络协议kcp、光影及空间算法（lightmapper、nvmesh、waveworks等）、一般算法和容器（插值、数学、内存池等）、脚本环境（mono）、基础库（stl等）、调试（Log等）、序列化持久化（Protobuf、hocon等）。
+- 包括字体、物理（Physx）、纹理资源、导入库用到文件格式（图片，FBX模型等）、图形库、声音处理、压缩、网络协议kcp、光影及空间算法（lightmapper、nvmesh、waveworks等）、一般算法和容器（插值、数学、内存池等）、脚本环境（mono）、基础库（stl等）、调试（Log等）、序列化持久化（Protobuf、hocon等）。。。。。。。。。
+Boost/Nuklear/Angle/GLFW/Lightmapper/Physx/Works/Json
+
 ##### 6.1.1.2 第三方工具
 - 调试、发布
 
