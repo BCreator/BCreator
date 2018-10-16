@@ -46,5 +46,12 @@ using c2ListenMap	= stdext::hash_map<c2EventType, c2ListenerList>;
 C2Interface void c2SubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType);
 C2Interface void c2UnsubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType);
 
+
+////////////////////////////////////////////////////////////////////////////////
+C2Interface c2::Part::ARPart c2CreatePart(const char *sClass, const char *sName = nullptr);
+C2Interface bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C);
+#define C2RegistPartClass(classname)	\
+	::_c2RegistPartClass(#classname, classname::_create);
+
 ////////////////////////////////////////////////////////////////////////////////
 #endif//C2_EVENT_H_
