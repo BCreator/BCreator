@@ -1,3 +1,7 @@
+#include<iostream>
+
+#include<boost/signals2.hpp>
+
 #include"../Runtime/Metas/Part.h"
 #include"../Runtime/c2Event.h"
 #include"../Runtime/c2Factory.h"
@@ -5,12 +9,21 @@
 #include"./GPanelAssets/GPanelAssets.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-int main() {
+static void helloworld() {
+	std::cout << "hello, w" << std::endl;
+}
+
+static int _main() {
+	boost::signals2::signal<void ()>sig;
+	sig.connect(&helloworld);
+
+	sig();
+
 	bool b = C2RegistPartClass(GPanelAssets);
 	if (!b)
 		return 0;
-	c2::ARPart ar = c2CreatePart("GPanelAssets");
-	c2ListenEvent(ar, c2ETRL_UPDATEFIX);
+	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
+	c2SubscribeEvent(ar, c2ETRL_UPDATEFIX);
 
 	/*------------------------------------------------------------------------*/
 	int current_frame = 0;
