@@ -21,8 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\Creator\main.cpp" />
     <ClCompile Include="..\Examples\templab.cpp" />
-    <ClCompile Include="..\Runtime\Metas\_Factory.cpp" />
-    <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp" />
+    <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp" />
+    <ClCompile Include="..\Runtime\_c2Activity\Observer.cpp" />
+    <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Creator\README.md" />
@@ -30,27 +31,39 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
-    <ClInclude Include="..\Runtime\Basics\Interplation.h" />
-    <ClInclude Include="..\Runtime\Basics\Matrix.h" />
-    <ClInclude Include="..\Runtime\Basics\MemPool.h" />
-    <ClInclude Include="..\Runtime\Basics\SwapChain.h" />
-    <ClInclude Include="..\Runtime\c2CMDProtocol.h" />
+    <ClInclude Include="..\Runtime\c2Activity.h" />
+    <ClInclude Include="..\Runtime\c2Command.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
-    <ClInclude Include="..\Runtime\c2Event.h" />
-    <ClInclude Include="..\Runtime\c2Factory.h" />
+    <ClInclude Include="..\Runtime\c2Filestream.h" />
     <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h" />
-    <ClInclude Include="..\Runtime\c2VFS.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartController\c2PartAnimation.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h" />
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
     <ClInclude Include="..\Runtime\Metas\Part.h" />
     <ClInclude Include="..\Runtime\Metas\PreDefined.h" />
+    <ClInclude Include="..\Runtime\_c2Debugger\Console.h" />
+    <ClInclude Include="..\Runtime\_c2Filestream\VFS.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Creator\GPanelAssets\CMakeLists.txt" />
-    <Text Include="..\Runtime\Basics\CMakeLists.txt" />
-    <Text Include="..\Runtime\c2Parts\_c2PartSpacetree\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\c2PartAudio\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\c2PartController\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\c2PartVisual\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PresentationCG\Render\CMakeLists.txt" />
+    <Text Include="..\Runtime\CMakeLists.txt" />
     <Text Include="..\Runtime\Metas\CMakeLists.txt" />
+    <Text Include="..\Runtime\_c2Activity\CMakeLists.txt" />
+    <Text Include="..\Runtime\_c2Command\CMakeLists.txt" />
     <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt" />
-    <Text Include="..\Runtime\_c2Event\CMakeLists.txt" />
+    <Text Include="..\Runtime\_c2Filestream\CMakeLists.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

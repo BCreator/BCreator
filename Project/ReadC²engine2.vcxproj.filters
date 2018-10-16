@@ -7,16 +7,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Runtime\_c2Event\c2Event.cpp">
-      <Filter>Runtime\_c2Event</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Runtime\Metas\_Factory.cpp">
-      <Filter>Runtime\Metas</Filter>
-    </ClCompile>
     <ClCompile Include="..\Creator\main.cpp">
       <Filter>Creator</Filter>
     </ClCompile>
     <ClCompile Include="..\Examples\templab.cpp" />
+    <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Activity\Observer.cpp">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
+      <Filter>Runtime\_c2Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Creator">
@@ -28,23 +31,44 @@
     <Filter Include="Runtime\Metas">
       <UniqueIdentifier>{5555ead9-23ba-4ce0-b02e-9f6b36e38a58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\_c2Event">
-      <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Creator\GPanelAssets">
       <UniqueIdentifier>{457e174e-cb98-4a93-a856-b7f3a9b92bcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\Basics">
-      <UniqueIdentifier>{dba8a583-4837-40bb-9eee-b5e172f47b1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Runtime\_c2Debugger">
       <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2Parts">
+    <Filter Include="Runtime\_c2Activity">
+      <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG">
       <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2Parts\_c2PartSpacetree">
+    <Filter Include="Runtime\c2PresentationCG\c2PartGeometry">
+      <UniqueIdentifier>{a6edeb6b-846b-419e-829e-061774987dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree">
       <UniqueIdentifier>{93449683-f696-4dc3-b487-303d937c7fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\_c2Command">
+      <UniqueIdentifier>{0d81982c-9e10-4ac4-a5a0-249814c1f1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\_c2Filestream">
+      <UniqueIdentifier>{38d7a9dd-9405-4dc6-bc12-4e61492fd103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\c2PartAudio">
+      <UniqueIdentifier>{369671e2-2545-4d9c-b36d-6564a2b70395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\c2PartController">
+      <UniqueIdentifier>{f836451e-504d-4618-ab32-6a94be555d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\c2PartInfoCollector">
+      <UniqueIdentifier>{aaa70403-78bb-423a-b080-e5f97339a71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\c2PartVisual">
+      <UniqueIdentifier>{d31138b6-0a9b-4954-a1fd-7ed840c586ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\Render">
+      <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,61 +78,97 @@
     <ClInclude Include="..\Runtime\Metas\Part.h">
       <Filter>Runtime\Metas</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2Event.h">
-      <Filter>Runtime</Filter>
-    </ClInclude>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h">
       <Filter>Creator\GPanelAssets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Basics\MemPool.h">
-      <Filter>Runtime\Basics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Basics\SwapChain.h">
-      <Filter>Runtime\Basics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Basics\Interplation.h">
-      <Filter>Runtime\Basics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Basics\Matrix.h">
-      <Filter>Runtime\Basics</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\Metas\PreDefined.h">
       <Filter>Runtime\Metas</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2CMDProtocol.h">
+    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h">
+      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
+      <Filter>Runtime\_c2Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Activity.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Command.h">
       <Filter>Runtime</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2Debugger.h">
       <Filter>Runtime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2Factory.h">
+    <ClInclude Include="..\Runtime\c2Filestream.h">
       <Filter>Runtime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2VFS.h">
-      <Filter>Runtime</Filter>
+    <ClInclude Include="..\Runtime\_c2Filestream\VFS.h">
+      <Filter>Runtime\_c2Filestream</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h">
-      <Filter>Runtime\c2Parts\_c2PartSpacetree</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h">
+      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h">
+      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h">
+      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartController\c2PartAnimation.h">
+      <Filter>Runtime\c2PresentationCG\c2PartController</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h">
+      <Filter>Runtime\c2PresentationCG\c2PartInfoCollector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h">
+      <Filter>Runtime\c2PresentationCG\c2PartVisual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h">
+      <Filter>Runtime\c2PresentationCG\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h">
+      <Filter>Runtime\c2PresentationCG\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Creator\GPanelAssets\CMakeLists.txt">
       <Filter>Creator\GPanelAssets</Filter>
     </Text>
-    <Text Include="..\Runtime\_c2Event\CMakeLists.txt">
-      <Filter>Runtime\_c2Event</Filter>
+    <Text Include="..\Runtime\Metas\CMakeLists.txt">
+      <Filter>Runtime\Metas</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt">
       <Filter>Runtime\_c2Debugger</Filter>
     </Text>
-    <Text Include="..\Runtime\Metas\CMakeLists.txt">
-      <Filter>Runtime\Metas</Filter>
+    <Text Include="..\Runtime\_c2Activity\CMakeLists.txt">
+      <Filter>Runtime\_c2Activity</Filter>
     </Text>
-    <Text Include="..\Runtime\Basics\CMakeLists.txt">
-      <Filter>Runtime\Basics</Filter>
+    <Text Include="..\Runtime\CMakeLists.txt">
+      <Filter>Runtime</Filter>
     </Text>
-    <Text Include="..\Runtime\c2Parts\_c2PartSpacetree\CMakeLists.txt">
-      <Filter>Runtime\c2Parts\_c2PartSpacetree</Filter>
+    <Text Include="..\Runtime\_c2Command\CMakeLists.txt">
+      <Filter>Runtime\_c2Command</Filter>
+    </Text>
+    <Text Include="..\Runtime\_c2Filestream\CMakeLists.txt">
+      <Filter>Runtime\_c2Filestream</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\c2PartAudio\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\c2PartController\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\c2PartController</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\c2PartInfoCollector</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\c2PartVisual\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\c2PartVisual</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PresentationCG\Render\CMakeLists.txt">
+      <Filter>Runtime\c2PresentationCG\Render</Filter>
     </Text>
   </ItemGroup>
 </Project>
