@@ -19,11 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\lab\BrainTree\example\Example01_Simple.cpp" />
     <ClCompile Include="..\Creator\main.cpp" />
-    <ClCompile Include="..\Examples\_templab.cpp" />
+    <ClCompile Include="..\Examples\templab.cpp" />
+    <ClCompile Include="..\Runtime\_c2Activity\Event.cpp" />
     <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp" />
-    <ClCompile Include="..\Runtime\_c2Activity\Observer.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +30,6 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\lab\BrainTree\BrainTree.h" />
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
     <ClInclude Include="..\Runtime\c2Activity.h" />
     <ClInclude Include="..\Runtime\c2Command.h" />
@@ -49,6 +47,7 @@
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
     <ClInclude Include="..\Runtime\Metas\Part.h" />
     <ClInclude Include="..\Runtime\Metas\PreDefined.h" />
+    <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h" />
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h" />
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h" />
   </ItemGroup>
@@ -128,6 +127,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -140,6 +142,9 @@
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
