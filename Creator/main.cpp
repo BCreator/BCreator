@@ -1,24 +1,10 @@
-#include<iostream>
-
-#include<boost/signals2.hpp>
-
 #include"../Runtime/Metas/Part.h"
-#include"../Runtime/c2Event.h"
-#include"../Runtime/c2Factory.h"
+#include"../Runtime/c2Activity.h"
 
 #include"./GPanelAssets/GPanelAssets.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-static void helloworld() {
-	std::cout << "hello, w" << std::endl;
-}
-
-static int _main() {
-	boost::signals2::signal<void ()>sig;
-	sig.connect(&helloworld);
-
-	sig();
-
+static int main1() {
 	bool b = C2RegistPartClass(GPanelAssets);
 	if (!b)
 		return 0;

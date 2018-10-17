@@ -40,9 +40,6 @@ C2Interface void c2PumpEvent(c2Event *pEvent);
 C2Interface void c2ProcessEventQueue(c2Event *pEvent);
 
 /******************************************************************************/
-class c2::Part;
-using c2ListenerList= std::list<const c2::Part*>;
-using c2ListenMap	= stdext::hash_map<c2EventType, c2ListenerList>;
 C2Interface void c2SubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType);
 C2Interface void c2UnsubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType);
 

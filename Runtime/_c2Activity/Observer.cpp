@@ -1,29 +1,30 @@
-#include<string>
-#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
-#include<hash_map>
-#include<assert.h>
-
-#include"Part.h"
-using namespace c2;
+#include"../Metas/Part.h"
+#include"../c2Activity.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-Part::CreationDict		Part::_CreationDict;
+//static tsMemoryQueueEx	EventQueue;
+//static std::q	EventQueue;
+
+/*============================================================================*/
+C2Interface void c2WaitEvent(c2Event *pEvent) {
+	if (!pEvent)
+		return;
+	/*------------------------------------------------------------------------*/
+//	EventQueue.get
+}
+
+C2Interface void c2PumpEvent(c2Event *pEvent) {
+	if (!pEvent)
+		return;
+	/*------------------------------------------------------------------------*/
+}
 
 /******************************************************************************/
-bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C) {
-	if (!sClass || !C )
-		return false;
-	return Part::_CreationDict.insert(			//如果已存在同样类名注册，则返回false。
-						Part::CreationDict::value_type(sClass, C)).second;
+C2Interface void c2SubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType) {
 }
 
-Part::ARPart c2CreatePart(const char *sClass, const char *sName = 0) {
-	if (!sClass)
-		return NULL;
-	Part::CreationDict::iterator ci = Part::_CreationDict.find(sClass);
-	if (ci == Part::_CreationDict.end())
-		return NULL;
-	Part::CreationFunc	create = ci->second;
-	assert(create);
-	return create();
+C2Interface void c2UnsubscribeEvent(const c2::Part::ARPart &AR, c2EventType EType) {
+
 }
+
+/******************************************************************************/

@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\lab\BrainTree\example\Example01_Simple.cpp" />
     <ClCompile Include="..\Creator\main.cpp" />
-    <ClCompile Include="..\Examples\templab.cpp" />
+    <ClCompile Include="..\Examples\_templab.cpp" />
     <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp" />
     <ClCompile Include="..\Runtime\_c2Activity\Observer.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
@@ -30,6 +31,7 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\lab\BrainTree\BrainTree.h" />
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
     <ClInclude Include="..\Runtime\c2Activity.h" />
     <ClInclude Include="..\Runtime\c2Command.h" />

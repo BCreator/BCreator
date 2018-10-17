@@ -3,7 +3,7 @@
 #include<hash_map>
 #include<assert.h>
 
-#include"Part.h"
+#include"../Metas/Part.h"
 using namespace c2;
 ////////////////////////////////////////////////////////////////////////////////
 

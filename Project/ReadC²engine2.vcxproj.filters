@@ -10,7 +10,6 @@
     <ClCompile Include="..\Creator\main.cpp">
       <Filter>Creator</Filter>
     </ClCompile>
-    <ClCompile Include="..\Examples\templab.cpp" />
     <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp">
       <Filter>Runtime\_c2Activity</Filter>
     </ClCompile>
@@ -19,6 +18,12 @@
     </ClCompile>
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
       <Filter>Runtime\_c2Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lab\BrainTree\example\Example01_Simple.cpp">
+      <Filter>_templab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Examples\_templab.cpp">
+      <Filter>_templab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +74,9 @@
     </Filter>
     <Filter Include="Runtime\c2PresentationCG\Render">
       <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_templab">
+      <UniqueIdentifier>{ff47f095-d4ce-412c-97e4-648f43b76dae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h">
       <Filter>Runtime\c2PresentationCG\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lab\BrainTree\BrainTree.h">
+      <Filter>_templab</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
