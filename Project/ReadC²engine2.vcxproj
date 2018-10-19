@@ -31,8 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
-    <ClInclude Include="..\Runtime\c2Activity.h" />
-    <ClInclude Include="..\Runtime\c2Command.h" />
+    <ClInclude Include="..\Runtime\c2Application.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2Filestream.h" />
     <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h" />
@@ -48,6 +47,7 @@
     <ClInclude Include="..\Runtime\Metas\Part.h" />
     <ClInclude Include="..\Runtime\Metas\PreDefined.h" />
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h" />
+    <ClInclude Include="..\Runtime\_c2Activity\gleq.h" />
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h" />
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h" />
   </ItemGroup>

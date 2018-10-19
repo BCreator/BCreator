@@ -1,5 +1,5 @@
 #include"../Runtime/Metas/Part.h"
-#include"../Runtime/c2Activity.h"
+#include"../Runtime/c2Application.h"
 
 #include"./GPanelAssets/GPanelAssets.h"
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,22 +9,21 @@ static int main1() {
 	if (!b)
 		return 0;
 	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
-	c2SubscribeEvent(ar, c2ETRL_UPDATEFIX);
 
 	/*------------------------------------------------------------------------*/
 	int current_frame = 0;
 	c2Event te;
 	while (true) {
-//		c2PumpEvent(&te);
-		c2WaitEvent(&te);
-		switch (te._nType) {
-		case c2ETKB_ESC:
-			break;
-		case c2ETRL_UPDATEFIX:
-//			root.updateFix(current_frame++);
-			break;
-		}
-//		root.draw(elapsed);
+////		c2PumpEvent(&te);
+//		c2WaitEvent(&te);
+//		switch (te._nType) {
+//		case c2ETKB_ESC:
+//			break;
+//		case c2ETRL_UPDATEFIX:
+////			root.updateFix(current_frame++);
+//			break;
+//		}
+////		root.draw(elapsed);
 
 	}
 	return 0;

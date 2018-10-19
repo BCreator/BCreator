@@ -50,8 +50,10 @@ private:
 		}
 	}
 protected:
-	explicit Part() : _Ref(0), _GUID(0)	{}
-	virtual ~Part()						{ _Ref = 0; _GUID = 0; }
+	explicit Part() : _Ref(0), _GUID(0) {}
+	virtual ~Part() { _Ref = 0; _GUID = 0; }
+	Part(Part &&other) = delete;
+	//Part& operator=(Part &&rhs);	//TODO
 
 	/*------------------------------------------------------------------------*/
 public:

@@ -17,7 +17,7 @@ bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C) {
 						Part::CreationDict::value_type(sClass, C)).second;
 }
 
-Part::ARPart c2CreatePart(const char *sClass, const char *sName = 0) {
+Part::ARPart c2CreatePart(const char *sClass, const char *sName = nullptr) {
 	if (!sClass)
 		return NULL;
 	Part::CreationDict::iterator ci = Part::_CreationDict.find(sClass);

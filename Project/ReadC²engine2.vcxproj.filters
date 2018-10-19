@@ -95,12 +95,6 @@
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
       <Filter>Runtime\_c2Debugger</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2Activity.h">
-      <Filter>Runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2Command.h">
-      <Filter>Runtime</Filter>
-    </ClInclude>
     <ClInclude Include="..\Runtime\c2Debugger.h">
       <Filter>Runtime</Filter>
     </ClInclude>
@@ -136,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h">
       <Filter>Runtime\_c2Activity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\_c2Activity\gleq.h">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Application.h">
+      <Filter>Runtime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
