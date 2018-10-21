@@ -12,7 +12,7 @@ static int main1() {
 
 	/*------------------------------------------------------------------------*/
 	int current_frame = 0;
-	c2Event te;
+	c2IEvent te;
 	while (true) {
 ////		c2PumpEvent(&te);
 //		c2WaitEvent(&te);

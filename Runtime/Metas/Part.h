@@ -15,7 +15,6 @@ namespace c2 {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-/******************************************************************************/
 #define C2DefineClass(classname)	\
 		public:\
 			static Part* _create() {\
@@ -54,7 +53,6 @@ protected:
 	virtual ~Part() { _Ref = 0; _GUID = 0; }
 	Part(Part &&other) = delete;
 	//Part& operator=(Part &&rhs);	//TODO
-
 	/*------------------------------------------------------------------------*/
 public:
 	using CreationFunc		= Part* (*)();
@@ -62,6 +60,9 @@ public:
 	static CreationDict		_CreationDict;
 	//friend bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C);
 	//friend ARPart c2CreatePart(const char *sClass, const char *sName = nullptr);
+/*============================================================================*/
+private:
+	std::vector<ARPart>		_Parts;
 };
 
 

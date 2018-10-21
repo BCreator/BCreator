@@ -21,8 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\Creator\main.cpp" />
     <ClCompile Include="..\Examples\templab.cpp" />
-    <ClCompile Include="..\Runtime\_c2Activity\Event.cpp" />
-    <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp" />
+    <ClCompile Include="..\Runtime\_c2Application\Event.cpp" />
+    <ClCompile Include="..\Runtime\_c2Application\Factory.cpp" />
+    <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,11 +35,11 @@
     <ClInclude Include="..\Runtime\c2Application.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2Filestream.h" />
-    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartController\c2PartAnimation.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="..\Runtime\Metas\PreDefined.h" />
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h" />
     <ClInclude Include="..\Runtime\_c2Activity\gleq.h" />
+    <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h" />
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h" />
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h" />
   </ItemGroup>

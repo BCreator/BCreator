@@ -10,16 +10,19 @@
     <ClCompile Include="..\Creator\main.cpp">
       <Filter>Creator</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Activity\Factory.cpp">
-      <Filter>Runtime\_c2Activity</Filter>
-    </ClCompile>
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
       <Filter>Runtime\_c2Command</Filter>
     </ClCompile>
     <ClCompile Include="..\Examples\templab.cpp">
       <Filter>Examples</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Activity\Event.cpp">
+    <ClCompile Include="..\Runtime\_c2Application\Event.cpp">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\_c2Application\Factory.cpp">
       <Filter>Runtime\_c2Activity</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,9 +92,6 @@
     <ClInclude Include="..\Runtime\Metas\PreDefined.h">
       <Filter>Runtime\Metas</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2Parts\_c2PartSpacetree\Node.h">
-      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
-    </ClInclude>
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
       <Filter>Runtime\_c2Debugger</Filter>
     </ClInclude>
@@ -136,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\c2Application.h">
       <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h">
+      <Filter>Runtime\_c2Activity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h">
+      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

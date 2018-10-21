@@ -24,18 +24,19 @@ static int main() {
 #include"../Runtime/c2Application.h"
 static void test_activity() {
 	//Subscribe event
-	c2Command ac;
-	c2EventType et = c2SubscribeEvent(ac);
+	c2IAction action;
+	c2EvtConsumer	consumer = boost::bind(&c2IAction::doItNow, action, _1);
+	c2EventType evttype= c2SubEvt(consumer, 1000);
 	//Publish event
-	c2Event event;
-	event._nType = et;
-	c2PublishEvent(event);
+	c2IEvent event;
+	event._nType = evttype;
+	c2PubEvt(event);
 	c2UpdateLogicFrame(1);
-	c2UnsubscribeEvent(et, ac);
-# TODO next：
-- 1 如果确定event type，以及设计event种类。
-- 2 订阅者，而不应该只是command吧？
-- 3 设计command的种类，接入BT等多种形式。
+	c2UnsubEvt(consumer, evttype);
+//# TODO next：
+//- 1 如果确定event type，以及设计event种类。
+//- 3 设计action的种类，接入BT等多种形式。
+//- 4 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,13 +72,13 @@ using EventType = std::vector<EventHandler>::size_type;
 static void test_command() {
 	std::cout << "test_command begin......" << std::endl;
 	EventHandlerVec.push_back(EventHandler());
-	EventType et = EventHandlerVec.size()-1;
-	BOOST_ASSERT(et>=0);
-	testCommand ac;
-	EventHandlerVec[et].connect(boost::bind(&testCommand::act, ac));
-	EventHandlerVec[et].connect(boost::bind(&testCommand::act, ac));
-	EventHandlerVec[et].connect(boost::bind(&testCommand::act, ac));
-	EventHandlerVec[et]();
+	EventType evttype = EventHandlerVec.size()-1;
+	BOOST_ASSERT(evttype>=0);
+	testCommand act;
+	EventHandlerVec[evttype].connect(boost::bind(&testCommand::act, act));
+	EventHandlerVec[evttype].connect(boost::bind(&testCommand::act, act));
+	EventHandlerVec[evttype].connect(boost::bind(&testCommand::act, act));
+	EventHandlerVec[evttype]();
 #if 0
 	std::cout << ">>> learn queue >>>" << std::endl;
 	std::queue<int> mq;
@@ -94,7 +95,7 @@ static void test_command() {
 ////////////////////////////////////////////////////////////////////////////////
 #include<GLFW/glfw3.h>
 #define GLEQ_IMPLEMENTATION
-#include"../Runtime/_c2Activity/gleq.h"//不合规矩
+#include"../Runtime/_c2Application/gleq.h"//不合规矩
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Error: %s\n", description);
 }
@@ -148,7 +149,7 @@ static void test_glfw() {
 
 ////////////////////////////////////////////////////////////////////////////////
 #include<boost/signals2/signal.hpp>
-#include"../Runtime/_c2Activity/BrainTree.h"//不合规矩
+#include"../Runtime/_c2Application/BrainTree.h"//不合规矩
 class btCommand: public BrainTree::Node{
 	Status update() override {
 		std::cout << "C2 Command" << std::endl;

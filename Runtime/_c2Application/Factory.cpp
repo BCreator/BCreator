@@ -1,7 +1,6 @@
 #include<string>
 #define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 #include<hash_map>
-#include<assert.h>
 
 #include"../Metas/Part.h"
 using namespace c2;
@@ -19,11 +18,11 @@ bool _c2RegistPartClass(const char *sClass, Part::CreationFunc C) {
 
 Part::ARPart c2CreatePart(const char *sClass, const char *sName = nullptr) {
 	if (!sClass)
-		return NULL;
+		return nullptr;
 	Part::CreationDict::iterator ci = Part::_CreationDict.find(sClass);
 	if (ci == Part::_CreationDict.end())
-		return NULL;
+		return nullptr;
 	Part::CreationFunc	create = ci->second;
-	assert(create);
+	BOOST_ASSERT(create);
 	return create();
 }

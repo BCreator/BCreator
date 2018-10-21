@@ -49,6 +49,8 @@
 
 - 无状态化编程，初学者都被告诫不要使用全局变量，实质就是对无状态化编程SAY NO。而滥用类是一个让状态化横行的原罪，类本身当然也并无罪，罪在滥用，但这个滥用确实来源于类这种事物的潜在误导，滥用类成员变量的危害性质同全局变量的危害其实类似。如果一个语言没有类，只有结构体（实体类）、方法聚合（行为类），是不是就可以逼着新手没法滥用？GO等语言有接口但无方法聚合。
 
+- 团队很多成员工作职责只是填空，接口、其他模块“冷冻住”。
+
 - 。。。。。。关于线程问题。Lock-Free、OneRoute、状态和状态变化的触发、原子操作、transaction等话题。。。。。。
 
 ### 4.2 基本理念
@@ -62,7 +64,7 @@
 
 - 元对象内的成员变量，也应该分清楚哪些是内部使用的，哪些是和外界有关的。哪些是临时cache加速性质的。
 - 线程安全的类或者函数，特意加上ts~前缀，如果另外还有c2~，则c2tx~。
-- 不同系统，32和64执行方式不一，LP32/ILP32/LP64/ILP64/LLP64等都有可能。为了便于32位和64位并存。遵循1）避免简单的把指针、各种数字类型互相转换；2）只有在需要跨平台的序列化、持久化和网络通讯这种情况中，才需要定义针对此种情况的特定的数据类型，此种情况以外均不要把这个污染扩大，摒弃以前m_public.h的幼稚做法。此种情况下的特定数据类型，是根据相关宏（最好是直接的ILLP宏，而不是OS和编译器的）所明示的字节长度、对齐方式及字节顺序等来定义的。
+- x86/amd64/arm等移植话题。。。。部分请见event。
 
 ### 4.3 理清容易迷糊的概念
 - Part可成为别人的零件。有两种方式被造出来，一种compile期coding写的，另外一种是运行期由别的零件构建出来。
@@ -85,7 +87,7 @@
 |uBuild			|FSS/BSDK<br>TARGET: Wechat/GF/Facebook/Browser/iOS/Android/MacOS/Windows/AR/VR
 |Editor			|Creator/Director/Gizmos/Templet/Asset/SpacetreePrefab/Extension
 |**LIVELESS**<br>*CG Presentation Layer*|INFO COLLECTOR: Navigation/Placemark/SketchSampler/ReflectProbe<br>GEOMETRY: Spacetree/Mesh/Voxel/Terrain/Skeleton/UI/Sketch/Line/Point<br>VISUAL: Particle/Flare/Fog/Halo/Sky/Surface/VolumeLight/Airwave/LOD/Projector<br>WORKS: Wave/Cloth/Hair/Fluid<br>CONTROLLER: Animation/Physical/Camera/Portal/OccVolume/Transform/Conspos<br>RENDERING: DLS/HDR/Bloom/DOF/GI<br>RENDER BASICS: *RPath/RChunk/RDevice/Material*<br>AUDIO: *AudDevice*/SFX/BGM
-|**ALIVE**<br>*Presentation Layer Independence*|Activity: Factory/Signal/Observer<br>Command: Arbitrator/BT/Action/C#/Python/Lua/Java/GO/NLP
+|**ALIVE**<br>*Presentation Layer Independence*|Application: Factory/Signal/Observer<br>Command: Arbitrator/BT/Action/C#/Python/Lua/Java/GO/NLP
 |BASICS<br>*Presentation Layer Independence*|Stream: Filestream/Netstream<br>Math: Matrix/Interplation<br>Debugger: Logger/Dump/UnitTest/Console
 |META<br>*Presentation Layer Independence*|Part/OneRoute/Serialization/Device/IOStream
 >- Space：挂接到某空间区域根节点，具有自己特定的阻力、重力加速度、浮力等模拟不同空间的物理特性。模拟水下、外星球等。
@@ -102,7 +104,7 @@
 >- LIVELESS：非斜体的一般都是用来形成各种公用的Node的Part（Unity3D里的Component）的，这些Part都能被序列化，并且还会引用文件形态的更复杂的数据，此种数据文件在Editor层称为Asset。
 >- INFO COLLECTOR：用来收集数据或者信息，例如供交互逻辑等使用，收集调试信息的也可暂时归为此类。
 >- Arbitrator：各自为政，自私的考虑自己的订阅处理。但遇到冲突需要有仲裁——自然思维编程。
->- Action：是BT里惯用的概念，故我们沿用。在Activity层面，执行的行为用Command这个词来抽象。Command的实现可以是C也可以是任何脚本来实现的，也可就是一棵BT。
+>- Action：Action的实现可以是C也可以是任何脚本来实现的，也可就是一棵BT。
 
 ### 4.4 CGS
 - Package、Module等抽象概念，各人内心自定义的含义都不一样。这种模糊的用词并不科学，实质也无非想表达段落层次。但是现实中一般人对层次的理解能力局限于"事不过三"，顶多四（这也是我们组织内万事都惯归纳为ABCD的原因），故仍可选用朴素的自然思维的生活中名词来规范组织内术语。我们使用包的概念，包可以有路径，也就是说包可以有层次，但是为了简便起见，在我们自己项目的范畴，也并不打算把包同多层namespace挂钩。C海关（Customs）级包及逻辑关口（接口Interface）、G国道包及逻辑流、S省道包及逻辑流。再往下X县道包、Y乡道包等更低层次就不讲了，对理解整体脉络影响不那么大，就如同来到一个新城市，记住几个主干道就可在人类脑中快速建立坐标系形成格局脉络。

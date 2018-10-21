@@ -13,22 +13,21 @@
  * 本类不允许被继承
 */
 
-#ifndef C2ENGINE_SPACETREE_NODE_H_
-#define C2ENGINE_SPACETREE_NODE_H_
-namespace C2engine {
-	//==============================================================================
+#ifndef C2_SPACETREE_NODE_H_
+#define C2_SPACETREE_NODE_H_
 
-	class Node final : public Part
-	{
-		C2DefineClass(Node)
-	private:
-		Node();
-		~Node();
+#include"../../../Metas/Part.h"
 
-		//plugPart();
+namespace c2 {
+////////////////////////////////////////////////////////////////////////////////
 
-	};
+class C2Interface Node final : public Part {
+	C2DefineClass(Node)
+private:
+	Node();
+	~Node();
+};
 
-	//==============================================================================
-}//namespace C2engine
-#endif// C2ENGINE_SPACETREE_NODE_H_
+////////////////////////////////////////////////////////////////////////////////
+}//namespace c2
+#endif// C2_SPACETREE_NODE_H_
