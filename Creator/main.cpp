@@ -14,8 +14,8 @@ static int main1() {
 	int current_frame = 0;
 	c2IEvent te;
 	while (true) {
-////		c2PumpEvent(&te);
-//		c2WaitEvent(&te);
+////		c2PumpEvent(te);
+//		c2WaitEvent(te);
 //		switch (te._nType) {
 //		case c2ETKB_ESC:
 //			break;

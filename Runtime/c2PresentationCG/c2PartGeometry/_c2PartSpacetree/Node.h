@@ -24,8 +24,8 @@ namespace c2 {
 class C2Interface Node final : public Part {
 	C2DefineClass(Node)
 private:
-	Node();
-	~Node();
+	explicit Node();
+	virtual ~Node() override;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

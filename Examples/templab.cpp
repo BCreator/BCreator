@@ -2,14 +2,16 @@
 #include<iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-static void test_activity();
-static void test_command();
+static void test_event();
+static void test_signalbind();
 static void test_glfw();
 static void test_signal2_bt();
-static int main() {
+static void test_memqueue();
 
-	test_activity();
-//	test_command();
+static int main() {
+	test_event();
+	test_memqueue();
+//	test_signalbind();
 //	test_signal2_bt();
 //	test_glfw();
 
@@ -22,21 +24,30 @@ static int main() {
 /*test_activity
 */
 #include"../Runtime/c2Application.h"
-static void test_activity() {
+static void test_event() {
+	std::cout << "test_activity begin......" << std::endl;
 	//Subscribe event
+	c2EventTest event;
+//	event._esType = _TEST_C2EVT;
+	event._s[0] = 'w';
+	event._s[1] = 'x';
+	event._s[2] = 'x';
+	event._s[3] = 'x';
+	event._s[4] = 'n';
+	event._s[5] = 'i';
+	event._s[6] = '\0';
 	c2IAction action;
-	c2EvtConsumer	consumer = boost::bind(&c2IAction::doItNow, action, _1);
-	c2EventType evttype= c2SubEvt(consumer, 1000);
+	c2SubEvt(event, action);
 	//Publish event
-	c2IEvent event;
-	event._nType = evttype;
-	c2PubEvt(event);
+	c2PubEvt(event, sizeof(event), 1840);
 	c2UpdateLogicFrame(1);
-	c2UnsubEvt(consumer, evttype);
-//# TODO next：
+	//Unsubscribe event
+	c2UnsubEvt(event, action);
+	//# TODO next：
 //- 1 如果确定event type，以及设计event种类。
 //- 3 设计action的种类，接入BT等多种形式。
 //- 4 
+	std::cout << "......test_activity end" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,8 +80,8 @@ struct testCommand {
 using EventHandler			= boost::signals2::signal<testCommand::Status()>;
 static std::vector<EventHandler>	EventHandlerVec;
 using EventType = std::vector<EventHandler>::size_type;
-static void test_command() {
-	std::cout << "test_command begin......" << std::endl;
+static void test_signalbind() {
+	std::cout << "test_signalbind begin......" << std::endl;
 	EventHandlerVec.push_back(EventHandler());
 	EventType evttype = EventHandlerVec.size()-1;
 	BOOST_ASSERT(evttype>=0);
@@ -89,7 +100,7 @@ static void test_command() {
 	mq.pop();
 //	std::cout << mq.front() << std::endl;
 #endif
-	std::cout << "......test_command end" << std::endl;
+	std::cout << "......test_signalbind end" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,8 +156,6 @@ static void test_glfw() {
 	std::cout << "......test_glfw end" << std::endl;
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 #include<boost/signals2/signal.hpp>
 #include"../Runtime/_c2Application/BrainTree.h"//不合规矩
@@ -164,14 +173,76 @@ static void test_signal2_bt() {
 	auto repeater = std::make_shared<BrainTree::Repeater>(5);
 	repeater->setChild(std::make_shared<btCommand>());
 	tree.setRoot(repeater);
-
 	/*------------------------------------------------------------------------*/
 	//Subscribe event
 	event.connect(boost::bind(&BrainTree::BehaviorTree::update, tree));
-
 	/*------------------------------------------------------------------------*/
 	//Fire Event
 	for (int i = 0; i < 5; i++)
 		event();
 	std::cout << "......test_signal2_bt end" << std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#include<boost/log/trivial.hpp>
+#include"../Runtime/_c2Application/tsMemQueue.h"
+#pragma pack(push, 1)
+struct aa {
+	size_t	_sizeSize;
+	char	_nType;
+	int		_nLFStamp;	//Logic Frame Stamp.
+	virtual void print() {
+		std::cout << "aa print!!!= " << _nLFStamp << std::endl;
+	}
+	aa() {
+		_sizeSize = sizeof(aa);
+	}
+	virtual void print2(int arg1, int arg2) {
+	}
+};
+struct bb : public aa {
+	int bbbb;
+	bb() {
+		_sizeSize = sizeof(bb);
+	}
+	virtual void print() override {
+		std::cout << "bb print!!!= " << _nLFStamp << std::endl;
+	}
+	//virtual void print2(int arg1) {
+	//}
+	//virtual void print2(int arg1, int arg2, int arg3) {
+	//}
+};
+struct cc {
+	char	_nType;
+	int			_nLFStamp;	//Logic Frame Stamp.
+	int cccc;
+};
+#pragma pack(pop)
+static void _test_ref(aa &the) {
+	std::cout << "test ref. _sizeSize= " << the._sizeSize << std::endl;
+}
+static void test_memqueue() {
+	std::cout << "test_memqueue begin......" << std::endl;
+	aa thea;
+	bb theb;
+	_test_ref(thea);
+	std::cout << sizeof(aa) << typeid(aa).name() << std::endl;
+	std::cout << sizeof(bb) << typeid(bb).name() << std::endl;
+	std::cout << sizeof(cc) << typeid(cc).name() << std::endl;
+	/*------------------------------------------------------------------------*/
+	c2::tsMemQueue mq(1024);
+	theb._nLFStamp = 12345;
+	theb.bbbb = 54321;
+	mq.push(&theb, theb._sizeSize);
+	bb *newb = (bb*)malloc(theb._sizeSize);
+//	bb *newb = (bb*)new char(theb._sizeSize);
+	mq.pop(newb, theb._sizeSize);
+	newb->print();
+	((aa*)newb)->print();
+	std::cout << "newb's typed= " << typeid(*(aa*)newb).name() << std::endl;
+	newb->print2(1, 1);
+
+	/*------------------------------------------------------------------------*/
+	std::cout << "......test_memqueue end" << std::endl;
 }

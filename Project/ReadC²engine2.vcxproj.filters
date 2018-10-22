@@ -16,14 +16,11 @@
     <ClCompile Include="..\Examples\templab.cpp">
       <Filter>Examples</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Application\Event.cpp">
-      <Filter>Runtime\_c2Activity</Filter>
-    </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp">
-      <Filter>Runtime\_c2Activity</Filter>
+      <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Application\Factory.cpp">
-      <Filter>Runtime\_c2Activity</Filter>
+    <ClCompile Include="..\Runtime\_c2Application\Application.cpp">
+      <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,9 +38,6 @@
     </Filter>
     <Filter Include="Runtime\_c2Debugger">
       <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\_c2Activity">
-      <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Runtime\c2PresentationCG">
       <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
@@ -78,6 +72,9 @@
     <Filter Include="Examples">
       <UniqueIdentifier>{ea5745db-6d61-4203-9505-0996f96e6b9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Runtime\_c2Application">
+      <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Runtime\Metas\OneRoute.h">
@@ -88,9 +85,6 @@
     </ClInclude>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h">
       <Filter>Creator\GPanelAssets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Metas\PreDefined.h">
-      <Filter>Runtime\Metas</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
       <Filter>Runtime\_c2Debugger</Filter>
@@ -129,19 +123,22 @@
       <Filter>Runtime\c2PresentationCG\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h">
-      <Filter>Runtime\_c2Activity</Filter>
+      <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Activity\gleq.h">
-      <Filter>Runtime\_c2Activity</Filter>
+      <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2Application.h">
       <Filter>Runtime</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h">
-      <Filter>Runtime\_c2Activity</Filter>
+      <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h">
       <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2DefEvent.h">
+      <Filter>Runtime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,7 +155,7 @@
       <Filter>Runtime\_c2Debugger</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Activity\CMakeLists.txt">
-      <Filter>Runtime\_c2Activity</Filter>
+      <Filter>Runtime\_c2Application</Filter>
     </Text>
     <Text Include="..\Runtime\CMakeLists.txt">
       <Filter>Runtime</Filter>

@@ -21,8 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\Creator\main.cpp" />
     <ClCompile Include="..\Examples\templab.cpp" />
-    <ClCompile Include="..\Runtime\_c2Application\Event.cpp" />
-    <ClCompile Include="..\Runtime\_c2Application\Factory.cpp" />
+    <ClCompile Include="..\Runtime\_c2Application\Application.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
   </ItemGroup>
@@ -34,6 +33,7 @@
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
     <ClInclude Include="..\Runtime\c2Application.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
+    <ClInclude Include="..\Runtime\c2DefEvent.h" />
     <ClInclude Include="..\Runtime\c2Filestream.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h" />
@@ -46,7 +46,6 @@
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h" />
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
     <ClInclude Include="..\Runtime\Metas\Part.h" />
-    <ClInclude Include="..\Runtime\Metas\PreDefined.h" />
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h" />
     <ClInclude Include="..\Runtime\_c2Activity\gleq.h" />
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h" />
