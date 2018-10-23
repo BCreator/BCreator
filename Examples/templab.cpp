@@ -2,6 +2,7 @@
 #include<conio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+static void test_gleqevent();
 static void test_event();
 static void test_signalbind();
 static void test_glfw();
@@ -9,7 +10,8 @@ static void test_signal2_bt();
 static void test_memqueue();
 
 static int main() {
-	test_event();
+	test_gleqevent();
+//	test_event();
 //	test_memqueue();
 //	test_signalbind();
 //	test_signal2_bt();
@@ -21,12 +23,33 @@ static int main() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/*test_activity
+/*test_gleqevent
 */
 #include"../Runtime/c2Application.h"
-Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
+static void test_gleqevent() {
+	std::cout << "test_gleqevent begin......" << std::endl;
+	Uint32 etc_offset = c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT + 1);
+	Uint32 etc2_offset = c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT + 1);
+	BOOST_STATIC_ASSERT(0 == GLEQ_NONE);
+#if GLFW_VERSION_MINOR >= 3
+	Uint32 etc_offset_gleq = GLEQ_WINDOW_SCALE_CHANGED - GLEQ_NONE;
+#elif GLFW_VERSION_MINOR >= 2
+	Uint32 etc_offset_gleq = GLEQ_JOYSTICK_DISCONNECTED - GLEQ_NONE;
+#elif GLFW_VERSION_MINOR >= 1
+	Uint32 etc_offset_gleq = GLEQ_FILE_DROPPED - GLEQ_NONE;
+#else
+	Uint32 etc_offset_gleq = GLEQ_MONITOR_DISCONNECTED - GLEQ_NONE;
+#endif
+	etc_offset_gleq = c2AppendEvtTypesChunk(etc_offset_gleq);
+//	C2EVT1::EventTest event(etc_offset_gleq);
+	std::cout << "......test_gleqevent end" << std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*test_event
+*/
 static void test_event() {
-	std::cout << "test_activity begin......" << std::endl;
+	std::cout << "test_event begin......" << std::endl;
 	//initialize 
 	Uint32 etc_offset	= c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT+1);
 	Uint32 etc2_offset	= c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT+1);
@@ -43,6 +66,7 @@ static void test_event() {
 	c2IAction action;
 	c2Action2 action2;
 	c2SubEvt(event, action);
+	c2SubEvt(event2, action);
 	c2SubEvt(event2, action2);
 //	c2SubEvt(event, c2Action2::doItNow);
 	//Publish event
@@ -55,7 +79,7 @@ static void test_event() {
 //- 1 如果确定event type，以及设计event种类。
 //- 3 设计action的种类，接入BT等多种形式。
 //- 4 
-	std::cout << "......test_activity end" << std::endl;
+	std::cout << "......test_event end" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

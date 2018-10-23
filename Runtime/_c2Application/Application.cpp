@@ -33,7 +33,10 @@ static std::vector<SigActByEvt>	g_EvtSignals;
 //尝试使用成员函数指针而不用bind的方式。但调用方式行不通，在事件fire的时候仍旧需要action
 using SigActByEvt = c2IAction::ActionFun;
 #endif
-static std::vector<c2IAction*>	g_EvtSignals;
+//static std::vector<c2IAction*>	g_EvtSignals;
+#include<set>
+using Signal = std::multiset<c2IAction*>;
+static std::vector<Signal>	g_EvtSignals;
 
 /*
 返回值为自定义事件类型Chunk的偏移值。每一个应用程序运行前就应该明确的，软件不能所以插拔
@@ -52,7 +55,9 @@ Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize) {
 C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction &Act) {
 	std::cout	<< "EvtType= " << Evt._esType
 				<< "  Act Type: " << typeid(Act).name() << std::endl;
-		g_EvtSignals[Evt._esType] = &Act;
+	//g_EvtSignals[Evt._esType] = &Act;
+	Signal &sig = g_EvtSignals[Evt._esType];
+	sig.insert(&Act);
 #if 0//尝试使用signal2的方式
 	g_EvtSignals[Evt._esType].connect(boost::bind(&c2IAction::doItNow, Act, _1));
 	//尝试使用成员函数指针而不用bind的方式。但调用方式行不通，在事件fire的时候仍旧需要action
@@ -66,30 +71,38 @@ C2Interface void c2UnsubEvt(const c2IEvent &Evt, const c2IAction &Act) {
 	//	g_EvtSignals[EventType].disconnect(Com);
 }
 
-/*============================================================================*/
-static c2::tsMemQueue	g_EventQueue(C2EVTQUEUE_INITSIZE);
-C2Interface void c2PubEvt(const c2IEvent &Event, const size_t EventSize,
-				const Uint64 esLogicalFrameStamp) {	//FIXME: esLogicalFrameStamp用64的es是为了够大，但仍然跑爆问题？
-	Event._esLogicalFrameStamp = esLogicalFrameStamp;
-	g_EventQueue.push(&Event, EventSize);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 /*
  Driving framework of the whole application
 */
+static c2::tsMemQueue	g_EventQueue(C2EVTQUEUE_INITSIZE);
+C2Interface void c2PubEvt(const c2IEvent &Event, const size_t EventSize,
+	const Uint64 esLogicalFrameStamp) {	//FIXME: esLogicalFrameStamp用64的es是为了够大，但仍然跑爆问题？
+	Event._esLogicalFrameStamp = esLogicalFrameStamp;
+	g_EventQueue.push(&Event, EventSize);
+}
+
 static char g_pTempEventBuffer4UpdateLogicalFrame[C2EVTMSG_MAXSIZE];
 C2Interface void c2UpdateLogicFrame(Uint64 esLogicalFrameStamp) {
 	//分发消息
-	g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
-	c2IEvent &evt= *((c2IEvent*)g_pTempEventBuffer4UpdateLogicalFrame);
+	while (!g_EventQueue.isEmpty()) {
+		g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
+		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateLogicalFrame);
 #if 0//尝试使用signal2的方式
-	g_EvtSignals[evt._esType](evt);//每个signal会回调多个slots。
+		g_EvtSignals[evt._esType](evt);//每个signal会回调多个slots。
 #endif
-	BOOST_ASSERT(g_EvtSignals[evt._esType]);
-	g_EvtSignals[evt._esType]->doItNow(evt);//暂时不支持一个消息被多个action监听。
+	//BOOST_ASSERT(g_EvtSignals[evt._esType]);
+	//g_EvtSignals[evt._esType]->doItNow(evt);//暂时不支持一个消息被多个action监听。
+		Signal &sig = g_EvtSignals[evt._esType];
+		for (auto tp_act : sig) {
+			//for each (auto tp_act in sig) {
+			BOOST_ASSERT(tp_act);
+			tp_act->doItNow(evt);
+		}
+	}
 }
 
+/*============================================================================*/
 C2Interface void c2WaitEvent(c2IEvent *pEvent) {
 	if (!pEvent)
 		return;

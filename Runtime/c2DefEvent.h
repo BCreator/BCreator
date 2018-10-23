@@ -18,6 +18,7 @@ protected://不能直接实例化使用，只是个类型
 };
 
 /*============================================================================*/
+Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
 #pragma pack(pop)
 #define C2EvtTypeChunkBegin(evttype_namespace)	\
 						namespace evttype_namespace {\
@@ -38,7 +39,7 @@ struct evttype_name : public c2IEvent {\
 }//namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-// event types chunk 1
+// event types chunk 1 for test
 C2EvtTypeChunkBegin(C2ET1)
 	Unknown = 0,
 	EventTest,
@@ -54,7 +55,7 @@ C2DefEvtEnd
 #pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
-// event types chunk 2
+// event types chunk 2 for test
 C2EvtTypeChunkBegin(C2ET2)
 	Keyboard = 0,
 	Mouse,
@@ -72,6 +73,9 @@ Uint32	_esTest;
 char	_s[128];
 C2DefEvtEnd
 
+////////////////////////////////////////////////////////////////////////////////
+// glfw.gleq events
+#include"./_c2Application/gleq.h"
 
 
 #pragma pack(pop)
