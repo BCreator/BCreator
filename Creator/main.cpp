@@ -1,3 +1,4 @@
+#include<iostream>
 #include"../Runtime/Metas/Part.h"
 #include"../Runtime/c2Application.h"
 
@@ -12,7 +13,7 @@ static int main1() {
 
 	/*------------------------------------------------------------------------*/
 	int current_frame = 0;
-	c2IEvent te;
+//	c2IEvent te;
 	while (true) {
 ////		c2PumpEvent(te);
 //		c2WaitEvent(te);

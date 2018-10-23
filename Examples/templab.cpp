@@ -1,5 +1,5 @@
-#include<conio.h>
 #include<iostream>
+#include<conio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 static void test_event();
@@ -10,7 +10,7 @@ static void test_memqueue();
 
 static int main() {
 	test_event();
-	test_memqueue();
+//	test_memqueue();
 //	test_signalbind();
 //	test_signal2_bt();
 //	test_glfw();
@@ -24,11 +24,15 @@ static int main() {
 /*test_activity
 */
 #include"../Runtime/c2Application.h"
+Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
 static void test_event() {
 	std::cout << "test_activity begin......" << std::endl;
+	//initialize 
+	Uint32 etc_offset	= c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT+1);
+	Uint32 etc2_offset	= c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT+1);
 	//Subscribe event
-	c2EventTest event;
-//	event._esType = _TEST_C2EVT;
+	C2EVT1::EventTest event(etc_offset);
+	C2EVT2::Mouse event2(etc2_offset);
 	event._s[0] = 'w';
 	event._s[1] = 'x';
 	event._s[2] = 'x';
@@ -37,13 +41,17 @@ static void test_event() {
 	event._s[5] = 'i';
 	event._s[6] = '\0';
 	c2IAction action;
+	c2Action2 action2;
 	c2SubEvt(event, action);
+	c2SubEvt(event2, action2);
+//	c2SubEvt(event, c2Action2::doItNow);
 	//Publish event
 	c2PubEvt(event, sizeof(event), 1840);
+	c2PubEvt(event2, sizeof(event2), 1841);
 	c2UpdateLogicFrame(1);
 	//Unsubscribe event
-	c2UnsubEvt(event, action);
-	//# TODO next：
+//	c2UnsubEvt(event, action);
+	//# TODO next:
 //- 1 如果确定event type，以及设计event种类。
 //- 3 设计action的种类，接入BT等多种形式。
 //- 4 
@@ -215,7 +223,7 @@ struct bb : public aa {
 };
 struct cc {
 	char	_nType;
-	int			_nLFStamp;	//Logic Frame Stamp.
+	int		_nLFStamp;	//Logic Frame Stamp.
 	int cccc;
 };
 #pragma pack(pop)
@@ -235,13 +243,16 @@ static void test_memqueue() {
 	theb._nLFStamp = 12345;
 	theb.bbbb = 54321;
 	mq.push(&theb, theb._sizeSize);
-	bb *newb = (bb*)malloc(theb._sizeSize);
-//	bb *newb = (bb*)new char(theb._sizeSize);
-	mq.pop(newb, theb._sizeSize);
-	newb->print();
-	((aa*)newb)->print();
-	std::cout << "newb's typed= " << typeid(*(aa*)newb).name() << std::endl;
-	newb->print2(1, 1);
+	bb *pnewb = (bb*)malloc(theb._sizeSize);
+//	bb *pnewb = (bb*)new char(theb._sizeSize);
+	mq.pop(pnewb, theb._sizeSize);
+	pnewb->print();
+	((aa*)pnewb)->print();
+	aa &newb = *pnewb;
+	newb.print();
+	std::cout << "pnewb's typed= " << typeid(*(aa*)pnewb).name() << std::endl;
+	std::cout << "newb's typed= " << typeid(newb).name() << std::endl;
+	pnewb->print2(1, 1);
 
 	/*------------------------------------------------------------------------*/
 	std::cout << "......test_memqueue end" << std::endl;
