@@ -4,7 +4,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 static void test_application();
 static void test_signalbind();
-static void test_signal2_bt();
 static void test_memqueue();
 
 //以后可以规整为Unittest更标准的方式。
@@ -12,17 +11,31 @@ static int main() {
 	test_application();
 //	test_memqueue();
 //	test_signalbind();
-//	test_signal2_bt();
 
 	std::cout << "Press any key to quit." << std::endl;
 	_getch();
 	return 0;
 }
 
+#include"../Runtime/_c2Application/BrainTree.h"
 #include"../Runtime/c2Application.h"
-struct onSysInitialized : public c2IAction {
+class onSysInitialized : public c2IAction {
+	class btCommand : public BrainTree::Node {
+		Status update() override {
+			std::cout << "  -> printed by BrainTree::Node." << std::endl;
+			return Node::Status::Success;
+		}
+	};
+	BrainTree::BehaviorTree _BTree;
+public:
+	onSysInitialized() {
+		auto repeater = std::make_shared<BrainTree::Repeater>(5);
+		repeater->setChild(std::make_shared<btCommand>());
+		_BTree.setRoot(repeater);
+	}
 	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize) {
 		std::cout << "I can plugin my extensions here." << std::endl;
+		_BTree.update();
 		return c2IAction::doItNow(Evt, EvtSize);
 	}
 };
@@ -35,11 +48,10 @@ static void test_application() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/*test command
+/*test_signalbind
 连续种类的command，在一定时间内输入do stack来实现undo redo。如果影起了其他的状态的
 话，状态还应该能回退——如果全部都是无状态设计，做到这一点容易。这里实质讨论就是transaction
-的问题了。
-*/
+的问题了。*/
 struct testCommand {
 	enum class Status
 	{
@@ -61,14 +73,14 @@ struct testCommand {
 #include<queue>
 #include<boost/assert.hpp>
 #include<boost/signals2/signal.hpp>
-using EventHandler			= boost::signals2::signal<testCommand::Status()>;
+using EventHandler = boost::signals2::signal<testCommand::Status()>;
 static std::vector<EventHandler>	EventHandlerVec;
 using EventType = std::vector<EventHandler>::size_type;
 static void test_signalbind() {
 	std::cout << "test_signalbind begin......" << std::endl;
 	EventHandlerVec.push_back(EventHandler());
-	EventType evttype = EventHandlerVec.size()-1;
-	BOOST_ASSERT(evttype>=0);
+	EventType evttype = EventHandlerVec.size() - 1;
+	BOOST_ASSERT(evttype >= 0);
 	testCommand act;
 	EventHandlerVec[evttype].connect(boost::bind(&testCommand::act, act));
 	EventHandlerVec[evttype].connect(boost::bind(&testCommand::act, act));
@@ -82,36 +94,9 @@ static void test_signalbind() {
 	std::cout << mq.front() << std::endl;
 	std::cout << mq.front() << std::endl;
 	mq.pop();
-//	std::cout << mq.front() << std::endl;
+	//	std::cout << mq.front() << std::endl;
 #endif
 	std::cout << "......test_signalbind end" << std::endl;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-#include<boost/signals2/signal.hpp>
-#include"../Runtime/_c2Application/BrainTree.h"//不合规矩
-class btCommand: public BrainTree::Node{
-	Status update() override {
-		std::cout << "C2 Command" << std::endl;
-		return Node::Status::Success;
-	}
-};
-static void test_signal2_bt() {
-	std::cout << "test_signal2_bt begin......" << std::endl;
-	boost::signals2::signal<BrainTree::Node::Status()>	event;
-	/*------------------------------------------------------------------------*/
-	BrainTree::BehaviorTree tree;
-	auto repeater = std::make_shared<BrainTree::Repeater>(5);
-	repeater->setChild(std::make_shared<btCommand>());
-	tree.setRoot(repeater);
-	/*------------------------------------------------------------------------*/
-	//Subscribe event
-	event.connect(boost::bind(&BrainTree::BehaviorTree::update, tree));
-	/*------------------------------------------------------------------------*/
-	//Fire Event
-	for (int i = 0; i < 5; i++)
-		event();
-	std::cout << "......test_signal2_bt end" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
