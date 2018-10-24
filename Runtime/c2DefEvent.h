@@ -31,15 +31,15 @@ Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
 #define C2DefEvtBegin(evttype_namespace, evt_namespace, evttype_name)	\
 namespace evt_namespace {\
 struct evttype_name : public c2IEvent {\
-	evttype_name(Uint32 ETOffset) : c2IEvent() {\
-		_esType = static_cast<Uint32>(evttype_namespace::evttype_name) + ETOffset;\
+	evttype_name(Uint32 ETChunkOffset) : c2IEvent() {\
+		_esType = static_cast<Uint32>(evttype_namespace::evttype_name) + ETChunkOffset;\
 	}
 #define C2DefEvtEnd	\
 };\
 }//namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-// event types chunk 1 for test
+/*event types chunk 1 for test*/
 C2EvtTypeChunkBegin(C2ET1)
 	Unknown = 0,
 	EventTest,
@@ -55,7 +55,7 @@ C2DefEvtEnd
 #pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
-// event types chunk 2 for test
+/*event types chunk 2 for test*/
 C2EvtTypeChunkBegin(C2ET2)
 	Keyboard = 0,
 	Mouse,
@@ -72,12 +72,24 @@ C2DefEvtBegin(C2ET2, C2EVT2, Mouse)
 Uint32	_esTest;
 char	_s[128];
 C2DefEvtEnd
+#pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
-// glfw.gleq events
+/*
+glfw.gleq events。GLEQ内的事件长度其实并不足够明确，并且没有明确的字节对齐。暂时又不想
+直接修改gleq.h文件。
+*/
+C2EvtTypeChunkBegin(c2gleqet)
+c2GLEQevent = 0,
+EVENTTYPE_AMMOUT,
+C2EvtTypeChunkEnd
+
 #include"./_c2Application/gleq.h"
-
-
+#pragma pack(push, 1)
+/*可以考虑把GLEQ整个当一个消息类型，然后都交给他处理*/
+C2DefEvtBegin(c2gleqet, c2gleqevts, c2GLEQevent)
+GLEQevent	_GLEQevent;
+C2DefEvtEnd
 #pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////

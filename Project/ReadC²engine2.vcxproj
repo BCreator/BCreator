@@ -47,7 +47,7 @@
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
     <ClInclude Include="..\Runtime\Metas\Part.h" />
     <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h" />
-    <ClInclude Include="..\Runtime\_c2Activity\gleq.h" />
+    <ClInclude Include="..\Runtime\_c2Application\gleq.h" />
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h" />
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h" />
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h" />

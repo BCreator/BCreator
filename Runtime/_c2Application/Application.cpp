@@ -16,7 +16,7 @@ c2IAction::c2IAction() : _SubjectID(0) {
 #if 0//尝试使用signal2的方式
 c2IAction::Status c2IAction::operator()(const c2IEvent &Evt) {
 #endif
-	c2IAction::Status c2IAction::doItNow(const c2IEvent &Evt) {
+	c2IAction::Status c2IAction::doItNow(const c2IEvent &Evt, size_t EvtSize) {
 	//	const EventTest &evt = (const EventTest&)Evt;
 	const C2EVT2::Mouse &evt = (const C2EVT2::Mouse&)Evt;
 	std::cout << typeid(*this).name() << "::doItNow| success..." << std::endl;
@@ -35,7 +35,8 @@ using SigActByEvt = c2IAction::ActionFun;
 #endif
 //static std::vector<c2IAction*>	g_EvtSignals;
 #include<set>
-using Signal = std::multiset<c2IAction*>;
+//若使用multiset能实现类似boost::signal2对slot的灵活管控，TODO：以后再完善
+using Signal = std::set<c2IAction*>;	//暂时不可有重复，故用set
 static std::vector<Signal>	g_EvtSignals;
 
 /*
@@ -53,22 +54,31 @@ Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize) {
 //C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction::ActionFun pFunAct) {
 #endif
 C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction &Act) {
-	std::cout	<< "EvtType= " << Evt._esType
-				<< "  Act Type: " << typeid(Act).name() << std::endl;
-	//g_EvtSignals[Evt._esType] = &Act;
 	Signal &sig = g_EvtSignals[Evt._esType];
 	sig.insert(&Act);
+}
+C2Interface void c2SubEvt(Uint32 ETChunkOffset, Uint32 EvtType, c2IAction &Act) {
+	//g_EvtSignals[EvtType] = &Act;
+	Signal &sig = g_EvtSignals[ETChunkOffset+EvtType];
+	sig.insert(&Act);
 #if 0//尝试使用signal2的方式
-	g_EvtSignals[Evt._esType].connect(boost::bind(&c2IAction::doItNow, Act, _1));
+	g_EvtSignals[EvtType].connect(boost::bind(&c2IAction::doItNow, Act, _1));
 	//尝试使用成员函数指针而不用bind的方式。但调用方式行不通，在事件fire的时候仍旧需要action
 	c2IAction::ActionFun f = &c2IAction::doItNow;
 	(Act.*f)(Evt);//test
-//	g_EvtSignals[Evt._esType]= f;
-	g_EvtSignals[Evt._esType].connect(f);
+//	g_EvtSignals[EvtType]= f;
+	g_EvtSignals[EvtType].connect(f);
 #endif
 }
-C2Interface void c2UnsubEvt(const c2IEvent &Evt, const c2IAction &Act) {
-	//	g_EvtSignals[EventType].disconnect(Com);
+C2Interface void c2UnsubEvt(Uint32 ETChunkOffset, Uint32 EvtType, const c2IAction &Act) {
+	//	g_EvtSignals[EvtType].disconnect(Com);
+}
+/*只是先投递移除操作，实际移除在主循环消息处理帧主函数里进行，因为此函数会可能在任
+何时候调用，不能破坏sig里的set及sigs。*/
+#include<utility>
+static std::list<std::pair<Uint32, c2IAction*>>	g_UnsubEvtList;
+C2Interface void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act) {
+	g_UnsubEvtList.push_back(std::make_pair(Evt._esType, &Act));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +86,7 @@ C2Interface void c2UnsubEvt(const c2IEvent &Evt, const c2IAction &Act) {
  Driving framework of the whole application
 */
 static c2::tsMemQueue	g_EventQueue(C2EVTQUEUE_INITSIZE);
-C2Interface void c2PubEvt(const c2IEvent &Event, const size_t EventSize,
+C2Interface void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
 	const Uint64 esLogicalFrameStamp) {	//FIXME: esLogicalFrameStamp用64的es是为了够大，但仍然跑爆问题？
 	Event._esLogicalFrameStamp = esLogicalFrameStamp;
 	g_EventQueue.push(&Event, EventSize);
@@ -85,35 +95,34 @@ C2Interface void c2PubEvt(const c2IEvent &Event, const size_t EventSize,
 static char g_pTempEventBuffer4UpdateLogicalFrame[C2EVTMSG_MAXSIZE];
 C2Interface void c2UpdateLogicFrame(Uint64 esLogicalFrameStamp) {
 	//分发消息
+	static size_t st_evtsize;
 	while (!g_EventQueue.isEmpty()) {
-		g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
+		st_evtsize= g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
 		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateLogicalFrame);
 #if 0//尝试使用signal2的方式
 		g_EvtSignals[evt._esType](evt);//每个signal会回调多个slots。
 #endif
-	//BOOST_ASSERT(g_EvtSignals[evt._esType]);
-	//g_EvtSignals[evt._esType]->doItNow(evt);//暂时不支持一个消息被多个action监听。
-		Signal &sig = g_EvtSignals[evt._esType];
-		for (auto tp_act : sig) {
-			//for each (auto tp_act in sig) {
+		for (c2IAction *tp_act : g_EvtSignals[evt._esType]) {
+		//for each (auto tp_act in sig) {
 			BOOST_ASSERT(tp_act);
-			tp_act->doItNow(evt);
+			tp_act->doItNow(evt, st_evtsize);
 		}
 	}
+	//实际退订消息，进行删除
+	//for (std::pair<Uint32, c2IAction*> &tp : g_UnsubEvtList) {
+	for (std::pair<Uint32, c2IAction*> tp : g_UnsubEvtList) {
+			g_EvtSignals[tp.first].erase(tp.second);
+	}
+	g_UnsubEvtList.clear();
 }
 
 /*============================================================================*/
-C2Interface void c2WaitEvent(c2IEvent *pEvent) {
-	if (!pEvent)
-		return;
-	/*------------------------------------------------------------------------*/
-//	EventQueue.get
+C2Interface void c2WaitEvent() {
+	glfwWaitEvents();
 }
 
-C2Interface void c2PumpEvent(c2IEvent *pEvent) {
-	if (!pEvent)
-		return;
-	/*------------------------------------------------------------------------*/
+C2Interface void c2PumpEvent() {
+	glfwPollEvents();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
