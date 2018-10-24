@@ -35,6 +35,7 @@
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2DefEvent.h" />
     <ClInclude Include="..\Runtime\c2Filestream.h" />
+    <ClInclude Include="..\Runtime\c2PreDefined.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h" />

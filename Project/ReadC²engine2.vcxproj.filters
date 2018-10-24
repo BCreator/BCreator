@@ -140,6 +140,9 @@
     <ClInclude Include="..\Runtime\c2DefEvent.h">
       <Filter>Runtime</Filter>
     </ClInclude>
+    <ClInclude Include="..\Runtime\c2PreDefined.h">
+      <Filter>Runtime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Creator\GPanelAssets\CMakeLists.txt">

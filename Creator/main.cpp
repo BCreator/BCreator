@@ -9,7 +9,7 @@ static int main1() {
 	bool b = C2RegistPartClass(GPanelAssets);
 	if (!b)
 		return 0;
-	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
+//	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
 
 	/*------------------------------------------------------------------------*/
 	int current_frame = 0;

@@ -21,7 +21,7 @@
 namespace c2 {
 ////////////////////////////////////////////////////////////////////////////////
 
-class C2Interface Node final : public Part {
+class C2API Node final : public Part {
 	C2DefineClass(Node)
 private:
 	explicit Node();

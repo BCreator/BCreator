@@ -10,9 +10,7 @@
 //#define C2_CHECK_MEM
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-Action体系
-*/
+/*Action体系*/
 struct c2IAction {
 	//TODO：？返回值有RUNNING是为了后面的OneRounte。
 	enum class Status
@@ -25,51 +23,47 @@ struct c2IAction {
 	int		_Predicate;
 	int		_SubjectID;
 	//blackboard;只能是内部状态，不能记录任何体外状态。
-	explicit c2IAction();
-	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize);
-#if 0//尝试使用signal2的方式。bind可能是编译期无法connect到运行期才能确定成员函数调用地址的多态action
-	//struct _DOITNOW {
-	//	Status operator ()(const c2IEvent &Evt);
-	//}doItNow;
-	virtual Status operator ()(const c2IEvent &Evt);
-	//使用成员函数指针的方式。但调用方式行不通
-	using ActionFun = c2IAction::Status(c2IAction::*)(const c2IEvent &Evt);
-#endif
-};
-
-struct c2Action2 : public c2IAction {
+	explicit c2IAction() {}
 	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize) {
-		std::cout << typeid(*this).name() << "::doItNow | success..." << std::endl;
+		std::cout << "EvType: " << Evt._esType << " -> "
+			<< typeid(*this).name() << "::doItNow: success..." << std::endl;
 		return Status::Success;
 	}
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-Driving framework of the whole application
-*/
-C2Interface void c2WaitEvent();
-C2Interface void c2PumpEvent();
-C2Interface void c2UpdateLogicFrame(Uint64 esLogicalFrameStamp);
+/*Driving framework of the whole application*/
+C2API void c2AppRun(bool isBlocked, int SwapInterval);
 
 /******************************************************************************/
-//Consumer subscribe event And Producer publish event.
-C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction &Act);
-C2Interface void c2SubEvt(Uint32 ETChunkOffset, Uint32 EvtType, c2IAction &Act);
-//C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction::ActionFun pFunAct);
-C2Interface void c2UnsubEvt(Uint32 ETChunkOffset, Uint32 EvtType, c2IAction &Act);
-C2Interface void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act);
-C2Interface void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
-						const Uint64 esLogicalFrameStamp);
+/*Consumer subscribe event And Producer publish event.*/
+C2API void c2SubEvt(const c2IEvent &Evt, c2IAction &Act);
+C2API void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act);
+C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
+								const Uint64 esFixFrameStamp);
+
+/******************************************************************************/
+/*System events of C2 Application
+ 注意通过系统事件进行用户自定义操作是假回调，我们的事件体系是基于事件队列，实质用户只有
+ 异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，特意不给用户太多选择。*/
+C2EvtTypeChunkBegin(c2SysET)
+	initialized = 0,
+	AMMOUT,
+C2EvtTypeChunkEnd
+
+#pragma pack(push, 1)
+C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
+C2DefOneEvtEnd
+#pragma pack(pop)
+
+C2API c2SysEvt::initialized& c2GetSysEvtInitialized();
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-Part & Factory
-*/
+/*Part & Factory*/
 #include"./Metas/Part.h"
 using c2APart = c2::Part::ARPart;
-C2Interface c2APart c2CreatePart(const char *sClass, const char *sName = nullptr);
-C2Interface bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C);
+C2API c2APart c2CreatePart(const char *sClass, const char *sName = nullptr);
+C2API bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C);
 #define C2RegistPartClass(classname)	\
 	::_c2RegistPartClass(#classname, classname::_create);
 

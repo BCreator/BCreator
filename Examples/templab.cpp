@@ -2,196 +2,36 @@
 #include<conio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-static void test_event();
+static void test_application();
 static void test_signalbind();
-static void test_glfwevent();
 static void test_signal2_bt();
 static void test_memqueue();
 
 //以后可以规整为Unittest更标准的方式。
 static int main() {
-//	test_event();
+	test_application();
 //	test_memqueue();
 //	test_signalbind();
 //	test_signal2_bt();
-	test_glfwevent();
 
 	std::cout << "Press any key to quit." << std::endl;
 	_getch();
 	return 0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/*test_gleqevent
-*/
-#define GLEQ_IMPLEMENTATION
-#include"../Runtime/_c2Application/gleq.h"
 #include"../Runtime/c2Application.h"
-c2gleqevts::c2GLEQevent st_c2_gleqevt(0);
-struct c2GLEQAction : public c2IAction {
+struct onSysInitialized : public c2IAction {
 	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize) {
-		std::cout << typeid(*this).name() << "::doItNow | ......" << std::endl;
-		const GLEQevent &event = static_cast<const c2gleqevts::c2GLEQevent&>(Evt)._GLEQevent;
-		BOOST_ASSERT(EvtSize == sizeof(static_cast<const c2gleqevts::c2GLEQevent&>(Evt)));
-		switch (event.type) {
-		case GLEQ_WINDOW_MOVED:
-			printf("Window moved to %i,%i\n", event.pos.x, event.pos.y);
-			break;
-		case GLEQ_BUTTON_PRESSED:
-			printf("Mouse button %i pressed (mods 0x%x)\n",
-				event.mouse.button,
-				event.mouse.mods);
-			break;
-		case GLEQ_WINDOW_RESIZED:
-			printf("Window resized to %ix%i\n", event.size.width,
-				event.size.height);
-			break;
-		case GLEQ_KEY_PRESSED:
-			printf("Key 0x%02x pressed (scancode 0x%x mods 0x%x)\n",
-				event.keyboard.key,
-				event.keyboard.scancode,
-				event.keyboard.mods);
-			break;
-		case GLEQ_KEY_REPEATED:
-			printf("Key 0x%02x repeated (scancode 0x%x mods 0x%x)\n",
-				event.keyboard.key,
-				event.keyboard.scancode,
-				event.keyboard.mods);
-			break;
-		case GLEQ_KEY_RELEASED:
-			printf("Key 0x%02x released (scancode 0x%x mods 0x%x)\n",
-				event.keyboard.key,
-				event.keyboard.scancode,
-				event.keyboard.mods);
-			if (0x1 == event.keyboard.scancode)
-				c2UnsubEvt(st_c2_gleqevt, *this);
-			break;
-		default:
-			printf("Error: Unknown event %i\n", event.type);
-			break;
-		}
-		return Status::Success;
+		std::cout << "I can plugin my extensions here." << std::endl;
+		return c2IAction::doItNow(Evt, EvtSize);
 	}
 };
-//static void _init_gleqevent() {
-//	Uint32 etc_offset = c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT + 1);
-//	Uint32 etc2_offset = c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT + 1);
-////	BOOST_STATIC_ASSERT(0 == GLEQ_NONE);
-////#if GLFW_VERSION_MINOR >= 3
-////	Uint32 etc_offset_gleq = GLEQ_WINDOW_SCALE_CHANGED - GLEQ_NONE;
-////#elif GLFW_VERSION_MINOR >= 2
-////	Uint32 etc_offset_gleq = GLEQ_JOYSTICK_DISCONNECTED - GLEQ_NONE;
-////#elif GLFW_VERSION_MINOR >= 1
-////	Uint32 etc_offset_gleq = GLEQ_FILE_DROPPED - GLEQ_NONE;
-////#else
-////	Uint32 etc_offset_gleq = GLEQ_MONITOR_DISCONNECTED - GLEQ_NONE;
-////#endif
-////	etc_offset_gleq = c2AppendEvtTypesChunk(etc_offset_gleq);
-//}
-static void error_callback(int error, const char* description) {
-	fprintf(stderr, "Error: %s\n", description);
-}
-static void test_glfwevent() {
-	std::cout << "test_glfwevent begin......" << std::endl;
-	Uint32 etc_offset_gleq;
-	etc_offset_gleq = c2AppendEvtTypesChunk(c2gleqet::EVENTTYPE_AMMOUT + 1);
-//	c2gleqevts::c2GLEQevent st_c2_gleqevt(etc_offset_gleq);
-	c2GLEQAction gleq_action;
-	c2SubEvt(st_c2_gleqevt, gleq_action);
-	/*glfw begin*/
-	glfwSetErrorCallback(error_callback);
-	/* Initialize the library */
-	if (!glfwInit())
-		return;
-	gleqInit();
-	/* Create a windowed mode window and its OpenGL context */
-	GLFWwindow *window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-	if (!window) {
-		glfwTerminate();
-		return;
-	}
-	/* Make the window's context current */
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(0);
-	gleqTrackWindow(window);
-	/* Loop until the user closes the window */
-#if 0
-	GLEQevent event;
-#endif
-	Uint64 es_logicalframe_stamp = 0;
-	while (!glfwWindowShouldClose(window)) {
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
-		c2PumpEvent();
-		//从GLEQ拿消息
-		while (gleqNextEvent(&(st_c2_gleqevt._GLEQevent))) {
-			c2PublishEvt(st_c2_gleqevt, sizeof(st_c2_gleqevt), es_logicalframe_stamp);
-		}
-		gleqFreeEvent(&(st_c2_gleqevt._GLEQevent));
-		/*逻辑、渲染等主循环帧*/
-		c2UpdateLogicFrame(es_logicalframe_stamp);
-		++es_logicalframe_stamp;
-#if 0
-		/* Poll for and process events */
-		glfwPollEvents();
-		while (gleqNextEvent(&event)) {
-			switch (event.type) {
-			case GLEQ_WINDOW_MOVED:
-				printf("Window moved to %i,%i\n", event.pos.x, event.pos.y);
-				break;
-			case GLEQ_WINDOW_RESIZED:
-				printf("Window resized to %ix%i\n", event.size.width,
-					event.size.height);
-				break;
-			default:
-				printf("Error: Unknown event %i\n", event.type);
-				break;
-			}
-			gleqFreeEvent(&event);
-		}
-#endif
-	}
-	glfwTerminate();
-	std::cout << "......test_glfwevent end" << std::endl;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/*test_event
-*/
-static void test_event() {
-	std::cout << "test_event begin......" << std::endl;
-	//initialize 
-	Uint32 etc_offset = c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT + 1);
-	Uint32 etc2_offset = c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT + 1);
-	//Subscribe event
-	C2EVT1::EventTest event(etc_offset);
-	C2EVT2::Mouse event2(etc2_offset);
-	event._s[0] = 'w';
-	event._s[1] = 'x';
-	event._s[2] = 'x';
-	event._s[3] = 'x';
-	event._s[4] = 'n';
-	event._s[5] = 'i';
-	event._s[6] = '\0';
-	c2IAction action;
-	c2Action2 action2;
-	c2SubEvt(event, action);
-	c2SubEvt(event2, action);
-	c2SubEvt(event2, action2);
-	//	c2SubEvt(event, c2Action2::doItNow);
-		//Publish event
-	c2PublishEvt(event, sizeof(event), 1840);
-	c2PublishEvt(event2, sizeof(event2), 1841);
-	c2UpdateLogicFrame(1);
-	//Unsubscribe event
-//	c2UnsubEvt(event, action);
-	//# TODO next:
-//- 1 如果确定event type，以及设计event种类。
-//- 3 设计action的种类，接入BT等多种形式。
-//- 4 
-	std::cout << "......test_event end" << std::endl;
+static void test_application() {
+	std::cout << "test_application begin......" << std::endl;
+	onSysInitialized osi;
+	c2SubEvt(c2GetSysEvtInitialized(), osi);
+	c2AppRun(false, 1);
+	std::cout << "......test_application end" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

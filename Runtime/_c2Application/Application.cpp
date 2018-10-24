@@ -8,121 +8,223 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 /*
-Action system
-*/
-c2IAction::c2IAction() : _SubjectID(0) {
-}
-
-#if 0//尝试使用signal2的方式
-c2IAction::Status c2IAction::operator()(const c2IEvent &Evt) {
-#endif
-	c2IAction::Status c2IAction::doItNow(const c2IEvent &Evt, size_t EvtSize) {
-	//	const EventTest &evt = (const EventTest&)Evt;
-	const C2EVT2::Mouse &evt = (const C2EVT2::Mouse&)Evt;
-	std::cout << typeid(*this).name() << "::doItNow| success..." << std::endl;
-	return Status::Success;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/*
 Consumer subscribe event And Producer publish event
 */
-#if 0//尝试使用signal2的方式。bind可能是编译期无法connect到运行期才能确定成员函数调用地址的多态action
-using SigActByEvt = boost::signals2::signal<c2IAction::Status (const c2IEvent &Evt)>;
-static std::vector<SigActByEvt>	g_EvtSignals;
-//尝试使用成员函数指针而不用bind的方式。但调用方式行不通，在事件fire的时候仍旧需要action
-using SigActByEvt = c2IAction::ActionFun;
-#endif
-//static std::vector<c2IAction*>	g_EvtSignals;
 #include<set>
-//若使用multiset能实现类似boost::signal2对slot的灵活管控，TODO：以后再完善
-using Signal = std::set<c2IAction*>;	//暂时不可有重复，故用set
-static std::vector<Signal>	g_EvtSignals;
 
-/*
-返回值为自定义事件类型Chunk的偏移值。每一个应用程序运行前就应该明确的，软件不能所以插拔
+/*暂时不可有重复，故用set。若使用multiset能实现类似boost::signal2对slot的灵活管控。
+TODO：以后再完善*/
+static std::vector<std::set<c2IAction*>> g_Evt2ActsetVector;
+
+/*返回值为自定义事件类型Chunk的偏移值。每一个应用程序运行前就应该明确的，软件不能所以插拔
 进来的event chunk，因为这会导致每个chunk的offect变化，同程序所匹配配合的其他网络配合端
-或者序列化（例如录像，undo/redo等）所存数据而产生不兼容。
-*/
+或者序列化（例如录像，undo/redo等）所存数据而产生不兼容。*/
 Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize) {
-	Uint32 ret = g_EvtSignals.size();
-	g_EvtSignals.resize(ret + nNewChunkSize);
+	Uint32 ret = g_Evt2ActsetVector.size();
+	g_Evt2ActsetVector.resize(ret + nNewChunkSize);
 	return ret;
 }
 
-#if 0//尝试使用成员函数指针的方式。但调用方式行不通
-//C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction::ActionFun pFunAct) {
-#endif
-C2Interface void c2SubEvt(const c2IEvent &Evt, c2IAction &Act) {
-	Signal &sig = g_EvtSignals[Evt._esType];
-	sig.insert(&Act);
-}
-C2Interface void c2SubEvt(Uint32 ETChunkOffset, Uint32 EvtType, c2IAction &Act) {
-	//g_EvtSignals[EvtType] = &Act;
-	Signal &sig = g_EvtSignals[ETChunkOffset+EvtType];
-	sig.insert(&Act);
-#if 0//尝试使用signal2的方式
-	g_EvtSignals[EvtType].connect(boost::bind(&c2IAction::doItNow, Act, _1));
-	//尝试使用成员函数指针而不用bind的方式。但调用方式行不通，在事件fire的时候仍旧需要action
-	c2IAction::ActionFun f = &c2IAction::doItNow;
-	(Act.*f)(Evt);//test
-//	g_EvtSignals[EvtType]= f;
-	g_EvtSignals[EvtType].connect(f);
-#endif
-}
-C2Interface void c2UnsubEvt(Uint32 ETChunkOffset, Uint32 EvtType, const c2IAction &Act) {
-	//	g_EvtSignals[EvtType].disconnect(Com);
-}
-/*只是先投递移除操作，实际移除在主循环消息处理帧主函数里进行，因为此函数会可能在任
-何时候调用，不能破坏sig里的set及sigs。*/
+/*============================================================================*/
+/*只是先投递操作记录，实际操作在主循环消息处理帧主函数里进行，因为订阅或退订可能会在任
+何时候（并不含有暗示改变我们多线程态度）被调用，不能破坏sig里的set及sigs。
+TODO:还需要严密测试一下，例如使用订阅了某事件的ACT，里面再订阅或退订，并pub事件触发
+ACT里再订阅或退订，等等。*/
 #include<utility>
+static std::list<std::pair<Uint32, c2IAction*>>	g_SubEvtList;
+C2API void c2SubEvt(const c2IEvent &Evt, c2IAction &Act) {
+	g_SubEvtList.push_back(std::make_pair(Evt._esType, &Act));
+}
 static std::list<std::pair<Uint32, c2IAction*>>	g_UnsubEvtList;
-C2Interface void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act) {
+C2API void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act) {
 	g_UnsubEvtList.push_back(std::make_pair(Evt._esType, &Act));
+}
+
+/******************************************************************************/
+/* Driving framework of the whole application*/
+static c2::tsMemQueue g_EventQueue(C2EVTQUEUE_INITSIZE);
+C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
+	/*FIXME: esFixFrameStamp用64的es是为了够大，但仍然跑爆问题？*/
+	const Uint64 esFixFrameStamp) {
+	Event._esFixFrameStamp = esFixFrameStamp;
+	g_EventQueue.push(&Event, EventSize);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /*
- Driving framework of the whole application
+ Frame & FixFrame control
 */
-static c2::tsMemQueue	g_EventQueue(C2EVTQUEUE_INITSIZE);
-C2Interface void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
-	const Uint64 esLogicalFrameStamp) {	//FIXME: esLogicalFrameStamp用64的es是为了够大，但仍然跑爆问题？
-	Event._esLogicalFrameStamp = esLogicalFrameStamp;
-	g_EventQueue.push(&Event, EventSize);
-}
-
 static char g_pTempEventBuffer4UpdateLogicalFrame[C2EVTMSG_MAXSIZE];
-C2Interface void c2UpdateLogicFrame(Uint64 esLogicalFrameStamp) {
-	//分发消息
+static void UpdateFixFrame(int Elapsed) {
+	/*处理上一帧实际订阅消息。*/
+	for (std::pair<Uint32, c2IAction*> &tpsub : g_SubEvtList) {
+		g_Evt2ActsetVector[tpsub.first].insert(tpsub.second);
+	}
+	g_SubEvtList.clear();
+	/*处理上一帧实际退订消息，进行删除。*/
+	for (std::pair<Uint32, c2IAction*> &tpunsub : g_UnsubEvtList) {
+		g_Evt2ActsetVector[tpunsub.first].erase(tpunsub.second);
+	}
+	g_UnsubEvtList.clear();
+	/*分发消息*/
 	static size_t st_evtsize;
 	while (!g_EventQueue.isEmpty()) {
 		st_evtsize= g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
 		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateLogicalFrame);
-#if 0//尝试使用signal2的方式
-		g_EvtSignals[evt._esType](evt);//每个signal会回调多个slots。
-#endif
-		for (c2IAction *tp_act : g_EvtSignals[evt._esType]) {
+		for (c2IAction *tp_act : g_Evt2ActsetVector[evt._esType]) {
 		//for each (auto tp_act in sig) {
 			BOOST_ASSERT(tp_act);
 			tp_act->doItNow(evt, st_evtsize);
 		}
 	}
-	//实际退订消息，进行删除
-	//for (std::pair<Uint32, c2IAction*> &tp : g_UnsubEvtList) {
-	for (std::pair<Uint32, c2IAction*> tp : g_UnsubEvtList) {
-			g_EvtSignals[tp.first].erase(tp.second);
+}
+static void UpdateFrame(int Elapsed) {
+	/*TODO*/
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+ System Events would be published by c2 app interval.
+*/
+static c2SysEvt::initialized g_SysEvtInitialized (
+	c2AppendEvtTypesChunk(c2SysET::AMMOUT + 1)
+);
+C2API c2SysEvt::initialized& c2GetSysEvtInitialized() {
+	return g_SysEvtInitialized;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+ Application framework based on GLFW.GLEQ
+*/
+#define GLEQ_IMPLEMENTATION
+#include"./gleq.h"
+/*glfw.gleq events。GLEQ内的事件长度其实并不足够明确，并且没有明确的字节对齐。暂时又不想
+直接修改gleq.h文件。目前暂时只是把GLEQ整个当一个消息类型，然后都交给他处理。*/
+C2EvtTypeChunkBegin(c2gleqet)
+	c2GLEQevent = 0,
+	EVENTTYPE_AMMOUT,
+C2EvtTypeChunkEnd
+#pragma pack(push, 1)
+/*可以考虑把GLEQ整个当一个消息类型，然后都交给他处理*/
+C2DefOneEvtBegin(c2gleqet, c2gleqevts, c2GLEQevent)
+	GLEQevent	_GLEQevent;
+C2DefOneEvtEnd
+#pragma pack(pop)
+struct c2GLEQAction : public c2IAction {
+	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize) {
+		std::cout << typeid(*this).name() << "::doItNow | ......" << std::endl;
+		const GLEQevent &event =
+				static_cast<const c2gleqevts::c2GLEQevent&>(Evt)._GLEQevent;
+		BOOST_ASSERT(EvtSize ==
+				sizeof(static_cast<const c2gleqevts::c2GLEQevent&>(Evt)));
+		switch (event.type) {
+		case GLEQ_WINDOW_MOVED:
+			printf("Window moved to %i,%i\n", event.pos.x, event.pos.y);
+			break;
+		case GLEQ_BUTTON_PRESSED:
+			printf("Mouse button %i pressed (mods 0x%x)\n",
+				event.mouse.button,
+				event.mouse.mods);
+			break;
+		case GLEQ_WINDOW_RESIZED:
+			printf("Window resized to %ix%i\n", event.size.width,
+				event.size.height);
+			break;
+		case GLEQ_KEY_PRESSED:
+			printf("Key 0x%02x pressed (scancode 0x%x mods 0x%x)\n",
+				event.keyboard.key,
+				event.keyboard.scancode,
+				event.keyboard.mods);
+			break;
+		case GLEQ_KEY_REPEATED:
+			printf("Key 0x%02x repeated (scancode 0x%x mods 0x%x)\n",
+				event.keyboard.key,
+				event.keyboard.scancode,
+				event.keyboard.mods);
+			break;
+		case GLEQ_KEY_RELEASED:
+			printf("Key 0x%02x released (scancode 0x%x mods 0x%x)\n",
+				event.keyboard.key,
+				event.keyboard.scancode,
+				event.keyboard.mods);
+			if (0x1 == event.keyboard.scancode)
+				c2UnsubEvt(Evt, *this);
+			break;
+		default:
+			printf("Error: Unknown event %i\n", event.type);
+			break;
+		}
+		return Status::Success;
 	}
-	g_UnsubEvtList.clear();
-}
+};
 
-/*============================================================================*/
-C2Interface void c2WaitEvent() {
-	glfwWaitEvents();
-}
-
-C2Interface void c2PumpEvent() {
-	glfwPollEvents();
+/******************************************************************************/
+//static void _init_gleqevent() {
+//	Uint32 etc_offset = c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT + 1);
+//	Uint32 etc2_offset = c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT + 1);
+////	BOOST_STATIC_ASSERT(0 == GLEQ_NONE);
+////#if GLFW_VERSION_MINOR >= 3
+////	Uint32 etc_offset_gleq = GLEQ_WINDOW_SCALE_CHANGED - GLEQ_NONE;
+////#elif GLFW_VERSION_MINOR >= 2
+////	Uint32 etc_offset_gleq = GLEQ_JOYSTICK_DISCONNECTED - GLEQ_NONE;
+////#elif GLFW_VERSION_MINOR >= 1
+////	Uint32 etc_offset_gleq = GLEQ_FILE_DROPPED - GLEQ_NONE;
+////#else
+////	Uint32 etc_offset_gleq = GLEQ_MONITOR_DISCONNECTED - GLEQ_NONE;
+////#endif
+////	etc_offset_gleq = c2AppendEvtTypesChunk(etc_offset_gleq);
+//}
+static void error_callback(int error, const char* description) {
+	fprintf(stderr, "Error: %s\n", description);
+}C2API void c2AppRun(bool isBlocked, int SwapInterval) {
+	/*转换GLFW.GLEQ消息*/
+	Uint32 etc_offset_gleq;
+	etc_offset_gleq = c2AppendEvtTypesChunk(c2gleqet::EVENTTYPE_AMMOUT + 1);
+	c2gleqevts::c2GLEQevent st_c2_gleqevt(etc_offset_gleq);
+	c2GLEQAction gleq_action;
+	c2SubEvt(st_c2_gleqevt, gleq_action);
+	/*glfw begin*/
+	glfwSetErrorCallback(error_callback);
+	/* Initialize the library */
+	if (!glfwInit())
+		return;
+	gleqInit();
+	/* Create a windowed mode window and its OpenGL context */
+	GLFWwindow *window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		return;
+	}
+	/* Make the window's context current */
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(SwapInterval);
+	gleqTrackWindow(window);
+	/*抛出初始化完成事件，上层应用如果有需要可订阅*/
+	//g_SysEvtInitialized.xxxx= xxxx;
+	Uint64 es_logicalframe_stamp = 0;
+	c2PublishEvt(g_SysEvtInitialized, sizeof(g_SysEvtInitialized),
+				es_logicalframe_stamp);
+	/* Loop until the user closes the window */
+	void(*syseventscatch)() = isBlocked ? glfwWaitEvents : glfwPollEvents;
+	while (!glfwWindowShouldClose(window)) {
+		/* Render here */
+		glClear(GL_COLOR_BUFFER_BIT);
+		/* Swap front and back buffers */
+		glfwSwapBuffers(window);
+		syseventscatch();
+		/*从GLEQ拿消息*/
+		while (gleqNextEvent(&(st_c2_gleqevt._GLEQevent))) {
+			c2PublishEvt(st_c2_gleqevt, sizeof(st_c2_gleqevt),
+							es_logicalframe_stamp);
+		}
+		gleqFreeEvent(&(st_c2_gleqevt._GLEQevent));
+		/*逻辑、渲染等主循环帧*/
+		int elapsed = 0;	//TODO
+		UpdateFixFrame(elapsed);
+		UpdateFrame(elapsed);
+		++es_logicalframe_stamp;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +234,7 @@ Part & Factory
 #include"../Metas/Part.h"
 c2::Part::CreationDict		c2::Part::_CreationDict;	//FIXME: 暂时放这
 
-C2Interface c2APart c2CreatePart(const char *sClass, const char *sName) {
+C2API c2APart c2CreatePart(const char *sClass, const char *sName) {
 	if (!sClass)
 		return nullptr;
 	c2::Part::CreationDict::iterator ci = c2::Part::_CreationDict.find(sClass);
@@ -143,7 +245,7 @@ C2Interface c2APart c2CreatePart(const char *sClass, const char *sName) {
 	return create();
 }
 
-C2Interface bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C) {
+C2API bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C) {
 	if (!sClass || !C)
 		return false;
 	return c2::Part::_CreationDict.insert(	//如果已存在同样类名注册，则返回false。
