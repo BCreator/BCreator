@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Creator\imgui\imgui.cpp" />
+    <ClCompile Include="..\Creator\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Creator\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Creator\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Creator\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Creator\main.cpp" />
     <ClCompile Include="..\Examples\templab.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp" />
@@ -31,6 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
+    <ClInclude Include="..\Creator\imgui\imconfig.h" />
+    <ClInclude Include="..\Creator\imgui\imgui.h" />
+    <ClInclude Include="..\Creator\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Creator\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Creator\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Creator\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Creator\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Runtime\c2Application.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2DefEvent.h" />

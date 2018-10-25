@@ -7,7 +7,7 @@ static void test_signalbind();
 static void test_memqueue();
 
 //以后可以规整为Unittest更标准的方式。
-static int main() {
+static int main1() {
 	test_application();
 //	test_memqueue();
 //	test_signalbind();

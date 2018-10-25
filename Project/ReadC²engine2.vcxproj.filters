@@ -22,6 +22,21 @@
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp">
       <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
+    <ClCompile Include="..\Creator\imgui\imgui_widgets.cpp">
+      <Filter>Creator\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Creator\imgui\imgui.cpp">
+      <Filter>Creator\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Creator\imgui\imgui_demo.cpp">
+      <Filter>Creator\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Creator\imgui\imgui_draw.cpp">
+      <Filter>Creator\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Creator\imgui\imgui_impl_glfw.cpp">
+      <Filter>Creator\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Creator">
@@ -74,6 +89,9 @@
     </Filter>
     <Filter Include="Runtime\_c2Application">
       <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\imgui">
+      <UniqueIdentifier>{d7a966fe-a1f1-40ca-9445-3b8dbe1405ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +160,27 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">
       <Filter>Runtime\_c2Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imgui_impl_glfw.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imgui_internal.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imconfig.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imgui.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imstb_truetype.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imstb_rectpack.h">
+      <Filter>Creator\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Creator\imgui\imstb_textedit.h">
+      <Filter>Creator\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
