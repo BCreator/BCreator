@@ -11,22 +11,26 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Action体系*/
-struct c2IAction {
-	//TODO：？返回值有RUNNING是为了后面的OneRounte。
-	enum class Status
-	{
-		Invalid,
-		Success,
-		Failure,
-		Running,
-	};
-	int		_Predicate;
-	int		_SubjectID;
-	//blackboard;只能是内部状态，不能记录任何体外状态。
-	explicit c2IAction() {}
-	virtual Status doItNow(const c2IEvent &Evt, size_t EvtSize) {
-		std::cout << "EvType: " << Evt._esType << " -> "
-			<< typeid(*this).name() << "::doItNow: success..." << std::endl;
+#include"./_c2Application/BrainTree.h"
+struct c2IAction : public BrainTree::Node {
+	////TODO：？返回值有RUNNING是为了后面的OneRounte。
+	//enum class Status
+	//{
+	//	Invalid,
+	//	Success,
+	//	Failure,
+	//	Running,
+	//};
+	////int		_Predicate;
+	////int		_SubjectID;
+	////blackboard;只能是内部状态，不能记录任何体外状态。
+	explicit c2IAction() : _pEvt(nullptr), _EvtSize(0) {}
+	const c2IEvent*	_pEvt;
+	size_t			_EvtSize;
+	virtual Status update() {
+		BOOST_ASSERT(_pEvt && _EvtSize);
+		std::cout << "EvType: " << _pEvt->_esTypeAddChunkOffset << " -> "
+			<< typeid(*this).name() << "::update: success..." << std::endl;
 		return Status::Success;
 	}
 };
@@ -37,8 +41,8 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval);
 
 /******************************************************************************/
 /*Consumer subscribe event And Producer publish event.*/
-C2API void c2SubEvt(const c2IEvent &Evt, c2IAction &Act);
-C2API void c2UnsubEvt(const c2IEvent &Evt, c2IAction &Act);
+C2API void c2ActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize);
+C2API void c2ActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
 C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
 								const Uint64 esFixFrameStamp);
 

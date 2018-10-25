@@ -8,12 +8,13 @@
 #define C2EVTQUEUE_INITSIZE	131072	//使用Memqueue作为事件队列，内部可自增。改进意见请见event框架相关说明。
 
 ////////////////////////////////////////////////////////////////////////////////
+/*c2IEvent没有多态，所以基于多态的特性的virtual操作就不能有（例如保存size，size放在了act里）*/
 #pragma pack(push, 1)
-struct c2IEvent {//TODO：GLFW缺少移动设备上的一些INPUT消息，例如屏幕翻转、重力等
-	Uint32			_esType;
+struct c2IEvent {
+	Uint32	_esTypeAddChunkOffset;
 	mutable	Uint64	_esFixFrameStamp;	//Logic Frame Stamp.TODO：使用64位数是为了够大，但仍旧跑爆怎么处理？
 protected://不能直接实例化使用，只是个类型
-	c2IEvent() : _esType(0), _esFixFrameStamp(0) {
+	c2IEvent() : _esTypeAddChunkOffset(0), _esFixFrameStamp(0) {
 	}
 };
 
@@ -32,7 +33,7 @@ C2API Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
 namespace evt_namespace {\
 struct evttype_name : public c2IEvent {\
 	evttype_name(Uint32 ETChunkOffset) : c2IEvent() {\
-		_esType = static_cast<Uint32>(evttype_namespace::evttype_name) + ETChunkOffset;\
+		_esTypeAddChunkOffset = static_cast<Uint32>(evttype_namespace::evttype_name) + ETChunkOffset;\
 	}
 #define C2DefOneEvtEnd	\
 };\

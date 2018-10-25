@@ -122,9 +122,6 @@
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h">
       <Filter>Runtime\c2PresentationCG\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\_c2Activity\BrainTree.h">
-      <Filter>Runtime\_c2Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\Runtime\c2Application.h">
       <Filter>Runtime</Filter>
     </ClInclude>
@@ -142,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PreDefined.h">
       <Filter>Runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">
+      <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
