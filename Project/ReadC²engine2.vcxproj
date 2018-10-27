@@ -19,13 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Creator\imgui\imgui.cpp" />
-    <ClCompile Include="..\Creator\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\Creator\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\Creator\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\Creator\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Creator\main.cpp" />
     <ClCompile Include="..\Examples\templab.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.c" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
@@ -36,13 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
-    <ClInclude Include="..\Creator\imgui\imconfig.h" />
-    <ClInclude Include="..\Creator\imgui\imgui.h" />
-    <ClInclude Include="..\Creator\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="..\Creator\imgui\imgui_internal.h" />
-    <ClInclude Include="..\Creator\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\Creator\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\Creator\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Runtime\c2Application.h" />
     <ClInclude Include="..\Runtime\c2Debugger.h" />
     <ClInclude Include="..\Runtime\c2DefEvent.h" />
@@ -55,6 +50,16 @@
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\glcorearb.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imconfig.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h" />
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h" />
     <ClInclude Include="..\Runtime\Metas\OneRoute.h" />
@@ -140,6 +145,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../Runtime/c2PresentationCG/imgui/examples/libs/gl3w</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>

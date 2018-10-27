@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /*Action体系*/
 #include"./_c2Application/BrainTree.h"
-struct c2IAction : public BrainTree::Node {
+struct c2IAction : public BrainTree::BehaviorTree {
 	////TODO：？返回值有RUNNING是为了后面的OneRounte。
 	//enum class Status
 	//{
@@ -24,11 +24,10 @@ struct c2IAction : public BrainTree::Node {
 	////int		_Predicate;
 	////int		_SubjectID;
 	////blackboard;只能是内部状态，不能记录任何体外状态。
-	explicit c2IAction() : _pEvt(nullptr), _EvtSize(0) {}
+	c2IAction() : _pEvt(nullptr) {}
 	const c2IEvent*	_pEvt;
-	size_t			_EvtSize;
 	virtual Status update() {
-		BOOST_ASSERT(_pEvt && _EvtSize);
+		BOOST_ASSERT(_pEvt );
 		std::cout << "EvType: " << _pEvt->_esTypeAddChunkOffset << " -> "
 			<< typeid(*this).name() << "::update: success..." << std::endl;
 		return Status::Success;
@@ -37,30 +36,33 @@ struct c2IAction : public BrainTree::Node {
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Driving framework of the whole application*/
-C2API void c2AppRun(bool isBlocked, int SwapInterval);
+C2API void c2AppRun(bool isBlocked, int SwapInterval,
+					int nWndWidth, int nWndHeight, const char *sWndCaption);
 
 /******************************************************************************/
 /*Consumer subscribe event And Producer publish event.*/
-C2API void c2ActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize);
-C2API void c2ActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
+C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize);
+C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
 C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
 								const Uint64 esFixFrameStamp);
 
 /******************************************************************************/
 /*System events of C2 Application
  注意通过系统事件进行用户自定义操作是假回调，我们的事件体系是基于事件队列，实质用户只有
- 异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，特意不给用户太多选择。*/
+ 异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，刻意不给用户太多选择。*/
 C2EvtTypeChunkBegin(c2SysET)
-	initialized = 0,
-	AMMOUT,
+initialized = 0,
+updatefixframe,
+AMMOUT,
 C2EvtTypeChunkEnd
 
 #pragma pack(push, 1)
 C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
 C2DefOneEvtEnd
-#pragma pack(pop)
 
-C2API c2SysEvt::initialized& c2GetSysEvtInitialized();
+C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
+C2DefOneEvtEnd
+#pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Part & Factory*/

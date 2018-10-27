@@ -6,6 +6,8 @@
 #include"../c2Application.h"
 #include"./tsMemQueue.h"
 
+static Uint32 g_SysETChunkOffset= 0;//±ØĞëÈ·±£system event type chunkÊÇµÚÒ»¸öappendµÄ
+
 ////////////////////////////////////////////////////////////////////////////////
 /*
 Consumer subscribe event And Producer publish event
@@ -32,13 +34,11 @@ TODO:»¹ĞèÒªÑÏÃÜ²âÊÔÒ»ÏÂ£¬ÀıÈçÊ¹ÓÃ¶©ÔÄÁËÄ³ÊÂ¼şµÄACT£¬ÀïÃæÔÙ¶©ÔÄ»òÍË¶©£¬²¢pubÊÂ¼ş´
 ACTÀïÔÙ¶©ÔÄ»òÍË¶©£¬µÈµÈ¡£*/
 #include<utility>
 static std::list<std::pair<c2IAction*, Uint32>>	g_ActSubEvtList;
-C2API void c2ActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize) {
-	Act._EvtSize	= EvtSize;
+C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize) {
 	g_ActSubEvtList.push_back(std::make_pair(&Act, esEvtTypeAddChunkOffset));
 }
 static std::list<std::pair<c2IAction*, Uint32>>	g_ActUnsubEvtList;
-C2API void c2ActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset) {
-	Act._EvtSize	= 0;
+C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset) {
 	g_ActUnsubEvtList.push_back(std::make_pair(&Act, esEvtTypeAddChunkOffset));
 }
 
@@ -55,59 +55,71 @@ C2API void c2PublishEvt(const c2IEvent &Event, size_t EventSize,
 /*
  Frame & FixFrame control
 */
-static char g_pTempEventBuffer4UpdateLogicalFrame[C2EVTMSG_MAXSIZE];
+static char g_pTempEventBuffer4UpdateFixFrame[C2EVTMSG_MAXSIZE];
 
-static void UpdateFixFrame(int Elapsed) {
+static void UpdateFixFrame(int Elapsed, Uint64 esFixframeStamp) {
 	/*´¦ÀíÉÏÒ»Ö¡Êµ¼Ê¶©ÔÄÏûÏ¢¡£*/
 	for (std::pair<c2IAction*, Uint32>& v : g_ActSubEvtList) {
-		BOOST_ASSERT(v.first && (0!= v.first->_EvtSize));
+		BOOST_ASSERT(v.first);
 		g_Evt2ActsetVector[v.second].insert(v.first);
 	}
 	g_ActSubEvtList.clear();
 	/*´¦ÀíÉÏÒ»Ö¡Êµ¼ÊÍË¶©ÏûÏ¢£¬½øĞĞÉ¾³ı¡£*/
 	for (std::pair<c2IAction*, Uint32>& v : g_ActUnsubEvtList) {
-		BOOST_ASSERT(v.first && (0==v.first->_EvtSize));
+		BOOST_ASSERT(v.first);
 		g_Evt2ActsetVector[v.second].erase(v.first);
 	}
 	g_ActUnsubEvtList.clear();
 	/*·Ö·¢ÏûÏ¢*/
-	static size_t st_evtsize;
 	while (!g_EventQueue.isEmpty()) {
-		st_evtsize= g_EventQueue.pop(g_pTempEventBuffer4UpdateLogicalFrame, C2EVTMSG_MAXSIZE);
-		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateLogicalFrame);
+		g_EventQueue.pop(g_pTempEventBuffer4UpdateFixFrame, C2EVTMSG_MAXSIZE);
+		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateFixFrame);
 		for (c2IAction *tp_act : g_Evt2ActsetVector[evt._esTypeAddChunkOffset]) {
 		//for each (auto tp_act in sig) {
-			BOOST_ASSERT(tp_act&&tp_act->_EvtSize== st_evtsize);
+			BOOST_ASSERT(tp_act);
 			tp_act->_pEvt = &evt;//´«µİ´Ëevent×÷Îª²ÎÊı¡£Ö÷ÒªÊÇBrainTreeµÄupdateÎŞ²ÎÊı£¬ËùÒÔÎÒÃÇÒ²²»·½±ãÍ¨¹ıupdateº¯Êı´«Èë²ÎÊı¡£
 			tp_act->update();
 			tp_act->_pEvt = nullptr;//´¦ÀíÍê£¬eventÖ¸ÏòÔòÖØÖÃ¡£
 		}
 	}
+	c2SysEvt::updatefixframe sysevt_updatefixframe(g_SysETChunkOffset);
+	c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), esFixframeStamp);
+
 }
 static void UpdateFrame(int Elapsed) {
-	/*TODO*/
+	/*TODO£ºÍ¬fix×ßÊÂ¼şÍ¶µİ²»Ò»Ñù£¬Ö±½ÓÓÃÕæÕıµÄÍ¬²½ĞÔ»Øµ÷¡£ÊÂ¼şÌåÏµ³õÖÔ¾ÍÊÇÎªÂß¼­µÈ¹Ì¶¨
+	ÆµÂÊĞÔÖÊµÄÂß¼­·şÎñµÄ¡£*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
- System Events would be published by c2 app interval.
-*/
-static c2SysEvt::initialized g_SysEvtInitialized (
-	c2AppendEvtTypesChunk(c2SysET::AMMOUT + 1)
-);
-C2API c2SysEvt::initialized& c2GetSysEvtInitialized() {
-	return g_SysEvtInitialized;
-}
+/*Application framework
+ - FIXME: ÔİÊ±½èÓÃÁËGLFW.GLEQµÄOS BIND×÷ÎªÎÒÃÇµÄINPUT EVENT£¬ÕâÑù¾ÍµÃÓÃGLFWÀ´´´½¨´°¿Ú
+ £¬¶øIMGUIµÄOPENGL BINDµÄ³õÊ¼»¯Ò²ÊÇÍ¬GLFW´°»úÏà¹ØµÄ£¬¼ò±ãÆğ¼û£¬ÔİÊ±Õâ¼¸¸ö¶«Î÷µÄ³õÊ¼»¯
+ ¶¼ñîºÏÔÚÕâÀïÁË¡£Êµ¼ÊÉÏAPPLICATIONÍ¬RENDERÓ¦¸Ã½âñî£¬¸üÓ¦¸ÃÍ¬GUIÏµÍ³½âñî¡£
+- FIXME£ºÊ¹ÓÃGLEQ²¢²»ÊÇÎªÁËËûµÄ¶ÓÁĞ£¬Ğ´glfwµÄcallbackÒ²»¹ºÃ£¬¾ÍÊÇÔİÊ±ÀÁµÃ×Ô¼º¶¨ÒåºÜ¶à
+KEY¡£ºóÃæ¿ÉÒÔ»ùÓÚGLEQĞŞ¸Ä£¬È¥µôËûµÄ¶ÓÁĞ¡£
+- FIXME: GLEQÄÚµÄÊÂ¼ş³¤¶ÈÆäÊµ²¢²»×ã¹»Ã÷È·£¬²¢ÇÒÃ»ÓĞÃ÷È·µÄ×Ö½Ú¶ÔÆë¡£ÔİÊ±ÓÖ²»ÏëÖ±½ÓĞŞ¸Ä
+gleq.hÎÄ¼ş¡£Ä¿Ç°ÔİÊ±Ö»ÊÇ°ÑGLEQÕû¸öµ±Ò»¸öÏûÏ¢ÀàĞÍ£¬È»ºó¶¼½»¸øËû´¦Àí¡£
+- TODO£ºGLFWÈ±ÉÙÒÆ¶¯Éè±¸ÉÏµÄÒ»Ğ©INPUTÏûÏ¢£¬ÀıÈçÆÁÄ»·­×ª¡¢ÖØÁ¦µÈ
+- FIXME: ÉèÖÃÎÒÃÇ×Ô¼ºµÄGLFW¼üÅÌºÍÊó±ê»Øµ÷£¬È»ºóÔÙ·Ö±ğµ÷ÓÃImgui¼°gleqµÄ¡£IMGUIµÄEXAMPLE 
+OS BINDÀïIOÀïÒÑ¾­ÓĞÁËÍ¨¹ı¼¸¸öwanted²¼¶ûÖµ£¬À´×ÔĞĞÅĞ¶ÏÊÇ·ñIMGUIÏûºÄµôINPUÏûÏ¢£¬Òª²»ÒªÈÃ
+¸øÓ¦ÓÃ³ÌĞò¡£imgui.cppÍ·ÎÄµµÀïµÄFAQµÚÒ»ÌõÓĞÏà¹ØËµÃ÷¡£*/
+#include "../c2PresentationCG/imgui/imgui.h"
+#include "../c2PresentationCG/imgui/examples/imgui_impl_glfw.h"
+#include "../c2PresentationCG/imgui/examples/imgui_impl_opengl3.h"
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+#include <GL/gl3w.h>    // Initialize with gl3wInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+#include <GL/glew.h>    // Initialize with glewInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+#include <glad/glad.h>  // Initialize with gladLoadGL()
+#else
+#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#endif
 
-////////////////////////////////////////////////////////////////////////////////
-/*
- Application framework based on GLFW.GLEQ
-*/
+/******************************************************************************/
 #define GLEQ_IMPLEMENTATION
 #include"./gleq.h"
-/*glfw.gleq events¡£GLEQÄÚµÄÊÂ¼ş³¤¶ÈÆäÊµ²¢²»×ã¹»Ã÷È·£¬²¢ÇÒÃ»ÓĞÃ÷È·µÄ×Ö½Ú¶ÔÆë¡£ÔİÊ±ÓÖ²»Ïë
-Ö±½ÓĞŞ¸Ägleq.hÎÄ¼ş¡£Ä¿Ç°ÔİÊ±Ö»ÊÇ°ÑGLEQÕû¸öµ±Ò»¸öÏûÏ¢ÀàĞÍ£¬È»ºó¶¼½»¸øËû´¦Àí¡£
-TODO£ºGLFWÈ±ÉÙÒÆ¶¯Éè±¸ÉÏµÄÒ»Ğ©INPUTÏûÏ¢£¬ÀıÈçÆÁÄ»·­×ª¡¢ÖØÁ¦µÈ*/
 C2EvtTypeChunkBegin(c2gleqet)
 	c2GLEQevent = 0,
 	EVENTTYPE_AMMOUT,
@@ -123,21 +135,39 @@ struct c2GLEQAction : public c2IAction {
 		std::cout << typeid(*this).name() << "::update | ......" << std::endl;
 		const GLEQevent &event =
 				static_cast<const c2gleqevts::c2GLEQevent*>(_pEvt)->_GLEQevent;
-		BOOST_ASSERT(_EvtSize ==
-				sizeof(static_cast<const c2gleqevts::c2GLEQevent&>(*_pEvt)));
 		switch (event.type) {
 		case GLEQ_WINDOW_MOVED:
 			printf("Window moved to %i,%i\n", event.pos.x, event.pos.y);
-			break;
-		case GLEQ_BUTTON_PRESSED:
-			printf("Mouse button %i pressed (mods 0x%x)\n",
-				event.mouse.button,
-				event.mouse.mods);
 			break;
 		case GLEQ_WINDOW_RESIZED:
 			printf("Window resized to %ix%i\n", event.size.width,
 				event.size.height);
 			break;
+		/*--------------------------------------------------------------------*/
+		case GLEQ_BUTTON_PRESSED:
+			ImGui_ImplGlfw_MouseButtonCallback(event.window, event.mouse.button,
+				event.mouse.mods, GLEQ_BUTTON_PRESSED);
+			printf("Mouse button %i pressed (mods 0x%x)\n",
+				event.mouse.button,
+				event.mouse.mods);
+			break;
+		case GLEQ_BUTTON_RELEASED:
+			ImGui_ImplGlfw_MouseButtonCallback(event.window, event.mouse.button,
+										event.mouse.mods, GLEQ_BUTTON_RELEASED);
+			printf("Mouse button %i pressed (mods 0x%x)\n",
+				event.mouse.button,
+				event.mouse.mods);
+			break;
+		case GLEQ_SCROLLED:
+			ImGui_ImplGlfw_ScrollCallback(event.window, event.scroll.x, event.scroll.y);
+			printf("Scrolled %0.2f,%0.2f\n",
+				event.scroll.x, event.scroll.y);
+			break;
+		case GLEQ_CODEPOINT_INPUT:
+			ImGui_ImplGlfw_CharCallback(event.window, event.codepoint);
+			printf("Codepoint U+%05X input\n", event.codepoint);
+			break;
+		/*--------------------------------------------------------------------*/
 		case GLEQ_KEY_PRESSED:
 			printf("Key 0x%02x pressed (scancode 0x%x mods 0x%x)\n",
 				event.keyboard.key,
@@ -157,7 +187,7 @@ struct c2GLEQAction : public c2IAction {
 				event.keyboard.mods);
 			if (0x1 == event.keyboard.scancode) {
 				BOOST_ASSERT(_pEvt);
-				c2ActUnsubEvt(*this, _pEvt->_esTypeAddChunkOffset);
+				c2asActUnsubEvt(*this, _pEvt->_esTypeAddChunkOffset);
 			}
 			break;
 		default:
@@ -169,30 +199,20 @@ struct c2GLEQAction : public c2IAction {
 };
 
 /******************************************************************************/
-//static void _init_gleqevent() {
-//	Uint32 etc_offset = c2AppendEvtTypesChunk(C2ET1::EVENTTYPE_AMMOUT + 1);
-//	Uint32 etc2_offset = c2AppendEvtTypesChunk(C2ET2::EVENTTYPE_AMMOUT + 1);
-////	BOOST_STATIC_ASSERT(0 == GLEQ_NONE);
-////#if GLFW_VERSION_MINOR >= 3
-////	Uint32 etc_offset_gleq = GLEQ_WINDOW_SCALE_CHANGED - GLEQ_NONE;
-////#elif GLFW_VERSION_MINOR >= 2
-////	Uint32 etc_offset_gleq = GLEQ_JOYSTICK_DISCONNECTED - GLEQ_NONE;
-////#elif GLFW_VERSION_MINOR >= 1
-////	Uint32 etc_offset_gleq = GLEQ_FILE_DROPPED - GLEQ_NONE;
-////#else
-////	Uint32 etc_offset_gleq = GLEQ_MONITOR_DISCONNECTED - GLEQ_NONE;
-////#endif
-////	etc_offset_gleq = c2AppendEvtTypesChunk(etc_offset_gleq);
-//}
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Error: %s\n", description);
-}C2API void c2AppRun(bool isBlocked, int SwapInterval) {
+}
+C2API void c2AppRun(bool isBlocked, int SwapInterval,
+					int nWndWidth, int nWndHeight, const char *sWndCaption) {
+	/*Ôö¼ÓÏµÍ³ÊÂ¼şchunk£¬±ØĞëÈ·±£system event type chunkÊÇµÚÒ»¸öappendµÄ*/
+	g_SysETChunkOffset = c2AppendEvtTypesChunk(c2SysET::AMMOUT + 1);
+	/*------------------------------------------------------------------------*/
 	/*×ª»»GLFW.GLEQÏûÏ¢*/
 	Uint32 etc_offset_gleq;
 	etc_offset_gleq = c2AppendEvtTypesChunk(c2gleqet::EVENTTYPE_AMMOUT + 1);
 	c2gleqevts::c2GLEQevent st_c2_gleqevt(etc_offset_gleq);
 	c2GLEQAction gleq_action;
-	c2ActSubEvt(gleq_action, st_c2_gleqevt._esTypeAddChunkOffset, sizeof(st_c2_gleqevt));
+	c2asActSubEvt(gleq_action, st_c2_gleqevt._esTypeAddChunkOffset, sizeof(st_c2_gleqevt));
 	/*glfw begin*/
 	glfwSetErrorCallback(error_callback);
 	/* Initialize the library */
@@ -200,7 +220,7 @@ static void error_callback(int error, const char* description) {
 		return;
 	gleqInit();
 	/* Create a windowed mode window and its OpenGL context */
-	GLFWwindow *window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(nWndWidth, nWndHeight, sWndCaption, NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return;
@@ -209,30 +229,89 @@ static void error_callback(int error, const char* description) {
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(SwapInterval);
 	gleqTrackWindow(window);
+	/*------------------------------------------------------------------------*/
+	// Decide GL+GLSL versions
+#if __APPLE__
+	// GL 3.2 + GLSL 150
+	const char* glsl_version = "#version 150";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+#else
+	// GL 3.0 + GLSL 130
+	const char* glsl_version = "#version 130";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+#endif
+	// Initialize OpenGL loader
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+	bool err = gl3wInit() != 0;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+	bool err = glewInit() != GLEW_OK;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+	bool err = gladLoadGL() != 0;
+#endif
+	if (err) {
+		BOOST_LOG_TRIVIAL(fatal) << "Failed to initialize OpenGL loader!";
+		return;
+	}
+	// Setup Dear ImGui binding
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+//	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(window, false);//ÉèÖÃÎªfalse£¬ÊÇÎªÁËÖØÔØ³ÉÎÒÃÇ×Ô¼ºµÄglfw input callback¡£
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	// Setup style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+//	glfwMakeContextCurrent(window);
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	int display_w, display_h;
+	glfwGetFramebufferSize(window, &display_w, &display_h);
+	glViewport(0, 0, display_w, display_h);
+	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+	/*------------------------------------------------------------------------*/
 	/*Å×³ö³õÊ¼»¯Íê³ÉÊÂ¼ş£¬ÉÏ²ãÓ¦ÓÃÈç¹ûÓĞĞèÒª¿É¶©ÔÄ*/
-	//g_SysEvtInitialized.xxxx= xxxx;
-	Uint64 es_logicalframe_stamp = 0;
-	c2PublishEvt(g_SysEvtInitialized, sizeof(g_SysEvtInitialized),
-					es_logicalframe_stamp);
-	/* Loop until the user closes the window */
+	c2SysEvt::initialized sysevt_initialized(g_SysETChunkOffset);
+	Uint64 es_fixframe_stamp = 0;
+	c2PublishEvt(sysevt_initialized, sizeof(sysevt_initialized),
+					es_fixframe_stamp);
 	void(*syseventscatch)() = isBlocked ? glfwWaitEvents : glfwPollEvents;
+	int elapsed = 0;	//TODO
+	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
 		syseventscatch();
 		/*´ÓGLEQÄÃÏûÏ¢*/
 		while (gleqNextEvent(&(st_c2_gleqevt._GLEQevent))) {
 			c2PublishEvt(st_c2_gleqevt, sizeof(st_c2_gleqevt),
-									es_logicalframe_stamp);
+				es_fixframe_stamp);
 		}
 		gleqFreeEvent(&(st_c2_gleqevt._GLEQevent));
+		/*--------------------------------------------------------------------*/
+		/*Imgui*/
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		/*--------------------------------------------------------------------*/
 		/*Âß¼­¡¢äÖÈ¾µÈÖ÷Ñ­»·Ö¡*/
-		int elapsed = 0;	//TODO
-		UpdateFixFrame(elapsed);
+		//int elapsed = 0;	//TODO
+		UpdateFixFrame(elapsed, es_fixframe_stamp);
 		UpdateFrame(elapsed);
-		++es_logicalframe_stamp;
+		++es_fixframe_stamp;
+		/*--------------------------------------------------------------------*/
+		// Rendering
+		ImGui::Render();
+		glClear(GL_COLOR_BUFFER_BIT);
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		/*--------------------------------------------------------------------*/
+		/* Swap front and back buffers */
+		glfwSwapBuffers(window);
 	}
 }
 

@@ -6,6 +6,10 @@
     <IncludePath>D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>D:\library\glfw-3.2.1\houstond\src\Debug;D:\library\boost_1_68_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

@@ -1,41 +1,72 @@
 #include<iostream>
+#include <stdio.h>
+
+#include<boost/log/trivial.hpp>
+
+#include "../Runtime/c2PresentationCG/imgui/imgui.h"
+
 #include"../Runtime/Metas/Part.h"
 #include"../Runtime/c2Application.h"
 
 #include"./GPanelAssets/GPanelAssets.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-#include"../Runtime/c2Application.h"
-class onSysInitialized : public c2IAction {
-	class btAct : public BrainTree::Node {
-		Status update() override {
-			std::cout << "  -> printed by BrainTree::Node." << std::endl;
-			return Node::Status::Success;
-		}
-	};
-	BrainTree::BehaviorTree _BTree;
-public:
-	onSysInitialized() {
-		auto repeater = std::make_shared<BrainTree::Repeater>(5);
-		repeater->setChild(std::make_shared<btAct>());
-		_BTree.setRoot(repeater);
+
+class btAct4test : public BrainTree::Node {
+	Status update() override {
+		BOOST_LOG_TRIVIAL(info) << "  -> printed by BrainTree::Node.";
+		return Node::Status::Success;
 	}
-	virtual Status update(const c2IEvent &Evt, size_t EvtSize) {
-		std::cout << "I can plugin my extensions here." << std::endl;
-		_BTree.update();
-		return c2IAction::update();
+};
+class onUpdateFixFrame : public c2IAction {
+public:
+	onUpdateFixFrame() {
+#if 1//just test
+		auto repeater = std::make_shared<BrainTree::Repeater>(5);
+		repeater->setChild(std::make_shared<btAct4test>());
+		setRoot(repeater);
+#endif
+		_b_showsameline = 0;
+	}
+	int _b_showsameline;
+	virtual Status update() {
+		ImGui::Begin("C2 Director");
+		ImGui::Text("NLP");
+		if (ImGui::Button("open"))
+			_b_showsameline++;
+		if(_b_showsameline >=3 )
+			ImGui::Text("more than 3 times.");
+		ImGui::End();
+		return BehaviorTree::update();
 	}
 };
 
+////////////////////////////////////////////////////////////////////////////////
+class onSysInitialized : public c2IAction {
+	virtual Status update() {
+		//TODO: I can plugin my extensions here.
+		BOOST_LOG_TRIVIAL(info) << "C2engine intialized.";
+		return Status::Success;
+	}
+ };
+ 
+////////////////////////////////////////////////////////////////////////////////
 static int main() {
-//	bool b = C2RegistPartClass(GPanelAssets);
-//	if (!b)
-//		return 0;
-////	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
+ //	bool b = C2RegistPartClass(GPanelAssets);
+ //	if (!b)
+ //		return 0;
+ ////	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
 
-	onSysInitialized osi;
-	c2ActSubEvt(osi, c2GetSysEvtInitialized()._esTypeAddChunkOffset, sizeof(c2SysEvt::initialized));
-	c2AppRun(false, 1);
+	Uint32 syset_chunkoffet = 0;
+ 	onSysInitialized osi;
+	c2asActSubEvt(osi, syset_chunkoffet +c2SysET::initialized,
+		sizeof(c2SysEvt::initialized));
 
-	return 0;
-}
+	onUpdateFixFrame ouff;
+	c2asActSubEvt(ouff, syset_chunkoffet +c2SysET::updatefixframe,
+		sizeof(c2SysEvt::updatefixframe));
+
+	c2AppRun(true, 1, 1280, 720, "C2engine.Creator");
+ 
+ 	return 0;
+ }

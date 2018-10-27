@@ -21,7 +21,7 @@ static int main1() {
 class onSysInitialized : public c2IAction {
 	class btAct : public BrainTree::Node {
 		Status update() override {
-			std::cout << "  -> printed by BrainTree::Node." << std::endl;
+			std::cout << "  -> BT PRINTed." << std::endl;
 			return Node::Status::Success;
 		}
 	};
@@ -32,7 +32,7 @@ public:
 		repeater->setChild(std::make_shared<btAct>());
 		_BTree.setRoot(repeater);
 	}
-	virtual Status update(const c2IEvent &Evt, size_t EvtSize) {
+	virtual Status update() {
 		std::cout << "I can plugin my extensions here." << std::endl;
 		_BTree.update();
 		return c2IAction::update();
@@ -41,8 +41,8 @@ public:
 static void test_application() {
 	std::cout << "test_application begin......" << std::endl;
 	onSysInitialized osi;
-	c2ActSubEvt(osi, c2GetSysEvtInitialized()._esTypeAddChunkOffset, sizeof(c2SysEvt::initialized));
-	c2AppRun(false, 1);
+	c2asActSubEvt(osi, 0+c2SysET::initialized, sizeof(c2SysEvt::initialized));
+	c2AppRun(false, 1, 640, 480, "Temp Lab");
 	std::cout << "......test_application end" << std::endl;
 }
 

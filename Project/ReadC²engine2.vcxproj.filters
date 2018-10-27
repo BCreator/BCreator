@@ -22,20 +22,26 @@
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp">
       <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\imgui\imgui_widgets.cpp">
-      <Filter>Creator\imgui</Filter>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\imgui\imgui.cpp">
-      <Filter>Creator\imgui</Filter>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_demo.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\imgui\imgui_demo.cpp">
-      <Filter>Creator\imgui</Filter>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_draw.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\imgui\imgui_draw.cpp">
-      <Filter>Creator\imgui</Filter>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_widgets.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Creator\imgui\imgui_impl_glfw.cpp">
-      <Filter>Creator\imgui</Filter>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.c">
+      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.cpp">
+      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,8 +96,20 @@
     <Filter Include="Runtime\_c2Application">
       <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Creator\imgui">
-      <UniqueIdentifier>{d7a966fe-a1f1-40ca-9445-3b8dbe1405ba}</UniqueIdentifier>
+    <Filter Include="Runtime\c2PresentationCG\imgui">
+      <UniqueIdentifier>{351e7136-0760-4a80-9dc6-f19a123052f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\imgui\examples">
+      <UniqueIdentifier>{dae0113d-9124-4ffa-b121-ba3485244d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs">
+      <UniqueIdentifier>{ae20df7b-95c8-4934-bf84-e63128bf6882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs\gl3w">
+      <UniqueIdentifier>{84223c6a-a43b-4848-8891-3240784c9f04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL">
+      <UniqueIdentifier>{7cb79eeb-c62c-403a-bd2c-5814447b2344}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,26 +179,35 @@
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">
       <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imgui_impl_glfw.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_textedit.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imgui_internal.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_truetype.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imconfig.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imconfig.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imgui.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imstb_truetype.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui_internal.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imstb_rectpack.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_rectpack.h">
+      <Filter>Runtime\c2PresentationCG\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Creator\imgui\imstb_textedit.h">
-      <Filter>Creator\imgui</Filter>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\glcorearb.h">
+      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.h">
+      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.h">
+      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.h">
+      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
