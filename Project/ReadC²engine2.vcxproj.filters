@@ -5,6 +5,339 @@
     <None Include="..\Creator\README.md">
       <Filter>Creator</Filter>
     </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_common.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_exponential.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_geometric.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_integer.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_matrix.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_packing.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_trigonometric.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\func_vector_relational.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_common.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_exponential.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_geometric.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_integer.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_matrix.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_trigonometric.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\intrinsic_vector_relational.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_gentype.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_half.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat2x2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat2x3.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat2x4.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat3x2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat3x3.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat3x4.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat4x2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat4x3.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_mat4x4.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec1.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec3.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec4.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec4_avx.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec4_avx2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\detail\type_vec4_sse2.inl">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\bitfield.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\color_space.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\constants.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\epsilon.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\integer.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\matrix_access.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\matrix_inverse.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\matrix_transform.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\noise.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\packing.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\quaternion.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\random.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\reciprocal.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\round.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\type_precision.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\type_ptr.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\ulp.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtc\vec1.inl">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\color_space.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\color_space_YCoCg.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\common.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\compatibility.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\component_wise.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\dual_quaternion.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\euler_angles.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\extend.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\extended_min_max.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\fast_exponential.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\fast_square_root.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\fast_trigonometry.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\float_notmalize.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\gradient_paint.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\handed_coordinate_space.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\hash.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\integer.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\intersect.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\io.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\log_base.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_cross_product.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_decompose.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_interpolation.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_major_storage.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_operation.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_query.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\matrix_transform_2d.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\mixed_product.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\norm.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\normal.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\normalize_dot.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\number_precision.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\optimum_pow.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\orthonormalize.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\perpendicular.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\polar_coordinates.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\projection.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\quaternion.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\raw_data.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\rotate_normalized_axis.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\rotate_vector.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\scalar_relational.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\simd_mat4.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\simd_quat.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\simd_vec4.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\spline.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\std_based_type.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\string_cast.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\transform.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\transform2.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\type_aligned.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\vector_angle.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\vector_query.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\wrap.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\associated_min_max.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\bit.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Laboratory\Voxel\glm\gtx\closest_point.inl">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </None>
+    <None Include="..\Runtime\ThirdParty\imgui\docs\README.md">
+      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Creator\main.cpp">
@@ -13,35 +346,159 @@
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
       <Filter>Runtime\_c2Command</Filter>
     </ClCompile>
-    <ClCompile Include="..\Examples\templab.cpp">
-      <Filter>Examples</Filter>
-    </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp">
       <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp">
       <Filter>Runtime\_c2Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClCompile Include="..\Laboratory\templab.cpp">
+      <Filter>Laboratory</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_demo.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClCompile Include="..\Laboratory\fbxlab.cpp">
+      <Filter>Laboratory</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_draw.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClCompile Include="..\Laboratory\physxlab.cpp">
+      <Filter>Laboratory</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\imgui_widgets.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClCompile Include="..\Laboratory\Voxel\blocks\BiomeManager.cpp">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.c">
-      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    <ClCompile Include="..\Laboratory\Voxel\blocks\ChunkManager.cpp">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\frustum.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\glsl.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\mesh.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\Renderer.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\texture.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\tga.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\camera.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Renderer\colour.cpp">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\Line3D.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\matrix4x4.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\Plane3D.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\3dmaths.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\Bezier3.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\Maths\Bezier4.cpp">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\tinythread\tinythread.cpp">
+      <Filter>Laboratory\Voxel\tinythread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\glew\src\glew.c">
+      <Filter>Laboratory\Voxel\glew\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\glm\detail\dummy.cpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\glm\detail\glm.cpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\libnoise\noiseutils.cpp">
+      <Filter>Laboratory\Voxel\libnoise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\VoxelLabMain.cpp">
+      <Filter>Laboratory\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\simplex\simplexnoise.cpp">
+      <Filter>Laboratory\Voxel\simplex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\VoxSettings.cpp">
+      <Filter>Laboratory\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\ini\ini.c">
+      <Filter>Laboratory\Voxel\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\ini\INIReader.cpp">
+      <Filter>Laboratory\Voxel\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\VoxGame.cpp">
+      <Filter>Laboratory\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\blocks\Chunk.cpp">
+      <Filter>Laboratory\Voxel\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\freetype\freetypefont.cpp">
+      <Filter>Laboratory\Voxel\freetype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinary.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinaryManager.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\VoxelCharacter.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\VoxelObject.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\VoxelWeapon.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\BoundingBox.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\MS3DAnimator.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\MS3DModel.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\objmodel.cpp">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\utils\FileUtils.cpp">
+      <Filter>Laboratory\Voxel\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\utils\Interpolator.cpp">
+      <Filter>Laboratory\Voxel\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="tempmain.cpp" />
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui.cpp">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_demo.cpp">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_draw.cpp">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_widgets.cpp">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_glfw.cpp">
+      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_opengl3.cpp">
+      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,9 +507,6 @@
     </Filter>
     <Filter Include="Runtime">
       <UniqueIdentifier>{9464ae04-ab26-44ca-9561-2abeeb8e790b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\Metas">
-      <UniqueIdentifier>{5555ead9-23ba-4ce0-b02e-9f6b36e38a58}</UniqueIdentifier>
     </Filter>
     <Filter Include="Creator\GPanelAssets">
       <UniqueIdentifier>{457e174e-cb98-4a93-a856-b7f3a9b92bcb}</UniqueIdentifier>
@@ -96,29 +550,110 @@
     <Filter Include="Runtime\_c2Application">
       <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2PresentationCG\imgui">
+    <Filter Include="Laboratory">
+      <UniqueIdentifier>{db635d8d-c687-4a5e-ba93-8be564d363b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel">
+      <UniqueIdentifier>{b4d941e4-2e18-4e7a-b1c2-0d04e38ab185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\blocks">
+      <UniqueIdentifier>{db253f0a-764b-4fe8-8bd1-28935e81230b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\Renderer">
+      <UniqueIdentifier>{930ef483-55e1-4752-b93a-addca6c9566f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\Maths">
+      <UniqueIdentifier>{e7fdf8be-a5cc-4cd1-9604-afa6795c18a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\tinythread">
+      <UniqueIdentifier>{7fc4faac-6e38-4a7e-80fb-a6dc6d6ca5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glew">
+      <UniqueIdentifier>{8796d379-6492-4747-bf4e-88eecb7f616a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glew\include">
+      <UniqueIdentifier>{312502df-1963-4641-9a64-eaa0853c5007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glew\src">
+      <UniqueIdentifier>{81c1d2a6-df89-4b85-bae4-aa11e628b14c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glew\include\GL">
+      <UniqueIdentifier>{edbbfc6c-0af4-4f3f-af99-827dd6fc897c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glm">
+      <UniqueIdentifier>{30e8d428-55c0-40b0-8c07-c379dbf75579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glm\detail">
+      <UniqueIdentifier>{52fafc9a-68f7-48b9-add3-56ce3ca33a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glm\gtc">
+      <UniqueIdentifier>{f005012f-efdf-44e0-b758-df5f34602692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\glm\gtx">
+      <UniqueIdentifier>{42c48c0e-6db9-46cd-b6f5-1e1e534d73b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\libnoise">
+      <UniqueIdentifier>{895ef2ac-9609-4d8c-bb6a-9384c9620712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\libnoise\noise">
+      <UniqueIdentifier>{254a2a15-c409-4ab3-b2bc-a58e507dbe5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\libnoise\noise\model">
+      <UniqueIdentifier>{8e1245bd-e998-4f5d-a0f0-98474bfed186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\libnoise\noise\module">
+      <UniqueIdentifier>{9be5d6aa-717c-4e45-9e32-2484244ca982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\Player">
+      <UniqueIdentifier>{3372e655-efc8-4290-95f2-733a25a365f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\simplex">
+      <UniqueIdentifier>{630c60be-a5cc-46b1-8a16-d588988890d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\ini">
+      <UniqueIdentifier>{5732f4a3-86c3-4bc7-9262-5d7f34da8950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\models">
+      <UniqueIdentifier>{772662c7-6fa1-407a-bbb1-626d41395783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype">
+      <UniqueIdentifier>{2660fad3-453e-4953-a60c-87930448a92f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype\include">
+      <UniqueIdentifier>{37823371-0bfc-4a90-881b-251f8c4478d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype\include\freetype">
+      <UniqueIdentifier>{5a5e078c-2ff3-4ae0-ac13-132bfaf922fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype\include\freetype\internal">
+      <UniqueIdentifier>{c3dcdf5b-564e-4011-ae1f-303ba7848537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype\include\freetype\internal\services">
+      <UniqueIdentifier>{68857fbb-7137-4e9b-a888-c4669e774433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\freetype\include\freetype\config">
+      <UniqueIdentifier>{da2ec329-a86a-4619-a215-a9586671718b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Laboratory\Voxel\utils">
+      <UniqueIdentifier>{083f0cd5-a1b1-4fc6-9313-73068a0b46fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\ThirdParty">
+      <UniqueIdentifier>{8319f043-88fc-4556-bc09-e0f6440e591d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime\ThirdParty\imgui">
       <UniqueIdentifier>{351e7136-0760-4a80-9dc6-f19a123052f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2PresentationCG\imgui\examples">
+    <Filter Include="Runtime\ThirdParty\imgui\examples">
       <UniqueIdentifier>{dae0113d-9124-4ffa-b121-ba3485244d34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs">
-      <UniqueIdentifier>{ae20df7b-95c8-4934-bf84-e63128bf6882}</UniqueIdentifier>
+    <Filter Include="Runtime\ThirdParty\imgui\docs">
+      <UniqueIdentifier>{d3d4f608-1e33-459f-8bf8-6a8a91d724e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs\gl3w">
-      <UniqueIdentifier>{84223c6a-a43b-4848-8891-3240784c9f04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL">
-      <UniqueIdentifier>{7cb79eeb-c62c-403a-bd2c-5814447b2344}</UniqueIdentifier>
+    <Filter Include="Runtime\c2Foundation">
+      <UniqueIdentifier>{17697c95-205f-42b9-b1c5-0056337584b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Runtime\Metas\OneRoute.h">
-      <Filter>Runtime\Metas</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Metas\Part.h">
-      <Filter>Runtime\Metas</Filter>
-    </ClInclude>
     <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h">
       <Filter>Creator\GPanelAssets</Filter>
     </ClInclude>
@@ -179,43 +714,907 @@
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">
       <Filter>Runtime\_c2Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_textedit.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\blocks\BiomeManager.h">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_truetype.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\blocks\BlocksEnum.h">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imconfig.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\blocks\Chunk.h">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\blocks\ChunkManager.h">
+      <Filter>Laboratory\Voxel\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imgui_internal.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\framebuffer.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\imstb_rectpack.h">
-      <Filter>Runtime\c2PresentationCG\imgui</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\frustum.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\glcorearb.h">
-      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\glsl.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL\gl3w.h">
-      <Filter>Runtime\c2PresentationCG\imgui\examples\libs\gl3w\GL</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\light.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_glfw.h">
-      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\material.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\imgui\examples\imgui_impl_opengl3.h">
-      <Filter>Runtime\c2PresentationCG\imgui\examples</Filter>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\mesh.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\Renderer.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\texture.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\tga.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\vertexarray.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\viewport.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\camera.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Renderer\colour.h">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Maths\3dGeometry.h">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Maths\3dmaths.h">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Maths\BoundingRegion.h">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\tinythread\tinythread.h">
+      <Filter>Laboratory\Voxel\tinythread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\tinythread\fast_mutex.h">
+      <Filter>Laboratory\Voxel\tinythread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glew\include\GL\wglew.h">
+      <Filter>Laboratory\Voxel\glew\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glew\include\GL\glew.h">
+      <Filter>Laboratory\Voxel\glew\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glew\include\GL\glxew.h">
+      <Filter>Laboratory\Voxel\glew\include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_features.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_fixes.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_noise.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_swizzle.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_swizzle_func.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\_vectorize.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_common.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_exponential.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_geometric.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_integer.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_matrix.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_packing.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_trigonometric.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\func_vector_relational.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_common.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_exponential.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_geometric.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_integer.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_matrix.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_trigonometric.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\intrinsic_vector_relational.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\precision.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\setup.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_float.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_gentype.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_half.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_int.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat2x2.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat2x3.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat2x4.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat3x2.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat3x3.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat3x4.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat4x2.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat4x3.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_mat4x4.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_vec.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_vec1.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_vec2.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_vec3.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\detail\type_vec4.hpp">
+      <Filter>Laboratory\Voxel\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\bitfield.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\color_space.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\constants.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\epsilon.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\integer.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\matrix_access.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\matrix_integer.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\matrix_inverse.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\matrix_transform.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\noise.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\packing.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\quaternion.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\random.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\reciprocal.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\round.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\type_precision.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\type_ptr.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\ulp.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtc\vec1.hpp">
+      <Filter>Laboratory\Voxel\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\color_space.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\color_space_YCoCg.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\common.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\compatibility.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\component_wise.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\dual_quaternion.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\euler_angles.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\extend.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\extended_min_max.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\fast_exponential.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\fast_square_root.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\fast_trigonometry.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\gradient_paint.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\handed_coordinate_space.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\hash.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\integer.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\intersect.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\io.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\log_base.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_cross_product.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_decompose.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_interpolation.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_major_storage.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_operation.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_query.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\matrix_transform_2d.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\mixed_product.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\norm.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\normal.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\normalize_dot.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\number_precision.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\optimum_pow.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\orthonormalize.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\perpendicular.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\polar_coordinates.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\projection.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\quaternion.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\range.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\raw_data.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\rotate_normalized_axis.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\rotate_vector.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\scalar_multiplication.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\scalar_relational.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\simd_mat4.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\simd_quat.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\simd_vec4.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\spline.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\std_based_type.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\string_cast.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\transform.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\transform2.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\type_aligned.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\vector_angle.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\vector_query.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\wrap.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\associated_min_max.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\bit.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\glm\gtx\closest_point.hpp">
+      <Filter>Laboratory\Voxel\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noiseutils.h">
+      <Filter>Laboratory\Voxel\libnoise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\basictypes.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\exception.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\interp.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\latlon.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\mathconsts.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\misc.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\noise.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\noisegen.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\vectortable.h">
+      <Filter>Laboratory\Voxel\libnoise\noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\model\plane.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\model\sphere.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\model\cylinder.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\model\line.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\model\model.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\checkerboard.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\clamp.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\const.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\curve.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\cylinders.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\displace.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\exponent.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\invert.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\max.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\min.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\module.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\modulebase.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\multiply.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\perlin.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\power.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\ridgedmulti.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\rotatepoint.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\scalebias.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\scalepoint.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\select.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\spheres.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\terrace.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\translatepoint.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\turbulence.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\voronoi.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\abs.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\add.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\billow.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\blend.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\libnoise\noise\module\cache.h">
+      <Filter>Laboratory\Voxel\libnoise\noise\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\Player\Player.h">
+      <Filter>Laboratory\Voxel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\simplex\simplexnoise.h">
+      <Filter>Laboratory\Voxel\simplex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\VoxSettings.h">
+      <Filter>Laboratory\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\ini\INIReader.h">
+      <Filter>Laboratory\Voxel\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\ini\ini.h">
+      <Filter>Laboratory\Voxel\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\VoxGame.h">
+      <Filter>Laboratory\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\freetypefont.h">
+      <Filter>Laboratory\Voxel\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\OBJModel.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinary.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinaryManager.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\VoxelCharacter.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\VoxelObject.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\VoxelWeapon.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\BoundingBox.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\modelloader.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\MS3DAnimator.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\MS3DModel.h">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\ft2build.h">
+      <Filter>Laboratory\Voxel\freetype\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\freetype.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftbbox.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftbdf.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftbitmap.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftcache.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftchapters.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftcid.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\fterrdef.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\fterrors.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftgasp.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftglyph.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftgxval.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftgzip.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftimage.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftincrem.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftlcdfil.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftlist.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftlzw.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftmac.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftmm.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftmodapi.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftmoderr.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftotval.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftoutln.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftpfr.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftrender.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftsizes.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftsnames.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftstroke.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftsynth.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftsystem.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\fttrigon.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\fttypes.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftwinfnt.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ftxf86.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\t1tables.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ttnameid.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\tttables.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\tttags.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\ttunpat.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svgldict.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svgxval.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svkern.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svmm.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svotval.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svpfr.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svpostnm.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svpscmap.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svpsinfo.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svsfnt.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svttcmap.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svtteng.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svttglyf.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svwinfnt.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svxf86nm.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svbdf.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\services\svcid.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\autohint.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftcalc.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftdebug.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftdriver.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftgloadr.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftmemory.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftobjs.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftrfork.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftserv.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftstream.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\fttrace.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\ftvalid.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\internal.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\pcftypes.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\psaux.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\pshints.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\sfnt.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\t1types.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\internal\tttypes.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\config\ftconfig.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\config\ftheader.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\config\ftmodule.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\config\ftoption.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\freetype\include\freetype\config\ftstdlib.h">
+      <Filter>Laboratory\Voxel\freetype\include\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\utils\Interpolator.h">
+      <Filter>Laboratory\Voxel\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\utils\FileUtils.h">
+      <Filter>Laboratory\Voxel\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\utils\Random.h">
+      <Filter>Laboratory\Voxel\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_truetype.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imconfig.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imgui.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imgui_internal.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_rectpack.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_textedit.h">
+      <Filter>Runtime\ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_opengl3.h">
+      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_glfw.h">
+      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Creator\GPanelAssets\CMakeLists.txt">
       <Filter>Creator\GPanelAssets</Filter>
-    </Text>
-    <Text Include="..\Runtime\Metas\CMakeLists.txt">
-      <Filter>Runtime\Metas</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\CMakeLists.txt">
       <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
@@ -249,6 +1648,33 @@
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\Render\CMakeLists.txt">
       <Filter>Runtime\c2PresentationCG\Render</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\blocks\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\blocks</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\Renderer\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\Renderer</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\Maths\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\Maths</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\tinythread\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\tinythread</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\libnoise\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\libnoise</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\ini\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\ini</Filter>
+    </Text>
+    <Text Include="..\Laboratory\Voxel\models\CMakeLists.txt">
+      <Filter>Laboratory\Voxel\models</Filter>
+    </Text>
+    <Text Include="..\Runtime\ThirdParty\imgui\docs\TODO.txt">
+      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
+    </Text>
+    <Text Include="..\Runtime\ThirdParty\imgui\docs\CHANGELOG.txt">
+      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
     </Text>
   </ItemGroup>
 </Project>

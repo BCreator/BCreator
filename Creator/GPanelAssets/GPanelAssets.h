@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class GPanelAssets : private c2::Part {
+class GPanelAssets : private c2Part {
 	C2DefineClass(GPanelAssets)
 private:
 	//PartExplorer	_Exp;
