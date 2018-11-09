@@ -48,7 +48,6 @@ C2EvtTypeChunkBegin(C2ET1)
 C2EvtTypeChunkEnd
 
 #pragma pack(push, 1)
-//C2DefOneEvtBegin(C2ET_, EventTest)
 C2DefOneEvtBegin(C2ET1, C2EVT1, EventTest)
 Uint32	_esTest;
 char	_s[128];

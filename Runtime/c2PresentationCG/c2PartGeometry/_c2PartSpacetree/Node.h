@@ -16,7 +16,7 @@
 #ifndef C2_SPACETREE_NODE_H_
 #define C2_SPACETREE_NODE_H_
 
-#include"../../../Metas/Part.h"
+#include"../../../Foundation/Part.h"
 
 namespace c2 {
 ////////////////////////////////////////////////////////////////////////////////

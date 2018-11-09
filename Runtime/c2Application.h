@@ -1,9 +1,7 @@
-#ifndef C2_APPLICATION_H_
-#define C2_APPLICATION_H_
+#pragma once
 
 #include<boost/signals2/signal.hpp>
-#include"./c2PreDefined.h"
-#include"./c2DefEvent.h"
+#include"./ThirdParty/imgui/imgui.h"
 
 //FIXME: 以下宏暂时定义注释于此，以后会用更现代化的方式来做这方面的事。把这个宏放在这里
 //只是为了便于后面以此宏为线索清除和修改相关的代码。
@@ -53,6 +51,7 @@ C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
 C2EvtTypeChunkBegin(c2SysET)
 initialized = 0,
 updatefixframe,
+updateframe,
 AMMOUT,
 C2EvtTypeChunkEnd
 
@@ -61,17 +60,19 @@ C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
+mutable Uint32 _esElapsed;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
+mutable Uint32 _esElapsed;
 C2DefOneEvtEnd
 #pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Part & Factory*/
-#include"./Metas/Part.h"
-using c2APart = c2::Part::ARPart;
+#include"./c2Foundation/c2Part.h"
+using c2APart = c2Part::ARPart;
 C2API c2APart c2CreatePart(const char *sClass, const char *sName = nullptr);
-C2API bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C);
+C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C);
 #define C2RegistPartClass(classname)	\
 	::_c2RegistPartClass(#classname, classname::_create);
-
-////////////////////////////////////////////////////////////////////////////////
-#endif//C2_APPLICATION_H_

@@ -1,8 +1,13 @@
+#ifdef _WIN32 //FIXME
+#	include<windows.h>
+#endif
 #include<vector>
 #include<queue>
 #include<iostream>
 #include<boost/assert.hpp>
 #include<boost/log/trivial.hpp>
+#include"../c2PreDefined.h"
+#include"../c2DefEvent.h"
 #include"../c2Application.h"
 #include"./tsMemQueue.h"
 
@@ -34,7 +39,8 @@ TODO:»¹ĞèÒªÑÏÃÜ²âÊÔÒ»ÏÂ£¬ÀıÈçÊ¹ÓÃ¶©ÔÄÁËÄ³ÊÂ¼şµÄACT£¬ÀïÃæÔÙ¶©ÔÄ»òÍË¶©£¬²¢pubÊÂ¼ş´
 ACTÀïÔÙ¶©ÔÄ»òÍË¶©£¬µÈµÈ¡£*/
 #include<utility>
 static std::list<std::pair<c2IAction*, Uint32>>	g_ActSubEvtList;
-C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize) {
+C2API void c2asActSubEvt(c2IAction &Act,
+						Uint32 esEvtTypeAddChunkOffset, size_t EvtSize) {
 	g_ActSubEvtList.push_back(std::make_pair(&Act, esEvtTypeAddChunkOffset));
 }
 static std::list<std::pair<c2IAction*, Uint32>>	g_ActUnsubEvtList;
@@ -43,52 +49,12 @@ C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset) {
 }
 
 /******************************************************************************/
-/* Driving framework of the whole application*/
+/*Driving framework of the whole application*/
 static c2::tsMemQueue g_EventQueue(C2EVTQUEUE_INITSIZE);
 C2API void c2PublishEvt(const c2IEvent &Event, size_t EventSize,
 		const Uint64 esFixFrameStamp) {//FIXME: ÓÃ64µÄesÊÇÎªÁË¹»´ó£¬µ«ÈÔÈ»ÅÜ±¬ÎÊÌâ£¿
 	Event._esFixFrameStamp = esFixFrameStamp;
 	g_EventQueue.push(&Event, EventSize);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/*
- Frame & FixFrame control
-*/
-static char g_pTempEventBuffer4UpdateFixFrame[C2EVTMSG_MAXSIZE];
-
-static void UpdateFixFrame(int Elapsed, Uint64 esFixframeStamp) {
-	/*´¦ÀíÉÏÒ»Ö¡Êµ¼Ê¶©ÔÄÏûÏ¢¡£*/
-	for (std::pair<c2IAction*, Uint32>& v : g_ActSubEvtList) {
-		BOOST_ASSERT(v.first);
-		g_Evt2ActsetVector[v.second].insert(v.first);
-	}
-	g_ActSubEvtList.clear();
-	/*´¦ÀíÉÏÒ»Ö¡Êµ¼ÊÍË¶©ÏûÏ¢£¬½øĞĞÉ¾³ı¡£*/
-	for (std::pair<c2IAction*, Uint32>& v : g_ActUnsubEvtList) {
-		BOOST_ASSERT(v.first);
-		g_Evt2ActsetVector[v.second].erase(v.first);
-	}
-	g_ActUnsubEvtList.clear();
-	/*·Ö·¢ÏûÏ¢*/
-	while (!g_EventQueue.isEmpty()) {
-		g_EventQueue.pop(g_pTempEventBuffer4UpdateFixFrame, C2EVTMSG_MAXSIZE);
-		c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateFixFrame);
-		for (c2IAction *tp_act : g_Evt2ActsetVector[evt._esTypeAddChunkOffset]) {
-		//for each (auto tp_act in sig) {
-			BOOST_ASSERT(tp_act);
-			tp_act->_pEvt = &evt;//´«µİ´Ëevent×÷Îª²ÎÊı¡£Ö÷ÒªÊÇBrainTreeµÄupdateÎŞ²ÎÊı£¬ËùÒÔÎÒÃÇÒ²²»·½±ãÍ¨¹ıupdateº¯Êı´«Èë²ÎÊı¡£
-			tp_act->update();
-			tp_act->_pEvt = nullptr;//´¦ÀíÍê£¬eventÖ¸ÏòÔòÖØÖÃ¡£
-		}
-	}
-	c2SysEvt::updatefixframe sysevt_updatefixframe(g_SysETChunkOffset);
-	c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), esFixframeStamp);
-
-}
-static void UpdateFrame(int Elapsed) {
-	/*TODO£ºÍ¬fix×ßÊÂ¼şÍ¶µİ²»Ò»Ñù£¬Ö±½ÓÓÃÕæÕıµÄÍ¬²½ĞÔ»Øµ÷¡£ÊÂ¼şÌåÏµ³õÖÔ¾ÍÊÇÎªÂß¼­µÈ¹Ì¶¨
-	ÆµÂÊĞÔÖÊµÄÂß¼­·şÎñµÄ¡£*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,9 +70,8 @@ gleq.hÎÄ¼ş¡£Ä¿Ç°ÔİÊ±Ö»ÊÇ°ÑGLEQÕû¸öµ±Ò»¸öÏûÏ¢ÀàĞÍ£¬È»ºó¶¼½»¸øËû´¦Àí¡£
 - FIXME: ÉèÖÃÎÒÃÇ×Ô¼ºµÄGLFW¼üÅÌºÍÊó±ê»Øµ÷£¬È»ºóÔÙ·Ö±ğµ÷ÓÃImgui¼°gleqµÄ¡£IMGUIµÄEXAMPLE 
 OS BINDÀïIOÀïÒÑ¾­ÓĞÁËÍ¨¹ı¼¸¸öwanted²¼¶ûÖµ£¬À´×ÔĞĞÅĞ¶ÏÊÇ·ñIMGUIÏûºÄµôINPUÏûÏ¢£¬Òª²»ÒªÈÃ
 ¸øÓ¦ÓÃ³ÌĞò¡£imgui.cppÍ·ÎÄµµÀïµÄFAQµÚÒ»ÌõÓĞÏà¹ØËµÃ÷¡£*/
-#include "../c2PresentationCG/imgui/imgui.h"
-#include "../c2PresentationCG/imgui/examples/imgui_impl_glfw.h"
-#include "../c2PresentationCG/imgui/examples/imgui_impl_opengl3.h"
+#include "../ThirdParty/imgui/examples/imgui_impl_glfw.h"
+#include "../ThirdParty/imgui/examples/imgui_impl_opengl3.h"
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
 #include <GL/gl3w.h>    // Initialize with gl3wInit()
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
@@ -282,9 +247,9 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 	Uint64 es_fixframe_stamp = 0;
 	c2PublishEvt(sysevt_initialized, sizeof(sysevt_initialized),
 					es_fixframe_stamp);
-	void(*syseventscatch)() = isBlocked ? glfwWaitEvents : glfwPollEvents;
-	int elapsed = 0;	//TODO
+	/*------------------------------------------------------------------------*/
 	/* Loop until the user closes the window */
+	void(*syseventscatch)() = isBlocked ? glfwWaitEvents : glfwPollEvents;
 	while (!glfwWindowShouldClose(window)) {
 		syseventscatch();
 		/*´ÓGLEQÄÃÏûÏ¢*/
@@ -301,8 +266,61 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 		/*--------------------------------------------------------------------*/
 		/*Âß¼­¡¢äÖÈ¾µÈÖ÷Ñ­»·Ö¡*/
 		//int elapsed = 0;	//TODO
-		UpdateFixFrame(elapsed, es_fixframe_stamp);
-		UpdateFrame(elapsed);
+		/*´¦ÀíÉÏÒ»Ö¡Êµ¼Ê¶©ÔÄÏûÏ¢¡£*/
+		for (std::pair<c2IAction*, Uint32>& v : g_ActSubEvtList) {
+			BOOST_ASSERT(v.first);
+			g_Evt2ActsetVector[v.second].insert(v.first);
+		}
+		g_ActSubEvtList.clear();
+		/*´¦ÀíÉÏÒ»Ö¡Êµ¼ÊÍË¶©ÏûÏ¢£¬½øĞĞÉ¾³ı¡£*/
+		for (std::pair<c2IAction*, Uint32>& v : g_ActUnsubEvtList) {
+			BOOST_ASSERT(v.first);
+			g_Evt2ActsetVector[v.second].erase(v.first);
+		}
+		g_ActUnsubEvtList.clear();
+		/*·Ö·¢ÏûÏ¢*/
+		static char g_pTempEventBuffer4UpdateFixFrame[C2EVTMSG_MAXSIZE];
+		while (!g_EventQueue.isEmpty()) {
+			g_EventQueue.pop(g_pTempEventBuffer4UpdateFixFrame, C2EVTMSG_MAXSIZE);
+			c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateFixFrame);
+			for (c2IAction *tp_act : g_Evt2ActsetVector[evt._esTypeAddChunkOffset]) {
+				//for each (auto tp_act in sig) {
+				BOOST_ASSERT(tp_act);
+				tp_act->_pEvt = &evt;//´«µİ´Ëevent×÷Îª²ÎÊı¡£Ö÷ÒªÊÇBrainTreeµÄupdateÎŞ²ÎÊı£¬ËùÒÔÎÒÃÇÒ²²»·½±ãÍ¨¹ıupdateº¯Êı´«Èë²ÎÊı¡£
+				tp_act->update();
+				tp_act->_pEvt = nullptr;//´¦ÀíÍêºó£¬ÔòeventÖ¸ÏòÖØÖÃ¡£
+			}
+		}
+		/*--------------------------------------------------------------------*/
+		/*FIXME: elapsed¼ÆËã*/
+		//boost::posix_time::second_clock
+		static Uint32 t_tick = 0, t_pretick = 0, elapsed = 0;
+#ifdef _WIN32
+		//static LARGE_INTEGER t_tick, t_pretick;
+		//QueryPerformanceCounter(&t_tick);
+		//QueryPerformanceCounter(&t_pretick);
+		t_tick = timeGetTime();
+#else
+#include <sys/time.h>
+		struct timeval tm;
+		gettimeofday(&tm, NULL);
+		m_fpsCurrentTicks = (double)tm.tv_sec + (double)tm.tv_usec / 1000000.0;
+		m_deltaTime = (m_fpsCurrentTicks - m_fpsPreviousTicks);
+#endif //_WIN32
+		elapsed = t_tick - t_pretick;
+		t_pretick = t_tick;
+		/*Å×³öfixupdateÏûÏ¢*/
+		static c2SysEvt::updatefixframe sysevt_updatefixframe(g_SysETChunkOffset);
+		sysevt_updatefixframe._esElapsed = elapsed;//FIXME: elapsed´Ë´¦Ó¦¸ÃÒªÓĞ×î´óÖµ±£»¤¡£
+		c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), es_fixframe_stamp);
+		/*TODO£ºÍ¬fix×ßÊÂ¼şÍ¶µİ²»Ò»Ñù£¬Ö±½ÓÓÃÕæÕıµÄÍ¬²½ĞÔ»Øµ÷¡£ÊÂ¼şÌåÏµ³õÖÔ¾ÍÊÇÎªÂß¼­µÈ¹Ì¶¨
+		ÆµÂÊĞÔÖÊµÄÂß¼­·şÎñµÄ¡£*/
+		/*Å×³öupdateÏûÏ¢*/
+		static c2SysEvt::updateframe sysevt_updateframe(g_SysETChunkOffset);
+		sysevt_updateframe._esElapsed = elapsed;//FIXME: elapsed´Ë´¦Ó¦¸ÃÒªÓĞ×î´óÖµ±£»¤¡£
+		c2PublishEvt(sysevt_updateframe, sizeof(sysevt_updateframe), es_fixframe_stamp);
+		/*--------------------------------------------------------------------*/
+		/*FIXME: fixframe²½½ø¡£ÑÛÏÂÊÇ¼ÙµÄ£¬ÕıÊ½Ó¦¸ÄÎªÃ¿ÃëµÄºã¶¨Ö¡ÂÊ*/
 		++es_fixframe_stamp;
 		/*--------------------------------------------------------------------*/
 		// Rendering
@@ -319,23 +337,23 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 /*
 Part & Factory
 */
-#include"../Metas/Part.h"
-c2::Part::CreationDict		c2::Part::_CreationDict;	//FIXME: ÔİÊ±·ÅÕâ
+#include"../c2Foundation/c2Part.h"
+c2Part::CreationDict		c2Part::_CreationDict;	//FIXME: ÔİÊ±·ÅÕâ
 
 C2API c2APart c2CreatePart(const char *sClass, const char *sName) {
 	if (!sClass)
 		return nullptr;
-	c2::Part::CreationDict::iterator ci = c2::Part::_CreationDict.find(sClass);
-	if (ci == c2::Part::_CreationDict.end())
+	c2Part::CreationDict::iterator ci = c2Part::_CreationDict.find(sClass);
+	if (ci == c2Part::_CreationDict.end())
 		return nullptr;
-	c2::Part::CreationFunc	create = ci->second;
+	c2Part::CreationFunc	create = ci->second;
 	BOOST_ASSERT(create);
 	return create();
 }
 
-C2API bool _c2RegistPartClass(const char *sClass, c2::Part::CreationFunc C) {
+C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C) {
 	if (!sClass || !C)
 		return false;
-	return c2::Part::_CreationDict.insert(	//Èç¹ûÒÑ´æÔÚÍ¬ÑùÀàÃû×¢²á£¬Ôò·µ»Øfalse¡£
-		c2::Part::CreationDict::value_type(sClass, C)).second;
+	return c2Part::_CreationDict.insert(	//Èç¹ûÒÑ´æÔÚÍ¬ÑùÀàÃû×¢²á£¬Ôò·µ»Øfalse¡£
+		c2Part::CreationDict::value_type(sClass, C)).second;
 }
