@@ -42,6 +42,7 @@
     <ClCompile Include="..\Laboratory\Voxel\models\VoxelCharacter.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\models\VoxelObject.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\models\VoxelWeapon.cpp" />
+    <ClCompile Include="..\Laboratory\Voxel\Player\Player.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\simplex\simplexnoise.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\utils\FileUtils.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\utils\Interpolator.cpp" />

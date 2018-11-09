@@ -51,10 +51,10 @@ public:
 		static const c2SysEvt::updateframe*  tpevt;
 		BOOST_ASSERT(_pEvt);
 		tpevt = static_cast<const c2SysEvt::updateframe*>(_pEvt);
-		pVoxGame->update(static_cast<int>(tpevt->_esElapsed));
-		pVoxGame->preRender();
-		pVoxGame->render();
-		return BehaviorTree::update();
+		pVoxGame->Update(static_cast<int>(tpevt->_esElapsed));
+		pVoxGame->PreRender();
+		pVoxGame->Render();
+		return Status::Success;
 	}
 };
 
@@ -64,7 +64,7 @@ class onSysInitializedVoxel : public c2IAction {
 		//TODO: I can plugin my extensions here.
 		BOOST_LOG_TRIVIAL(info) << "C2engine intialized.";
 		pVoxGame = VoxGame::GetInstance();
-		pVoxGame->init(1024, 768, 32, 8);
+		pVoxGame->Init(1024, 768, 32, 8);
 
 		return Status::Success;
 	}

@@ -30,7 +30,7 @@ using namespace tthread;
 class Player;
 //class NPCManager;
 //class EnemyManager;
-class BlockParticleManager;
+//class BlockParticleManager;
 //class ItemManager;
 class SceneryManager;
 class VoxSettings;
@@ -260,9 +260,9 @@ private:
 	VoxSettings* m_pVoxSettings;
 	QubicleBinaryManager* m_pQubicleBinaryManager;
 //	ItemManager* m_pItemManager;
-	BlockParticleManager* m_pBlockParticleManager;
-	//EnemyManager* m_pEnemyManager;
-	//NPCManager* m_pNPCManager;
+//	BlockParticleManager* m_pBlockParticleManager;
+//	EnemyManager* m_pEnemyManager;
+//	NPCManager* m_pNPCManager;
 
 	// Chunk Material
 	unsigned int m_chunkMaterialID;

@@ -1,4 +1,5 @@
 //FIXME：暂时我自己模拟的
+#include "blocks/BiomeManager.h"
 
 enum GameMode {
 	GameMode_Debug = 0,
@@ -8,6 +9,7 @@ enum GameMode {
 };
 
 class Camera;
+class Player;
 class VoxSettings;
 class Renderer;
 class QubicleBinaryManager;
@@ -19,9 +21,8 @@ public:
 	static VoxGame* GetInstance();
 
 	GameMode m_gameMode;
-	GameMode GetGameMode() {
-		return m_gameMode;
-	}
+	void SetGameMode(GameMode mode);
+	GameMode GetGameMode();
 
 	unsigned int m_defaultViewport;
 	unsigned int GetDefaultViewport() {
@@ -33,14 +34,30 @@ public:
 		return m_pGameCamera;
 	}
 
+	void UpdateCamera(float dt);
+	void UpdateCameraFirstPerson(float dt);
+	void RenderFirstPersonViewport();
+
+	Player* m_pPlayer;
 	VoxSettings* m_pVoxSettings;
 	Renderer* m_pRenderer;
 	QubicleBinaryManager* m_pQubicleBinaryManager;
 	ChunkManager* m_pChunkManager;
 	BiomeManager* m_pBiomeManager;
-	void init(int nWndWidth, int nWndHeight, int depthBits, int stencilBits);
-	void update(int nElapsed);
-	void preRender();
-	void render();
-	void destory();
+	// Biome
+	Biome m_currentBiome;
+	unsigned int m_firstpersonViewport;
+	void Init(int nWndWidth, int nWndHeight, int depthBits, int stencilBits);
+	void Update(int nElapsed);
+	void PreRender();
+	void Render();
+	void Destroy();
+
+	// Materials
+	unsigned int m_defaultMaterial;
+	// Shaders
+	unsigned int m_defaultShader;
+	void BeginShaderRender();
+	void EndShaderRender();
+	void RenderTransparency();
 };

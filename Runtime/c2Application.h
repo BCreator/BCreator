@@ -11,17 +11,7 @@
 /*Action体系*/
 #include"./_c2Application/BrainTree.h"
 struct c2IAction : public BrainTree::BehaviorTree {
-	////TODO：？返回值有RUNNING是为了后面的OneRounte。
-	//enum class Status
-	//{
-	//	Invalid,
-	//	Success,
-	//	Failure,
-	//	Running,
-	//};
-	////int		_Predicate;
-	////int		_SubjectID;
-	////blackboard;只能是内部状态，不能记录任何体外状态。
+	//TODO：返回值的意义需要更为明确。以及未来同OneRounte的关系。
 	c2IAction() : _pEvt(nullptr) {}
 	const c2IEvent*	_pEvt;
 	virtual Status update() {
