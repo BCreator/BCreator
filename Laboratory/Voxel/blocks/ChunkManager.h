@@ -32,7 +32,7 @@ class Player;
 //class EnemyManager;
 //class BlockParticleManager;
 //class ItemManager;
-class SceneryManager;
+//class SceneryManager;
 class VoxSettings;
 class QubicleBinaryManager;
 class BiomeManager;
@@ -149,23 +149,22 @@ public:
 
 	// Linkage
 	void SetPlayer(Player* pPlayer);
-	//houstond
-	//void SetNPCManager(NPCManager* pNPCManager);
-	//void SetEnemyManager(EnemyManager* pEnemyManager);
-	//void SetBlockParticleManager(BlockParticleManager* pBlockParticleManager);
-	//void SetItemManager(ItemManager* pItemManager);
-
-	// Scenery manager pointer
-	void SetSceneryManager(SceneryManager* pSceneryManager);
+//  	void SetNPCManager(NPCManager* pNPCManager);
+//  	void SetEnemyManager(EnemyManager* pEnemyManager);
+//  	void SetBlockParticleManager(BlockParticleManager* pBlockParticleManager);
+//  	void SetItemManager(ItemManager* pItemManager);
+ 
+//  	// Scenery manager pointer
+//  	void SetSceneryManager(SceneryManager* pSceneryManager);
 
 	// Biome manager
 	void SetBiomeManager(BiomeManager* pBiomeManager);
-	BiomeManager* getBiomeManager() {//houstond
+	BiomeManager* getBiomeManager() {
 		return m_pBiomeManager;
 	}
 
-	// Initial chunk creation
-	void InitializeChunkCreation();
+// 	// Initial chunk creation
+// 	void InitializeChunkCreation();
 
 	// Chunk rendering material
 	unsigned int GetChunkMaterialID();
@@ -211,12 +210,12 @@ public:
 	QubicleBinary* ImportQubicleBinary(QubicleBinary* qubicleBinaryFile, vec3 position, QubicleImportDirection direction);
 	QubicleBinary* ImportQubicleBinary(const char* filename, vec3 position, QubicleImportDirection direction);
 
-	// Explosions
-	void CreateBlockDestroyParticleEffect(float r, float g, float b, float a, vec3 blockPosition);
-	void ExplodeSphere(vec3 position, float radius);
-
-	// Collectible block objects
-	void CreateCollectibleBlock(BlockType blockType, vec3 blockPos);
+// 	// Explosions
+// 	void CreateBlockDestroyParticleEffect(float r, float g, float b, float a, vec3 blockPosition);
+// 	void ExplodeSphere(vec3 position, float radius);
+// 
+// 	// Collectible block objects
+// 	void CreateCollectibleBlock(BlockType blockType, vec3 blockPos);
 
 	// Water
 	void SetWaterHeight(float height);
@@ -234,7 +233,8 @@ public:
 	void UpdatingChunksThread();
 
 	// Rendering
-	void Render(bool shadowRender);
+//	void Render(bool shadowRender);
+	void Render(bool shadowRender, int GMode, unsigned int ViewPort, const vec3& CameraPos);
 	void RenderWater();
 	void RenderDebug();
 	void Render2D(Camera* pCamera, unsigned int viewport, unsigned int font);
@@ -255,14 +255,14 @@ private:
 	/* Private members */
 	Renderer* m_pRenderer;
 	Player* m_pPlayer;
-	SceneryManager* m_pSceneryManager;
+//	SceneryManager* m_pSceneryManager;
 	BiomeManager* m_pBiomeManager;
 	VoxSettings* m_pVoxSettings;
 	QubicleBinaryManager* m_pQubicleBinaryManager;
-//	ItemManager* m_pItemManager;
-//	BlockParticleManager* m_pBlockParticleManager;
-//	EnemyManager* m_pEnemyManager;
-//	NPCManager* m_pNPCManager;
+// 	ItemManager* m_pItemManager;
+// 	BlockParticleManager* m_pBlockParticleManager;
+// 	EnemyManager* m_pEnemyManager;
+// 	NPCManager* m_pNPCManager;
 
 	// Chunk Material
 	unsigned int m_chunkMaterialID;

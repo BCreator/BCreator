@@ -53,12 +53,12 @@ void Chunk::SetPlayer(Player* pPlayer)
 {
 	m_pPlayer = pPlayer;
 }
-
-//// Scenery manager pointer
-//houstond void Chunk::SetSceneryManager(SceneryManager* pSceneryManager)
-//{
-//	m_pSceneryManager = pSceneryManager;
-//}
+// 
+// // Scenery manager pointer
+// void Chunk::SetSceneryManager(SceneryManager* pSceneryManager)
+// {
+// 	m_pSceneryManager = pSceneryManager;
+// }
 
 // Biome manager
 void Chunk::SetBiomeManager(BiomeManager* pBiomeManager)

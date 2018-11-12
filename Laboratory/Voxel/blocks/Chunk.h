@@ -18,6 +18,15 @@
 
 #pragma once
 
+// Game modes
+enum GameMode
+{
+	GameMode_Debug = 0,
+	GameMode_Loading,
+	GameMode_FrontEnd,
+	GameMode_Game,
+};
+
 #include "BlocksEnum.h"
 #include "../Renderer/Renderer.h"
 #include "../Renderer/camera.h"
@@ -46,9 +55,9 @@ public:
 
 	// Player pointer
 	void SetPlayer(Player* pPlayer);
-
-	// Scenery manager pointer
-	void SetSceneryManager(SceneryManager* pSceneryManager);
+// 
+// 	// Scenery manager pointer
+// 	void SetSceneryManager(SceneryManager* pSceneryManager);
 
 	// Biome manager
 	void SetBiomeManager(BiomeManager* pBiomeManager);
@@ -174,7 +183,7 @@ private:
 	Renderer* m_pRenderer;
 	ChunkManager* m_pChunkManager;
 	Player* m_pPlayer;
-//	SceneryManager* m_pSceneryManager;
+	SceneryManager* m_pSceneryManager;
 	BiomeManager* m_pBiomeManager;
 
 	// Chunk neighbours

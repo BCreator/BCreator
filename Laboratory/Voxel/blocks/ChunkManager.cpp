@@ -12,17 +12,16 @@
 #include "ChunkManager.h"
 #include "BiomeManager.h"
 #include "../Player/Player.h"
-//#include "../NPC/NPCManager.h"
-//#include "../Enemy/EnemyManager.h"
-//#include "../Items/ItemManager.h"
-//#include "../Particles/BlockParticleManager.h"
+// #include "../NPC/NPCManager.h"
+// #include "../Enemy/EnemyManager.h"
+// #include "../Items/ItemManager.h"
+// #include "../Particles/BlockParticleManager.h"
 #include "../VoxSettings.h"
-#include "../VoxGame.h"
+//#include "../VoxGame.h"
 #include "../utils/Random.h"
 #include "../models/QubicleBinaryManager.h"
 
 #include <algorithm>
-
 
 ChunkManager::ChunkManager(Renderer* pRenderer, VoxSettings* pVoxSettings, QubicleBinaryManager* pQubicleBinaryManager)
 {
@@ -114,46 +113,45 @@ void ChunkManager::SetPlayer(Player* pPlayer)
 	m_pPlayer = pPlayer;
 }
 
-//houstond
-//void ChunkManager::SetNPCManager(NPCManager* pNPCManager)
-//{
-//	m_pNPCManager = pNPCManager;
-//}
-//
-//void ChunkManager::SetEnemyManager(EnemyManager* pEnemyManager)
-//{
-//	m_pEnemyManager = pEnemyManager;
-//}
-//
-//void ChunkManager::SetBlockParticleManager(BlockParticleManager* pBlockParticleManager)
-//{
-//	m_pBlockParticleManager = pBlockParticleManager;
-//}
-//
-//void ChunkManager::SetItemManager(ItemManager* pItemManager)
-//{
-//	m_pItemManager = pItemManager;
-//}
-//
-//// Scenery manager pointer
-//void ChunkManager::SetSceneryManager(SceneryManager* pSceneryManager)
-//{
-//	m_pSceneryManager = pSceneryManager;
-//}
+//  void ChunkManager::SetNPCManager(NPCManager* pNPCManager)
+//  {
+//  	m_pNPCManager = pNPCManager;
+//  }
+//  
+//  void ChunkManager::SetEnemyManager(EnemyManager* pEnemyManager)
+//  {
+//  	m_pEnemyManager = pEnemyManager;
+//  }
+//  
+//  void ChunkManager::SetBlockParticleManager(BlockParticleManager* pBlockParticleManager)
+//  {
+//  	m_pBlockParticleManager = pBlockParticleManager;
+//  }
+//  
+//  void ChunkManager::SetItemManager(ItemManager* pItemManager)
+//  {
+//  	m_pItemManager = pItemManager;
+//  }
+//  
+//  // Scenery manager pointer
+//  void ChunkManager::SetSceneryManager(SceneryManager* pSceneryManager)
+//  {
+//  	m_pSceneryManager = pSceneryManager;
+//  }
 
 // Biome manager
 void ChunkManager::SetBiomeManager(BiomeManager* pBiomeManager)
 {
 	m_pBiomeManager = pBiomeManager;
 }
-
-// Initial chunk creation
-void ChunkManager::InitializeChunkCreation()
-{
-	// Create initial chunk
-	CreateNewChunk(m_pPlayer->GetGridX(), m_pPlayer->GetGridY(), m_pPlayer->GetGridZ());
-}
-
+// 
+// // Initial chunk creation
+// void ChunkManager::InitializeChunkCreation()
+// {
+// 	// Create initial chunk
+// 	CreateNewChunk(m_pPlayer->GetGridX(), m_pPlayer->GetGridY(), m_pPlayer->GetGridZ());
+// }
+// 
 // Chunk rendering material
 unsigned int ChunkManager::GetChunkMaterialID()
 {
@@ -203,7 +201,7 @@ void ChunkManager::CreateNewChunk(int x, int y, int z)
 	// Create a new chunk at this grid position
 	Chunk* pNewChunk = new Chunk(m_pRenderer, this, m_pVoxSettings);
 	pNewChunk->SetPlayer(m_pPlayer);
-	//houstond pNewChunk->SetSceneryManager(m_pSceneryManager);
+//	pNewChunk->SetSceneryManager(m_pSceneryManager);
 	pNewChunk->SetBiomeManager(m_pBiomeManager);
 
 	float xPos = x * (Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE*2.0f);
@@ -373,26 +371,25 @@ void ChunkManager::UnloadChunk(Chunk* pChunk)
 
 	// Clear chunk linkage
 	m_updateThreadFlagLock.lock();
-	if (m_updateThreadActive)
-	{
-		if (m_pPlayer != NULL)
-		{
-			m_pPlayer->ClearChunkCacheForChunk(pChunk);
-		}
-		//houstond
-		//if (m_pNPCManager != NULL)
-		//{
-		//	m_pNPCManager->ClearNPCChunkCacheForChunk(pChunk);
-		//}
-		//if (m_pEnemyManager)
-		//{
-		//	m_pEnemyManager->ClearEnemyChunkCacheForChunk(pChunk);
-		//}
-		//if (m_pBlockParticleManager)
-		//{
-		//	m_pBlockParticleManager->ClearParticleChunkCacheForChunk(pChunk);
-		//}
-	}
+// 	if (m_updateThreadActive)
+// 	{
+// 		if (m_pPlayer != NULL)
+// 		{
+// 			m_pPlayer->ClearChunkCacheForChunk(pChunk);
+// 		}
+// 		if (m_pNPCManager != NULL)
+// 		{
+// 			m_pNPCManager->ClearNPCChunkCacheForChunk(pChunk);
+// 		}
+// 		if (m_pEnemyManager)
+// 		{
+// 			m_pEnemyManager->ClearEnemyChunkCacheForChunk(pChunk);
+// 		}
+// 		if (m_pBlockParticleManager)
+// 		{
+// 			m_pBlockParticleManager->ClearParticleChunkCacheForChunk(pChunk);
+// 		}
+// 	}
 	m_updateThreadFlagLock.unlock();
 
 	// Unload and delete
@@ -880,147 +877,144 @@ QubicleBinary* ChunkManager::ImportQubicleBinary(const char* filename, vec3 posi
 
 	return NULL;
 }
-
-// Explosions
-void ChunkManager::CreateBlockDestroyParticleEffect(float r, float g, float b, float a, vec3 blockPosition)
-{
-	for (int i = 0; i < 8; i++)
-	{
-		float size = Chunk::BLOCK_RENDER_SIZE*0.5f;
-		float scale = 0.3f + (GetRandomNumber(-1, 1, 4)*0.2f);
-		vec3 addition;
-		if (i == 0) addition = vec3(-size, size, -size);
-		if (i == 1) addition = vec3(size, size, -size);
-		if (i == 2) addition = vec3(-size, size, size);
-		if (i == 3) addition = vec3(size, size, size);
-		if (i == 4) addition = vec3(-size, -size, -size);
-		if (i == 5) addition = vec3(size, -size, -size);
-		if (i == 6) addition = vec3(-size, -size, size);
-		if (i == 7) addition = vec3(size, -size, size);
-
-		float lifeTime = 6.5f + GetRandomNumber(-1, 1, 1) * 0.75f;
-
-		vec3 gravityDir = vec3(0.0f, -1.0f, 0.0f);
-		vec3 pointOrigin = vec3(0.0f, 0.0f, 0.0f);
-		//houstond
-		//BlockParticle* pParticle = m_pBlockParticleManager->CreateBlockParticle(blockPosition + addition, blockPosition + addition, gravityDir, 2.5f, pointOrigin, scale, 0.0f, scale, 0.0f,
-		//	r, g, b, a, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a, 0.0f, 0.0f, 0.0f, 0.0f, lifeTime, 0.0f, 0.0f, 0.0f, vec3(0.0f, 7.0f, 0.0f),
-		//	vec3(3.0f, 2.0f, 3.0f), vec3(GetRandomNumber(-360, 360, 2), GetRandomNumber(-360, 360, 2), GetRandomNumber(-360, 360, 2)),
-		//	vec3(180.0f, 180.0f, 180.0f), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, true, vec3(0.0f, 0.0f, 0.0f), true, false, false, false, NULL);
-	}
-}
-
-void ChunkManager::ExplodeSphere(vec3 position, float radius)
-{
-	float startx = position.x - radius;
-	float starty = position.y - radius;
-	float startz = position.z - radius;
-	float endx = position.x + radius;
-	float endy = position.y + radius;
-	float endz = position.z + radius;
-
-	ChunkList vChunkBatchUpdateList;
-
-	for (float x = startx; x < endx; x += Chunk::BLOCK_RENDER_SIZE)
-	{
-		for (float y = starty; y < endy; y += Chunk::BLOCK_RENDER_SIZE)
-		{
-			for (float z = startz; z < endz; z += Chunk::BLOCK_RENDER_SIZE)
-			{
-				vec3 blockPosition;
-				int blockX, blockY, blockZ;
-				Chunk* pChunk = NULL;
-				bool active = GetBlockActiveFrom3DPosition(x, y, z, &blockPosition, &blockX, &blockY, &blockZ, &pChunk);
-
-				float distance = length(blockPosition - position);
-
-				if (pChunk != NULL)
-				{
-					if (distance <= radius)
-					{
-						if (active)
-						{
-							float r;
-							float g;
-							float b;
-							float a;
-							// Store the colour for particle effect later
-							pChunk->GetColour(blockX, blockY, blockZ, &r, &g, &b, &a);
-
-							// Remove the block from being active
-							pChunk->SetColour(blockX, blockY, blockZ, 0);
-
-							// Create particle effect
-							if (GetRandomNumber(0, 100, 2) > 75.0f)
-							{
-								CreateBlockDestroyParticleEffect(r, g, b, a, blockPosition);
-							}
-
-							// Create the collectible block item
-							if (GetRandomNumber(0, 100, 2) > 75.0f)
-							{
-								BlockType blockType = pChunk->GetBlockType(blockX, blockY, blockZ);
-								CreateCollectibleBlock(blockType, blockPosition);
-							}
-
-							// Add to batch update list (no duplicates)
-							bool found = false;
-							for (int i = 0; i < (int)vChunkBatchUpdateList.size() && found == false; i++)
-							{
-								if (vChunkBatchUpdateList[i] == pChunk)
-								{
-									found = true;
-								}
-							}
-							if (found == false)
-							{
-								vChunkBatchUpdateList.push_back(pChunk);
-								pChunk->StartBatchUpdate();
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	for (int i = 0; i < (int)vChunkBatchUpdateList.size(); i++)
-	{
-		vChunkBatchUpdateList[i]->StopBatchUpdate();
-	}
-	vChunkBatchUpdateList.clear();
-}
-
-// Collectible block objects
-void ChunkManager::CreateCollectibleBlock(BlockType blockType, vec3 blockPos)
-{
-#if 0//houstond
-	Item* pItem = NULL;
-
-	ItemSubSpawnData *pItemSubSpawnData = m_pItemManager->GetItemSubSpawnData(blockType);
-	if (pItemSubSpawnData != NULL)
-	{
-		pItem = m_pItemManager->CreateItem(blockPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), pItemSubSpawnData->m_spawnedItemFilename.c_str(), pItemSubSpawnData->m_spawnedItem, pItemSubSpawnData->m_spawnedItemTitle.c_str(), pItemSubSpawnData->m_interactable, pItemSubSpawnData->m_collectible, pItemSubSpawnData->m_scale);
-
-		if (pItem != NULL)
-		{
-			float radius = 1.5f;
-			float angle = DegToRad((float)GetRandomNumber(0, 360, 2));
-			vec3 ItemPosition = blockPos + vec3(cos(angle) * radius, 0.0f, sin(angle) * radius);
-
-			pItem->SetGravityDirection(vec3(0.0f, -1.0f, 0.0f));
-			vec3 vel = ItemPosition - blockPos;
-			pItem->SetVelocity(normalize(vel)*(float)GetRandomNumber(0, 1, 2) + vec3(GetRandomNumber(-1, 1, 2), 1.0f + GetRandomNumber(2, 5, 2), GetRandomNumber(-1, 1, 2)));
-			pItem->SetRotation(vec3(0.0f, GetRandomNumber(0, 360, 2), 0.0f));
-			pItem->SetAngularVelocity(vec3(0.0f, 90.0f, 0.0f));
-
-			pItem->SetDroppedItem(pItemSubSpawnData->m_droppedItemFilename.c_str(), pItemSubSpawnData->m_droppedItemTextureFilename.c_str(), pItemSubSpawnData->m_droppedItemInventoryType, pItemSubSpawnData->m_droppedItemItem, pItemSubSpawnData->m_droppedItemStatus, pItemSubSpawnData->m_droppedItemEquipSlot, pItemSubSpawnData->m_droppedItemQuality, pItemSubSpawnData->m_droppedItemLeft, pItemSubSpawnData->m_droppedItemRight, pItemSubSpawnData->m_droppedItemTitle.c_str(), pItemSubSpawnData->m_droppedItemDescription.c_str(), pItemSubSpawnData->m_droppedItemPlacementR, pItemSubSpawnData->m_droppedItemPlacementG, pItemSubSpawnData->m_droppedItemPlacementB, pItemSubSpawnData->m_droppedItemQuantity);
-			pItem->SetAutoDisappear(20.0f + (GetRandomNumber(-20, 20, 1) * 0.2f));
-			pItem->SetCollisionEnabled(false);
-		}
-	}
-#endif
-}
+// 
+// // Explosions
+// void ChunkManager::CreateBlockDestroyParticleEffect(float r, float g, float b, float a, vec3 blockPosition)
+// {
+//  	for (int i = 0; i < 8; i++)
+//  	{
+//  		float size = Chunk::BLOCK_RENDER_SIZE*0.5f;
+//  		float scale = 0.3f + (GetRandomNumber(-1, 1, 4)*0.2f);
+//  		vec3 addition;
+//  		if (i == 0) addition = vec3(-size, size, -size);
+//  		if (i == 1) addition = vec3(size, size, -size);
+//  		if (i == 2) addition = vec3(-size, size, size);
+//  		if (i == 3) addition = vec3(size, size, size);
+//  		if (i == 4) addition = vec3(-size, -size, -size);
+//  		if (i == 5) addition = vec3(size, -size, -size);
+//  		if (i == 6) addition = vec3(-size, -size, size);
+//  		if (i == 7) addition = vec3(size, -size, size);
+//  
+//  		float lifeTime = 6.5f + GetRandomNumber(-1, 1, 1) * 0.75f;
+//  
+//  		vec3 gravityDir = vec3(0.0f, -1.0f, 0.0f);
+//  		vec3 pointOrigin = vec3(0.0f, 0.0f, 0.0f);
+//  		BlockParticle* pParticle = m_pBlockParticleManager->CreateBlockParticle(blockPosition + addition, blockPosition + addition, gravityDir, 2.5f, pointOrigin, scale, 0.0f, scale, 0.0f,
+//  			r, g, b, a, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a, 0.0f, 0.0f, 0.0f, 0.0f, lifeTime, 0.0f, 0.0f, 0.0f, vec3(0.0f, 7.0f, 0.0f),
+//  			vec3(3.0f, 2.0f, 3.0f), vec3(GetRandomNumber(-360, 360, 2), GetRandomNumber(-360, 360, 2), GetRandomNumber(-360, 360, 2)),
+//  			vec3(180.0f, 180.0f, 180.0f), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, true, vec3(0.0f, 0.0f, 0.0f), true, false, false, false, NULL);
+//  	}
+// }
+// 
+// void ChunkManager::ExplodeSphere(vec3 position, float radius)
+// {
+// 	float startx = position.x - radius;
+// 	float starty = position.y - radius;
+// 	float startz = position.z - radius;
+// 	float endx = position.x + radius;
+// 	float endy = position.y + radius;
+// 	float endz = position.z + radius;
+// 
+// 	ChunkList vChunkBatchUpdateList;
+// 
+// 	for (float x = startx; x < endx; x += Chunk::BLOCK_RENDER_SIZE)
+// 	{
+// 		for (float y = starty; y < endy; y += Chunk::BLOCK_RENDER_SIZE)
+// 		{
+// 			for (float z = startz; z < endz; z += Chunk::BLOCK_RENDER_SIZE)
+// 			{
+// 				vec3 blockPosition;
+// 				int blockX, blockY, blockZ;
+// 				Chunk* pChunk = NULL;
+// 				bool active = GetBlockActiveFrom3DPosition(x, y, z, &blockPosition, &blockX, &blockY, &blockZ, &pChunk);
+// 
+// 				float distance = length(blockPosition - position);
+// 
+// 				if (pChunk != NULL)
+// 				{
+// 					if (distance <= radius)
+// 					{
+// 						if (active)
+// 						{
+// 							float r;
+// 							float g;
+// 							float b;
+// 							float a;
+// 							// Store the colour for particle effect later
+// 							pChunk->GetColour(blockX, blockY, blockZ, &r, &g, &b, &a);
+// 
+// 							// Remove the block from being active
+// 							pChunk->SetColour(blockX, blockY, blockZ, 0);
+// 
+// 							// Create particle effect
+// 							if (GetRandomNumber(0, 100, 2) > 75.0f)
+// 							{
+// 								CreateBlockDestroyParticleEffect(r, g, b, a, blockPosition);
+// 							}
+// 
+// 							// Create the collectible block item
+// 							if (GetRandomNumber(0, 100, 2) > 75.0f)
+// 							{
+// 								BlockType blockType = pChunk->GetBlockType(blockX, blockY, blockZ);
+// 								CreateCollectibleBlock(blockType, blockPosition);
+// 							}
+// 
+// 							// Add to batch update list (no duplicates)
+// 							bool found = false;
+// 							for (int i = 0; i < (int)vChunkBatchUpdateList.size() && found == false; i++)
+// 							{
+// 								if (vChunkBatchUpdateList[i] == pChunk)
+// 								{
+// 									found = true;
+// 								}
+// 							}
+// 							if (found == false)
+// 							{
+// 								vChunkBatchUpdateList.push_back(pChunk);
+// 								pChunk->StartBatchUpdate();
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 
+// 	for (int i = 0; i < (int)vChunkBatchUpdateList.size(); i++)
+// 	{
+// 		vChunkBatchUpdateList[i]->StopBatchUpdate();
+// 	}
+// 	vChunkBatchUpdateList.clear();
+// }
+// 
+// // Collectible block objects
+// void ChunkManager::CreateCollectibleBlock(BlockType blockType, vec3 blockPos)
+// {
+//  	Item* pItem = NULL;
+//  
+//  	ItemSubSpawnData *pItemSubSpawnData = m_pItemManager->GetItemSubSpawnData(blockType);
+//  	if (pItemSubSpawnData != NULL)
+//  	{
+//  		pItem = m_pItemManager->CreateItem(blockPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), pItemSubSpawnData->m_spawnedItemFilename.c_str(), pItemSubSpawnData->m_spawnedItem, pItemSubSpawnData->m_spawnedItemTitle.c_str(), pItemSubSpawnData->m_interactable, pItemSubSpawnData->m_collectible, pItemSubSpawnData->m_scale);
+//  
+//  		if (pItem != NULL)
+//  		{
+//  			float radius = 1.5f;
+//  			float angle = DegToRad((float)GetRandomNumber(0, 360, 2));
+//  			vec3 ItemPosition = blockPos + vec3(cos(angle) * radius, 0.0f, sin(angle) * radius);
+//  
+//  			pItem->SetGravityDirection(vec3(0.0f, -1.0f, 0.0f));
+//  			vec3 vel = ItemPosition - blockPos;
+//  			pItem->SetVelocity(normalize(vel)*(float)GetRandomNumber(0, 1, 2) + vec3(GetRandomNumber(-1, 1, 2), 1.0f + GetRandomNumber(2, 5, 2), GetRandomNumber(-1, 1, 2)));
+//  			pItem->SetRotation(vec3(0.0f, GetRandomNumber(0, 360, 2), 0.0f));
+//  			pItem->SetAngularVelocity(vec3(0.0f, 90.0f, 0.0f));
+//  
+//  			pItem->SetDroppedItem(pItemSubSpawnData->m_droppedItemFilename.c_str(), pItemSubSpawnData->m_droppedItemTextureFilename.c_str(), pItemSubSpawnData->m_droppedItemInventoryType, pItemSubSpawnData->m_droppedItemItem, pItemSubSpawnData->m_droppedItemStatus, pItemSubSpawnData->m_droppedItemEquipSlot, pItemSubSpawnData->m_droppedItemQuality, pItemSubSpawnData->m_droppedItemLeft, pItemSubSpawnData->m_droppedItemRight, pItemSubSpawnData->m_droppedItemTitle.c_str(), pItemSubSpawnData->m_droppedItemDescription.c_str(), pItemSubSpawnData->m_droppedItemPlacementR, pItemSubSpawnData->m_droppedItemPlacementG, pItemSubSpawnData->m_droppedItemPlacementB, pItemSubSpawnData->m_droppedItemQuantity);
+//  			pItem->SetAutoDisappear(20.0f + (GetRandomNumber(-20, 20, 1) * 0.2f));
+//  			pItem->SetCollisionEnabled(false);
+//  		}
+//  	}
+// }
 
 // Water
 void ChunkManager::SetWaterHeight(float height)
@@ -1040,10 +1034,10 @@ bool ChunkManager::IsUnderWater(vec3 position)
 		return false;
 	}
 
-	if (VoxGame::GetInstance()->GetGameMode() == GameMode_FrontEnd)
-	{
-		return false;
-	}
+// 	if (VoxGame::GetInstance()->GetGameMode() == GameMode_FrontEnd)
+// 	{
+// 		return false;
+// 	}
 
 	if(position.y <= m_waterHeight)
 	{
@@ -1354,7 +1348,8 @@ void ChunkManager::UpdatingChunksThread()
 }
 
 // Rendering
-void ChunkManager::Render(bool shadowRender)
+//void ChunkManager::Render(bool shadowRender)
+void ChunkManager::Render(bool shadowRender, int GMode, unsigned int ViewPort, const vec3& CameraPos)
 {
 	if (shadowRender == false)
 	{
@@ -1387,13 +1382,16 @@ void ChunkManager::Render(bool shadowRender)
 			{
 				vec3 chunkCenter = pChunk->GetPosition() + vec3((Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE, (Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE, (Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE);
 
-				if (shadowRender == true || m_pRenderer->SphereInFrustum(VoxGame::GetInstance()->GetDefaultViewport(), chunkCenter, Chunk::CHUNK_RADIUS))
+//				if (shadowRender == true || m_pRenderer->SphereInFrustum(VoxGame::GetInstance()->GetDefaultViewport(), chunkCenter, Chunk::CHUNK_RADIUS))
+				if (shadowRender == true || m_pRenderer->SphereInFrustum(ViewPort, chunkCenter, Chunk::CHUNK_RADIUS))
 				{
 					// Fog
-					if (VoxGame::GetInstance()->GetGameMode() != GameMode_FrontEnd)
+//					if (VoxGame::GetInstance()->GetGameMode() != GameMode_FrontEnd)
+					if (GMode != GameMode_FrontEnd)
 					{
 						vec3 chunkCenter = pChunk->GetPosition() + vec3((Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE, (Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE, (Chunk::CHUNK_SIZE * Chunk::BLOCK_RENDER_SIZE) - Chunk::BLOCK_RENDER_SIZE);
-						float toCamera = length(VoxGame::GetInstance()->GetGameCamera()->GetPosition() - chunkCenter);
+//						float toCamera = length(VoxGame::GetInstance()->GetGameCamera()->GetPosition() - chunkCenter);
+						float toCamera = length(CameraPos - chunkCenter);
 						if (toCamera > GetLoaderRadius() + (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE*5.0f))
 						{
 							continue;
