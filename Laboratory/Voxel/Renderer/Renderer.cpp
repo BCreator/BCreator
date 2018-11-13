@@ -967,12 +967,12 @@ void Renderer::DisableImmediateMode()
 // 
 // 	glEnd();
 // }
-// 
-// void Renderer::DrawSphere(float lRadius, int lSlices, int lStacks)
-// {
-// 	gluSphere(m_Quadratic, lRadius, lSlices, lStacks);
-// }
-// 
+ 
+ void Renderer::DrawSphere(float lRadius, int lSlices, int lStacks)
+ {
+ 	gluSphere(m_Quadratic, lRadius, lSlices, lStacks);
+ }
+ 
 // void Renderer::DrawBezier(Bezier3 curve, int lPoints)
 // {
 // 	glBegin(GL_LINE_STRIP);
