@@ -178,75 +178,75 @@ Renderer::~Renderer()
 // 	m_windowHeight = newHeight;
 // }
 // 
-// // Viewport
-// bool Renderer::CreateViewport(int bottom, int left, int width, int height, float fov, unsigned int *pID)
-// {
-// 	Viewport* pViewport = new Viewport();
-// 	Frustum* pFrustum = new Frustum();
-// 
-// 	pViewport->Bottom = bottom;
-// 	pViewport->Left = left;
-// 	pViewport->Width = width;
-// 	pViewport->Height = height;
-// 	pViewport->Fov = fov;
-// 	pViewport->Aspect = (float)width / (float)height;
-// 
-// 	// Create the perspective projection for the viewport
-// 	glMatrixMode(GL_PROJECTION);
-// 	glPushMatrix();
-// 	glLoadIdentity();
-// 	gluPerspective(fov, pViewport->Aspect, m_clipNear, m_clipFar);
-// 	float mat[16];
-// 	glGetFloatv(GL_PROJECTION_MATRIX, mat);
-// 	pViewport->Perspective = mat;
-// 	glPopMatrix();
-// 
-// 	// Setup the frustum for this viewport
-// 	pFrustum->SetFrustum(fov, pViewport->Aspect, m_clipNear, m_clipFar);
-// 
-// 	// Push this frustum onto the list
-// 	m_frustums.push_back(pFrustum);
-// 
-// 	// Create the orthographic projection matrix for the viewport
-// 	float coordright = 1.0f;
-// 	float coordleft = -1.0f;
-// 	float coordtop = 1.0f;
-// 	float coordbottom = -1.0f;
-// 
-// 	memset(&(pViewport->Orthographic), 0, sizeof(Matrix4x4));
-// 	pViewport->Orthographic.m[0] = 2.0f / (coordright - coordleft);
-// 	pViewport->Orthographic.m[5] = 2.0f / (coordtop - coordbottom);
-// 	pViewport->Orthographic.m[10] = -2.0f / (m_clipFar - m_clipNear);
-// 	pViewport->Orthographic.m[12] = -(coordright + coordleft) / (coordright - coordleft);
-// 	pViewport->Orthographic.m[13] = -(coordtop + coordbottom) / (coordtop - coordbottom);
-// 	pViewport->Orthographic.m[14] = -(m_clipFar + m_clipNear) / (m_clipFar - m_clipNear);
-// 	pViewport->Orthographic.m[15] = 1.0f;
-// 
-// 	// Create the 2d projection matrix for the viewport
-// 	coordright = (float)m_windowWidth;
-// 	coordleft = 0.0f;
-// 	coordtop = (float)m_windowHeight;
-// 	coordbottom = 0.0f;
-// 
-// 	memset(&(pViewport->Projection2d), 0, sizeof(Matrix4x4));
-// 	pViewport->Projection2d.m[0] = 2.0f / (coordright - coordleft);
-// 	pViewport->Projection2d.m[5] = 2.0f / (coordtop - coordbottom);
-// 	pViewport->Projection2d.m[10] = -2.0f / (m_clipFar - m_clipNear);
-// 	pViewport->Projection2d.m[12] = -(coordright + coordleft) / (coordright - coordleft);
-// 	pViewport->Projection2d.m[13] = -(coordtop + coordbottom) / (coordtop - coordbottom);
-// 	pViewport->Projection2d.m[14] = -(m_clipFar + m_clipNear) / (m_clipFar - m_clipNear);
-// 	pViewport->Projection2d.m[15] = 1.0f;
-// 
-// 	// Push this viewport onto the list
-// 	m_viewports.push_back(pViewport);
-// 
-// 	// Return the viewport id
-// 	*pID = (int)m_viewports.size() - 1;
-// 
-// 	return true;
-// }
-// 
-// 
+// Viewport
+bool Renderer::CreateViewport(int bottom, int left, int width, int height, float fov, unsigned int *pID)
+{
+	Viewport* pViewport = new Viewport();
+	Frustum* pFrustum = new Frustum();
+
+	pViewport->Bottom = bottom;
+	pViewport->Left = left;
+	pViewport->Width = width;
+	pViewport->Height = height;
+	pViewport->Fov = fov;
+	pViewport->Aspect = (float)width / (float)height;
+
+	// Create the perspective projection for the viewport
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluPerspective(fov, pViewport->Aspect, m_clipNear, m_clipFar);
+	float mat[16];
+	glGetFloatv(GL_PROJECTION_MATRIX, mat);
+	pViewport->Perspective = mat;
+	glPopMatrix();
+
+	// Setup the frustum for this viewport
+	pFrustum->SetFrustum(fov, pViewport->Aspect, m_clipNear, m_clipFar);
+
+	// Push this frustum onto the list
+	m_frustums.push_back(pFrustum);
+
+	// Create the orthographic projection matrix for the viewport
+	float coordright = 1.0f;
+	float coordleft = -1.0f;
+	float coordtop = 1.0f;
+	float coordbottom = -1.0f;
+
+	memset(&(pViewport->Orthographic), 0, sizeof(Matrix4x4));
+	pViewport->Orthographic.m[0] = 2.0f / (coordright - coordleft);
+	pViewport->Orthographic.m[5] = 2.0f / (coordtop - coordbottom);
+	pViewport->Orthographic.m[10] = -2.0f / (m_clipFar - m_clipNear);
+	pViewport->Orthographic.m[12] = -(coordright + coordleft) / (coordright - coordleft);
+	pViewport->Orthographic.m[13] = -(coordtop + coordbottom) / (coordtop - coordbottom);
+	pViewport->Orthographic.m[14] = -(m_clipFar + m_clipNear) / (m_clipFar - m_clipNear);
+	pViewport->Orthographic.m[15] = 1.0f;
+
+	// Create the 2d projection matrix for the viewport
+	coordright = (float)m_windowWidth;
+	coordleft = 0.0f;
+	coordtop = (float)m_windowHeight;
+	coordbottom = 0.0f;
+
+	memset(&(pViewport->Projection2d), 0, sizeof(Matrix4x4));
+	pViewport->Projection2d.m[0] = 2.0f / (coordright - coordleft);
+	pViewport->Projection2d.m[5] = 2.0f / (coordtop - coordbottom);
+	pViewport->Projection2d.m[10] = -2.0f / (m_clipFar - m_clipNear);
+	pViewport->Projection2d.m[12] = -(coordright + coordleft) / (coordright - coordleft);
+	pViewport->Projection2d.m[13] = -(coordtop + coordbottom) / (coordtop - coordbottom);
+	pViewport->Projection2d.m[14] = -(m_clipFar + m_clipNear) / (m_clipFar - m_clipNear);
+	pViewport->Projection2d.m[15] = 1.0f;
+
+	// Push this viewport onto the list
+	m_viewports.push_back(pViewport);
+
+	// Return the viewport id
+	*pID = (int)m_viewports.size() - 1;
+
+	return true;
+}
+
+
 // bool Renderer::ResizeViewport(unsigned int viewportid, int bottom, int left, int width, int height, float fov)
 // {
 // 	Viewport* pViewport = m_viewports[viewportid];
@@ -348,33 +348,33 @@ void Renderer::SetRenderMode(RenderMode mode)
 	};
 }
 
-// void Renderer::SetPrimativeMode(PrimativeMode mode)
-// {
-// 	switch (mode)
-// 	{
-// 	case PM_POINTS:
-// 		m_primativeMode = GL_POINTS;
-// 		break;
-// 	case PM_LINES:
-// 		m_primativeMode = GL_LINES;
-// 		break;
-// 	case PM_LINELIST:
-// 		m_primativeMode = GL_LINE_STRIP;
-// 		break;
-// 	case PM_TRIANGLES:
-// 		m_primativeMode = GL_TRIANGLES;
-// 		break;
-// 	case PM_TRIANGLESTRIPS:
-// 		m_primativeMode = GL_TRIANGLE_STRIP;
-// 		break;
-// 	case PM_TRIANGLEFANS:
-// 		m_primativeMode = GL_TRIANGLE_FAN;
-// 		break;
-// 	case PM_QUADS:
-// 		m_primativeMode = GL_QUADS;
-// 		break;
-// 	}
-// }
+void Renderer::SetPrimativeMode(PrimativeMode mode)
+{
+	switch (mode)
+	{
+	case PM_POINTS:
+		m_primativeMode = GL_POINTS;
+		break;
+	case PM_LINES:
+		m_primativeMode = GL_LINES;
+		break;
+	case PM_LINELIST:
+		m_primativeMode = GL_LINE_STRIP;
+		break;
+	case PM_TRIANGLES:
+		m_primativeMode = GL_TRIANGLES;
+		break;
+	case PM_TRIANGLESTRIPS:
+		m_primativeMode = GL_TRIANGLE_STRIP;
+		break;
+	case PM_TRIANGLEFANS:
+		m_primativeMode = GL_TRIANGLE_FAN;
+		break;
+	case PM_QUADS:
+		m_primativeMode = GL_QUADS;
+		break;
+	}
+}
 
 void Renderer::SetCullMode(CullMode mode)
 {
@@ -1235,27 +1235,27 @@ void Renderer::DisableImmediateMode()
 // {
 // 	return m_lights[id]->QuadraticAttenuation();
 // }
-// 
-// // Materials
-// bool Renderer::CreateMaterial(const Colour &ambient, const Colour &diffuse, const Colour &specular, const Colour &emmisive, float specularPower, unsigned int *pID)
-// {
-// 	Material *pMaterial = new Material();
-// 
-// 	pMaterial->Ambient(ambient);
-// 	pMaterial->Diffuse(diffuse);
-// 	pMaterial->Specular(specular);
-// 	pMaterial->Emission(emmisive);
-// 	pMaterial->Shininess(specularPower);
-// 
-// 	// Push the material onto the list
-// 	m_materials.push_back(pMaterial);
-// 
-// 	// Return the material id
-// 	*pID = (int)m_materials.size() - 1;
-// 
-// 	return true;
-// }
-// 
+
+// Materials
+bool Renderer::CreateMaterial(const Colour &ambient, const Colour &diffuse, const Colour &specular, const Colour &emmisive, float specularPower, unsigned int *pID)
+{
+	Material *pMaterial = new Material();
+
+	pMaterial->Ambient(ambient);
+	pMaterial->Diffuse(diffuse);
+	pMaterial->Specular(specular);
+	pMaterial->Emission(emmisive);
+	pMaterial->Shininess(specularPower);
+
+	// Push the material onto the list
+	m_materials.push_back(pMaterial);
+
+	// Return the material id
+	*pID = (int)m_materials.size() - 1;
+
+	return true;
+}
+
 // bool Renderer::EditMaterial(unsigned int id, const Colour &ambient, const Colour &diffuse, const Colour &specular, const Colour &emmisive, float specularPower)
 // {
 // 	Material *pMaterial = m_materials[id];
@@ -1339,13 +1339,13 @@ void Renderer::DisableImmediateMode()
 // 
 // 	return false;
 // }
-// 
-// void Renderer::BindTexture(unsigned int id)
-// {
-// 	glEnable(GL_TEXTURE_2D);
-// 	m_textures[id]->Bind();
-// }
-// 
+
+void Renderer::BindTexture(unsigned int id)
+{
+	glEnable(GL_TEXTURE_2D);
+	m_textures[id]->Bind();
+}
+
 // void Renderer::PrepareShaderTexture(unsigned int textureIndex, unsigned int textureId)
 // {
 // 	glActiveTextureARB(GL_TEXTURE0_ARB + textureIndex);
@@ -1458,285 +1458,285 @@ void Renderer::DisableImmediateMode()
 // {
 // 	glDisable(GL_TEXTURE_CUBE_MAP);
 // }
-// 
-// // Vertex buffers
-// bool Renderer::CreateStaticBuffer(VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices, unsigned int *pID)
-// {
-// 	VertexArray *pVertexArray = new VertexArray();
-// 
-// 	pVertexArray->nIndices = nIndices;
-// 	pVertexArray->nVerts = nVerts;
-// 	pVertexArray->nTextureCoordinates = nTextureCoordinates;
-// 	pVertexArray->materialID = materialID;
-// 	pVertexArray->textureID = textureID;
-// 	pVertexArray->type = type;
-// 
-// 	// Get the correct vertex size and construct the vertex array to hold the vertices
-// 	if (nVerts)
-// 	{
-// 		switch (type)
-// 		{
-// 		case VT_POSITION:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionVertex);
-// 			pVertexArray->pVA = new float[nVerts * 3];
-// 			break;
-// 		case VT_POSITION_DIFFUSE:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			break;
-// 		case VT_POSITION_DIFFUSE_ALPHA:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseAlphaVertex);
-// 			pVertexArray->pVA = new float[nVerts * 7];
-// 			break;
-// 		case VT_POSITION_NORMAL:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			break;
-// 		case VT_POSITION_NORMAL_COLOUR:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
-// 			pVertexArray->pVA = new float[nVerts * 10];
-// 			break;
-// 		case VT_POSITION_NORMAL_UV:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
-// 			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
-// 			break;
-// 		case VT_POSITION_NORMAL_UV_COLOUR:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
-// 			pVertexArray->pVA = new float[nVerts * 10];
-// 			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
-// 			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
-// 			break;
-// 		}
-// 	}
-// 
-// 
-// 	// If we have indices, create the indices array to hold the information
-// 	if (nIndices)
-// 	{
-// 		pVertexArray->pIndices = new unsigned int[nIndices];
-// 	}
-// 
-// 	// Copy the vertices into the vertex array
-// 	memcpy(pVertexArray->pVA, pVerts, pVertexArray->vertexSize*nVerts);
-// 
-// 	// Copt the texture coordinates into the texture array
-// 	memcpy(pVertexArray->pTextureCoordinates, pTextureCoordinates, pVertexArray->textureCoordinateSize*nTextureCoordinates);
-// 
-// 	// Copy the indices into the vertex array
-// 	memcpy(pVertexArray->pIndices, pIndices, sizeof(unsigned int)*nIndices);
-// 
-// 	// Push the vertex array onto the list
-// 	m_vertexArraysMutex.lock();
-// 	m_vertexArrays.push_back(pVertexArray);
-// 
-// 	// Return the vertex array id
-// 	*pID = (int)m_vertexArrays.size() - 1;
-// 	m_vertexArraysMutex.unlock();
-// 
-// 	return true;
-// }
-// 
-// bool Renderer::RecreateStaticBuffer(unsigned int ID, VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices)
-// {
-// 	m_vertexArraysMutex.lock();
-// 
-// 	// Create a new vertex array
-// 	m_vertexArrays[ID] = new VertexArray();
-// 
-// 	// Get this already existing array pointer from the list
-// 	VertexArray *pVertexArray = m_vertexArrays[ID];
-// 
-// 	pVertexArray->nIndices = nIndices;
-// 	pVertexArray->nVerts = nVerts;
-// 	pVertexArray->nTextureCoordinates = nTextureCoordinates;
-// 	pVertexArray->materialID = materialID;
-// 	pVertexArray->textureID = textureID;
-// 	pVertexArray->type = type;
-// 
-// 	// Get the correct vertex size and construct the vertex array to hold the vertices
-// 	if (nVerts)
-// 	{
-// 		switch (type)
-// 		{
-// 		case VT_POSITION:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionVertex);
-// 			pVertexArray->pVA = new float[nVerts * 3];
-// 			break;
-// 		case VT_POSITION_DIFFUSE:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			break;
-// 		case VT_POSITION_DIFFUSE_ALPHA:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseAlphaVertex);
-// 			pVertexArray->pVA = new float[nVerts * 7];
-// 			break;
-// 		case VT_POSITION_NORMAL:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			break;
-// 		case VT_POSITION_NORMAL_COLOUR:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
-// 			pVertexArray->pVA = new float[nVerts * 10];
-// 			break;
-// 		case VT_POSITION_NORMAL_UV:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
-// 			pVertexArray->pVA = new float[nVerts * 6];
-// 			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
-// 			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
-// 			break;
-// 		case VT_POSITION_NORMAL_UV_COLOUR:
-// 			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
-// 			pVertexArray->pVA = new float[nVerts * 10];
-// 			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
-// 			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
-// 			break;
-// 		}
-// 	}
-// 
-// 	// If we have indices, create the indices array to hold the information
-// 	if (nIndices)
-// 	{
-// 		pVertexArray->pIndices = new unsigned int[nIndices];
-// 	}
-// 
-// 	// Copy the vertices into the vertex array
-// 	memcpy(pVertexArray->pVA, pVerts, pVertexArray->vertexSize*nVerts);
-// 
-// 	// Copt the texture coordinates into the texture array
-// 	memcpy(pVertexArray->pTextureCoordinates, pTextureCoordinates, pVertexArray->textureCoordinateSize*nTextureCoordinates);
-// 
-// 	// Copy the indices into the vertex array
-// 	memcpy(pVertexArray->pIndices, pIndices, sizeof(unsigned int)*nIndices);
-// 	
-// 	m_vertexArraysMutex.unlock();
-// 
-// 	return true;
-// }
-// 
-// void Renderer::DeleteStaticBuffer(unsigned int id)
-// {
-// 	m_vertexArraysMutex.lock();
-// 	if (m_vertexArrays[id])
-// 	{
-// 		delete m_vertexArrays[id];
-// 		m_vertexArrays[id] = 0;
-// 	}
-// 	m_vertexArraysMutex.unlock();
-// }
-// 
-// bool Renderer::RenderStaticBuffer(unsigned int id)
-// {
-// 	m_vertexArraysMutex.lock();
-// 
-// 	if (id >= m_vertexArrays.size())
-// 	{
-// 		m_vertexArraysMutex.unlock();
-// 		return false;  // We have supplied an invalid id		
-// 	}
-// 
-// 	// Find the vertex array from the list
-// 	VertexArray *pVertexArray = m_vertexArrays[id];
-// 
-// 	bool rendered = false;
-// 	if (pVertexArray != NULL)
-// 	{
-// 		m_numRenderedVertices += pVertexArray->nVerts;
-// 		switch (m_primativeMode)
-// 		{
-// 		case GL_POINTS:
-// 		case GL_LINES:
-// 			m_numRenderedFaces += 0;
-// 			break;
-// 		case GL_TRIANGLES:
-// 			m_numRenderedFaces += (pVertexArray->nIndices / 3);
-// 			break;
-// 		case GL_TRIANGLE_STRIP:
-// 			m_numRenderedFaces += (pVertexArray->nIndices - 2);
-// 			break;
-// 		case GL_TRIANGLE_FAN:
-// 			m_numRenderedFaces += (pVertexArray->nIndices - 2);
-// 			break;
-// 		case GL_QUADS:
-// 			m_numRenderedFaces += (pVertexArray->nIndices / 4);
-// 			break;
-// 		}
-// 
-// 		if ((pVertexArray->type != VT_POSITION_DIFFUSE_ALPHA) && (pVertexArray->type != VT_POSITION_DIFFUSE))
-// 		{
-// 			if (pVertexArray->materialID != -1)
-// 			{
-// 				m_materials[pVertexArray->materialID]->Apply();
-// 			}
-// 		}
-// 
-// 		if (pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR)
-// 		{
-// 			if (pVertexArray->textureID != -1)
-// 			{
-// 				BindTexture(pVertexArray->textureID);
-// 			}
-// 		}
-// 
-// 		// Calculate the stride
-// 		GLsizei totalStride = GetStride(pVertexArray->type);
-// 
-// 		glEnableClientState(GL_VERTEX_ARRAY);
-// 		glVertexPointer(3, GL_FLOAT, totalStride, pVertexArray->pVA);
-// 
-// 		if (pVertexArray->type == VT_POSITION_NORMAL || pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR || pVertexArray->type == VT_POSITION_NORMAL_COLOUR)
-// 		{
-// 			glEnableClientState(GL_NORMAL_ARRAY);
-// 			glNormalPointer(GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
-// 		}
-// 
-// 		if (pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR)
-// 		{
-// 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-// 			glTexCoordPointer(2, GL_FLOAT, 0, pVertexArray->pTextureCoordinates);
-// 		}
-// 
-// 		if (pVertexArray->type == VT_POSITION_DIFFUSE_ALPHA)
-// 		{
-// 			glEnableClientState(GL_COLOR_ARRAY);
-// 			glColorPointer(4, GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
-// 		}
-// 
-// 		if (pVertexArray->type == VT_POSITION_DIFFUSE)
-// 		{
-// 			glEnableClientState(GL_COLOR_ARRAY);
-// 			glColorPointer(3, GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
-// 		}
-// 
-// 		if (pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR || pVertexArray->type == VT_POSITION_NORMAL_COLOUR)
-// 		{
-// 			glEnableClientState(GL_COLOR_ARRAY);
-// 			glColorPointer(4, GL_FLOAT, totalStride, &pVertexArray->pVA[6]);
-// 		}
-// 
-// 		if (pVertexArray->nIndices != 0)
-// 		{
-// 			glDrawElements(m_primativeMode, pVertexArray->nIndices, GL_UNSIGNED_INT, pVertexArray->pIndices);
-// 		}
-// 		else
-// 		{
-// 			glDrawArrays(m_primativeMode, 0, pVertexArray->nVerts);
-// 		}
-// 
-// 		glDisableClientState(GL_VERTEX_ARRAY);
-// 		glDisableClientState(GL_NORMAL_ARRAY);
-// 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-// 		glDisableClientState(GL_COLOR_ARRAY);
-// 
-// 		rendered =  true;
-// 	}
-// 
-// 	m_vertexArraysMutex.unlock();
-// 
-// 	return rendered;
-// }
-// 
+
+// Vertex buffers
+bool Renderer::CreateStaticBuffer(VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices, unsigned int *pID)
+{
+	VertexArray *pVertexArray = new VertexArray();
+
+	pVertexArray->nIndices = nIndices;
+	pVertexArray->nVerts = nVerts;
+	pVertexArray->nTextureCoordinates = nTextureCoordinates;
+	pVertexArray->materialID = materialID;
+	pVertexArray->textureID = textureID;
+	pVertexArray->type = type;
+
+	// Get the correct vertex size and construct the vertex array to hold the vertices
+	if (nVerts)
+	{
+		switch (type)
+		{
+		case VT_POSITION:
+			pVertexArray->vertexSize = sizeof(OGLPositionVertex);
+			pVertexArray->pVA = new float[nVerts * 3];
+			break;
+		case VT_POSITION_DIFFUSE:
+			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			break;
+		case VT_POSITION_DIFFUSE_ALPHA:
+			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseAlphaVertex);
+			pVertexArray->pVA = new float[nVerts * 7];
+			break;
+		case VT_POSITION_NORMAL:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			break;
+		case VT_POSITION_NORMAL_COLOUR:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
+			pVertexArray->pVA = new float[nVerts * 10];
+			break;
+		case VT_POSITION_NORMAL_UV:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
+			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
+			break;
+		case VT_POSITION_NORMAL_UV_COLOUR:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
+			pVertexArray->pVA = new float[nVerts * 10];
+			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
+			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
+			break;
+		}
+	}
+
+
+	// If we have indices, create the indices array to hold the information
+	if (nIndices)
+	{
+		pVertexArray->pIndices = new unsigned int[nIndices];
+	}
+
+	// Copy the vertices into the vertex array
+	memcpy(pVertexArray->pVA, pVerts, pVertexArray->vertexSize*nVerts);
+
+	// Copt the texture coordinates into the texture array
+	memcpy(pVertexArray->pTextureCoordinates, pTextureCoordinates, pVertexArray->textureCoordinateSize*nTextureCoordinates);
+
+	// Copy the indices into the vertex array
+	memcpy(pVertexArray->pIndices, pIndices, sizeof(unsigned int)*nIndices);
+
+	// Push the vertex array onto the list
+	m_vertexArraysMutex.lock();
+	m_vertexArrays.push_back(pVertexArray);
+
+	// Return the vertex array id
+	*pID = (int)m_vertexArrays.size() - 1;
+	m_vertexArraysMutex.unlock();
+
+	return true;
+}
+
+bool Renderer::RecreateStaticBuffer(unsigned int ID, VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices)
+{
+	m_vertexArraysMutex.lock();
+
+	// Create a new vertex array
+	m_vertexArrays[ID] = new VertexArray();
+
+	// Get this already existing array pointer from the list
+	VertexArray *pVertexArray = m_vertexArrays[ID];
+
+	pVertexArray->nIndices = nIndices;
+	pVertexArray->nVerts = nVerts;
+	pVertexArray->nTextureCoordinates = nTextureCoordinates;
+	pVertexArray->materialID = materialID;
+	pVertexArray->textureID = textureID;
+	pVertexArray->type = type;
+
+	// Get the correct vertex size and construct the vertex array to hold the vertices
+	if (nVerts)
+	{
+		switch (type)
+		{
+		case VT_POSITION:
+			pVertexArray->vertexSize = sizeof(OGLPositionVertex);
+			pVertexArray->pVA = new float[nVerts * 3];
+			break;
+		case VT_POSITION_DIFFUSE:
+			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			break;
+		case VT_POSITION_DIFFUSE_ALPHA:
+			pVertexArray->vertexSize = sizeof(OGLPositionDiffuseAlphaVertex);
+			pVertexArray->pVA = new float[nVerts * 7];
+			break;
+		case VT_POSITION_NORMAL:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			break;
+		case VT_POSITION_NORMAL_COLOUR:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
+			pVertexArray->pVA = new float[nVerts * 10];
+			break;
+		case VT_POSITION_NORMAL_UV:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalVertex);
+			pVertexArray->pVA = new float[nVerts * 6];
+			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
+			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
+			break;
+		case VT_POSITION_NORMAL_UV_COLOUR:
+			pVertexArray->vertexSize = sizeof(OGLPositionNormalColourVertex);
+			pVertexArray->pVA = new float[nVerts * 10];
+			pVertexArray->textureCoordinateSize = sizeof(OGLUVCoordinate);
+			pVertexArray->pTextureCoordinates = new float[nTextureCoordinates * 2];
+			break;
+		}
+	}
+
+	// If we have indices, create the indices array to hold the information
+	if (nIndices)
+	{
+		pVertexArray->pIndices = new unsigned int[nIndices];
+	}
+
+	// Copy the vertices into the vertex array
+	memcpy(pVertexArray->pVA, pVerts, pVertexArray->vertexSize*nVerts);
+
+	// Copt the texture coordinates into the texture array
+	memcpy(pVertexArray->pTextureCoordinates, pTextureCoordinates, pVertexArray->textureCoordinateSize*nTextureCoordinates);
+
+	// Copy the indices into the vertex array
+	memcpy(pVertexArray->pIndices, pIndices, sizeof(unsigned int)*nIndices);
+	
+	m_vertexArraysMutex.unlock();
+
+	return true;
+}
+
+void Renderer::DeleteStaticBuffer(unsigned int id)
+{
+	m_vertexArraysMutex.lock();
+	if (m_vertexArrays[id])
+	{
+		delete m_vertexArrays[id];
+		m_vertexArrays[id] = 0;
+	}
+	m_vertexArraysMutex.unlock();
+}
+
+bool Renderer::RenderStaticBuffer(unsigned int id)
+{
+	m_vertexArraysMutex.lock();
+
+	if (id >= m_vertexArrays.size())
+	{
+		m_vertexArraysMutex.unlock();
+		return false;  // We have supplied an invalid id		
+	}
+
+	// Find the vertex array from the list
+	VertexArray *pVertexArray = m_vertexArrays[id];
+
+	bool rendered = false;
+	if (pVertexArray != NULL)
+	{
+		m_numRenderedVertices += pVertexArray->nVerts;
+		switch (m_primativeMode)
+		{
+		case GL_POINTS:
+		case GL_LINES:
+			m_numRenderedFaces += 0;
+			break;
+		case GL_TRIANGLES:
+			m_numRenderedFaces += (pVertexArray->nIndices / 3);
+			break;
+		case GL_TRIANGLE_STRIP:
+			m_numRenderedFaces += (pVertexArray->nIndices - 2);
+			break;
+		case GL_TRIANGLE_FAN:
+			m_numRenderedFaces += (pVertexArray->nIndices - 2);
+			break;
+		case GL_QUADS:
+			m_numRenderedFaces += (pVertexArray->nIndices / 4);
+			break;
+		}
+
+		if ((pVertexArray->type != VT_POSITION_DIFFUSE_ALPHA) && (pVertexArray->type != VT_POSITION_DIFFUSE))
+		{
+			if (pVertexArray->materialID != -1)
+			{
+				m_materials[pVertexArray->materialID]->Apply();
+			}
+		}
+
+		if (pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR)
+		{
+			if (pVertexArray->textureID != -1)
+			{
+				BindTexture(pVertexArray->textureID);
+			}
+		}
+
+		// Calculate the stride
+		GLsizei totalStride = GetStride(pVertexArray->type);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glVertexPointer(3, GL_FLOAT, totalStride, pVertexArray->pVA);
+
+		if (pVertexArray->type == VT_POSITION_NORMAL || pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR || pVertexArray->type == VT_POSITION_NORMAL_COLOUR)
+		{
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glNormalPointer(GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
+		}
+
+		if (pVertexArray->type == VT_POSITION_NORMAL_UV || pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR)
+		{
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glTexCoordPointer(2, GL_FLOAT, 0, pVertexArray->pTextureCoordinates);
+		}
+
+		if (pVertexArray->type == VT_POSITION_DIFFUSE_ALPHA)
+		{
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(4, GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
+		}
+
+		if (pVertexArray->type == VT_POSITION_DIFFUSE)
+		{
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(3, GL_FLOAT, totalStride, &pVertexArray->pVA[3]);
+		}
+
+		if (pVertexArray->type == VT_POSITION_NORMAL_UV_COLOUR || pVertexArray->type == VT_POSITION_NORMAL_COLOUR)
+		{
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(4, GL_FLOAT, totalStride, &pVertexArray->pVA[6]);
+		}
+
+		if (pVertexArray->nIndices != 0)
+		{
+			glDrawElements(m_primativeMode, pVertexArray->nIndices, GL_UNSIGNED_INT, pVertexArray->pIndices);
+		}
+		else
+		{
+			glDrawArrays(m_primativeMode, 0, pVertexArray->nVerts);
+		}
+
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+
+		rendered =  true;
+	}
+
+	m_vertexArraysMutex.unlock();
+
+	return rendered;
+}
+
 // bool Renderer::RenderStaticBuffer_NoColour(unsigned int id)
 // {
 // 	m_vertexArraysMutex.lock();
@@ -1942,151 +1942,151 @@ void Renderer::DisableImmediateMode()
 // 
 // 	return true;
 // }
-// 
-// unsigned int Renderer::GetStride(VertexType type)
-// {
-// 	// Add xyz stride
-// 	unsigned int totalStride = sizeof(float) * 3;
-// 
-// 	// Add normals stride
-// 	if (type == VT_POSITION_NORMAL || type == VT_POSITION_NORMAL_UV || type == VT_POSITION_NORMAL_UV_COLOUR || type == VT_POSITION_NORMAL_COLOUR)
-// 		totalStride += sizeof(float) * 3;
-// 
-// 	// Add colour  stride
-// 	if (type == VT_POSITION_DIFFUSE)
-// 		totalStride += sizeof(float) * 3;
-// 
-// 	// Add colour and alpha stride
-// 	if (type == VT_POSITION_DIFFUSE_ALPHA || type == VT_POSITION_NORMAL_UV_COLOUR || type == VT_POSITION_NORMAL_COLOUR)
-// 		totalStride += sizeof(float) * 4;
-// 
-// 	return totalStride;
-// }
-// 
-// // Mesh
-// OpenGLTriangleMesh* Renderer::CreateMesh(OGLMeshType meshType)
-// {
-// 	OpenGLTriangleMesh* pNewMesh = new OpenGLTriangleMesh();
-// 
-// 	pNewMesh->m_meshType = meshType;
-// 
-// 	// Return the mesh pointer
-// 	return pNewMesh;
-// }
-// 
-// void Renderer::ClearMesh(OpenGLTriangleMesh* pMesh)
-// {
-// 	pMesh->m_textureId = -1;
-// 	pMesh->m_materialId = -1;
-// 	//pMesh->m_staticMeshId = -1; // DON'T reset this! Else we end up create more and more and more static buffers and data
-// 
-// 	// Delete the vertices
-// 	for (unsigned int i = 0; i < pMesh->m_vertices.size(); i++)
-// 	{
-// 		delete pMesh->m_vertices[i];
-// 		pMesh->m_vertices[i] = 0;
-// 	}
-// 
-// 	// Delete the texture coordinates
-// 	for (unsigned int i = 0; i < pMesh->m_textureCoordinates.size(); i++)
-// 	{
-// 		delete pMesh->m_textureCoordinates[i];
-// 		pMesh->m_textureCoordinates[i] = 0;
-// 	}
-// 
-// 	// Delete the triangles
-// 	for (unsigned int i = 0; i < pMesh->m_triangles.size(); i++)
-// 	{
-// 		delete pMesh->m_triangles[i];
-// 		pMesh->m_triangles[i] = 0;
-// 	}
-// 
-// 	pMesh->m_vertices.clear();
-// 	pMesh->m_textureCoordinates.clear();
-// 	pMesh->m_triangles.clear();
-// 
-// 	if (pMesh->m_staticMeshId != -1)
-// 	{
-// 		DeleteStaticBuffer(pMesh->m_staticMeshId);
-// 	}
-// 	pMesh->m_staticMeshId = -1;
-// 
-// 	delete pMesh;
-// 	pMesh = NULL;
-// }
-// 
-// unsigned int Renderer::AddVertexToMesh(vec3 p, vec3 n, float r, float g, float b, float a, OpenGLTriangleMesh* pMesh)
-// {
-// 	OpenGLMesh_Vertex* pNewVertex = new OpenGLMesh_Vertex();
-// 	pNewVertex->vertexPosition[0] = p.x;
-// 	pNewVertex->vertexPosition[1] = p.y;
-// 	pNewVertex->vertexPosition[2] = p.z;
-// 
-// 	pNewVertex->vertexNormals[0] = n.x;
-// 	pNewVertex->vertexNormals[1] = n.y;
-// 	pNewVertex->vertexNormals[2] = n.z;
-// 
-// 	pNewVertex->vertexColour[0] = r;
-// 	pNewVertex->vertexColour[1] = g;
-// 	pNewVertex->vertexColour[2] = b;
-// 	pNewVertex->vertexColour[3] = a;
-// 
-// 	if (pMesh != NULL)
-// 	{
-// 		pMesh->m_vertices.push_back(pNewVertex);
-// 
-// 		unsigned int vertex_id = (int)pMesh->m_vertices.size() - 1;
-// 
-// 		return vertex_id;
-// 	}
-// 	else
-// 	{
-// 		return -1;
-// 	}
-// }
-// 
-// unsigned int Renderer::AddTextureCoordinatesToMesh(float s, float t, OpenGLTriangleMesh* pMesh)
-// {
-// 	OpenGLMesh_TextureCoordinate* pNewTextureCoordinate = new OpenGLMesh_TextureCoordinate();
-// 	pNewTextureCoordinate->s = s;
-// 	pNewTextureCoordinate->t = t;
-// 
-// 	if (pMesh != NULL)
-// 	{
-// 		pMesh->m_textureCoordinates.push_back(pNewTextureCoordinate);
-// 
-// 		unsigned int textureCoordinate_id = (int)pMesh->m_textureCoordinates.size() - 1;
-// 
-// 		return textureCoordinate_id;
-// 	}
-// 	else
-// 	{
-// 		return -1;
-// 	}
-// }
-// 
-// unsigned int Renderer::AddTriangleToMesh(unsigned int vertexId1, unsigned int vertexId2, unsigned int vertexId3, OpenGLTriangleMesh* pMesh)
-// {
-// 	// Create the triangle
-// 	OpenGLMesh_Triangle* pTri = new OpenGLMesh_Triangle();
-// 	pTri->vertexIndices[0] = vertexId1;
-// 	pTri->vertexIndices[1] = vertexId2;
-// 	pTri->vertexIndices[2] = vertexId3;
-// 
-// 	if (pMesh != NULL)
-// 	{
-// 		pMesh->m_triangles.push_back(pTri);
-// 
-// 		unsigned int tri_id = (int)pMesh->m_triangles.size() - 1;
-// 
-// 		return tri_id;
-// 	}
-// 	else
-// 	{
-// 		return -1;
-// 	}
-// }
-// 
+
+unsigned int Renderer::GetStride(VertexType type)
+{
+	// Add xyz stride
+	unsigned int totalStride = sizeof(float) * 3;
+
+	// Add normals stride
+	if (type == VT_POSITION_NORMAL || type == VT_POSITION_NORMAL_UV || type == VT_POSITION_NORMAL_UV_COLOUR || type == VT_POSITION_NORMAL_COLOUR)
+		totalStride += sizeof(float) * 3;
+
+	// Add colour  stride
+	if (type == VT_POSITION_DIFFUSE)
+		totalStride += sizeof(float) * 3;
+
+	// Add colour and alpha stride
+	if (type == VT_POSITION_DIFFUSE_ALPHA || type == VT_POSITION_NORMAL_UV_COLOUR || type == VT_POSITION_NORMAL_COLOUR)
+		totalStride += sizeof(float) * 4;
+
+	return totalStride;
+}
+
+// Mesh
+OpenGLTriangleMesh* Renderer::CreateMesh(OGLMeshType meshType)
+{
+	OpenGLTriangleMesh* pNewMesh = new OpenGLTriangleMesh();
+
+	pNewMesh->m_meshType = meshType;
+
+	// Return the mesh pointer
+	return pNewMesh;
+}
+
+void Renderer::ClearMesh(OpenGLTriangleMesh* pMesh)
+{
+	pMesh->m_textureId = -1;
+	pMesh->m_materialId = -1;
+	//pMesh->m_staticMeshId = -1; // DON'T reset this! Else we end up create more and more and more static buffers and data
+
+	// Delete the vertices
+	for (unsigned int i = 0; i < pMesh->m_vertices.size(); i++)
+	{
+		delete pMesh->m_vertices[i];
+		pMesh->m_vertices[i] = 0;
+	}
+
+	// Delete the texture coordinates
+	for (unsigned int i = 0; i < pMesh->m_textureCoordinates.size(); i++)
+	{
+		delete pMesh->m_textureCoordinates[i];
+		pMesh->m_textureCoordinates[i] = 0;
+	}
+
+	// Delete the triangles
+	for (unsigned int i = 0; i < pMesh->m_triangles.size(); i++)
+	{
+		delete pMesh->m_triangles[i];
+		pMesh->m_triangles[i] = 0;
+	}
+
+	pMesh->m_vertices.clear();
+	pMesh->m_textureCoordinates.clear();
+	pMesh->m_triangles.clear();
+
+	if (pMesh->m_staticMeshId != -1)
+	{
+		DeleteStaticBuffer(pMesh->m_staticMeshId);
+	}
+	pMesh->m_staticMeshId = -1;
+
+	delete pMesh;
+	pMesh = NULL;
+}
+
+unsigned int Renderer::AddVertexToMesh(vec3 p, vec3 n, float r, float g, float b, float a, OpenGLTriangleMesh* pMesh)
+{
+	OpenGLMesh_Vertex* pNewVertex = new OpenGLMesh_Vertex();
+	pNewVertex->vertexPosition[0] = p.x;
+	pNewVertex->vertexPosition[1] = p.y;
+	pNewVertex->vertexPosition[2] = p.z;
+
+	pNewVertex->vertexNormals[0] = n.x;
+	pNewVertex->vertexNormals[1] = n.y;
+	pNewVertex->vertexNormals[2] = n.z;
+
+	pNewVertex->vertexColour[0] = r;
+	pNewVertex->vertexColour[1] = g;
+	pNewVertex->vertexColour[2] = b;
+	pNewVertex->vertexColour[3] = a;
+
+	if (pMesh != NULL)
+	{
+		pMesh->m_vertices.push_back(pNewVertex);
+
+		unsigned int vertex_id = (int)pMesh->m_vertices.size() - 1;
+
+		return vertex_id;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+unsigned int Renderer::AddTextureCoordinatesToMesh(float s, float t, OpenGLTriangleMesh* pMesh)
+{
+	OpenGLMesh_TextureCoordinate* pNewTextureCoordinate = new OpenGLMesh_TextureCoordinate();
+	pNewTextureCoordinate->s = s;
+	pNewTextureCoordinate->t = t;
+
+	if (pMesh != NULL)
+	{
+		pMesh->m_textureCoordinates.push_back(pNewTextureCoordinate);
+
+		unsigned int textureCoordinate_id = (int)pMesh->m_textureCoordinates.size() - 1;
+
+		return textureCoordinate_id;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+unsigned int Renderer::AddTriangleToMesh(unsigned int vertexId1, unsigned int vertexId2, unsigned int vertexId3, OpenGLTriangleMesh* pMesh)
+{
+	// Create the triangle
+	OpenGLMesh_Triangle* pTri = new OpenGLMesh_Triangle();
+	pTri->vertexIndices[0] = vertexId1;
+	pTri->vertexIndices[1] = vertexId2;
+	pTri->vertexIndices[2] = vertexId3;
+
+	if (pMesh != NULL)
+	{
+		pMesh->m_triangles.push_back(pTri);
+
+		unsigned int tri_id = (int)pMesh->m_triangles.size() - 1;
+
+		return tri_id;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
 // void Renderer::ModifyMeshAlpha(float alpha, OpenGLTriangleMesh* pMesh)
 // {
 // 	m_vertexArraysMutex.lock();
@@ -2155,87 +2155,87 @@ void Renderer::DisableImmediateMode()
 // 	}
 // 	m_vertexArraysMutex.unlock();
 // }
-// 
-// void Renderer::FinishMesh(unsigned int textureID, unsigned int materialID, OpenGLTriangleMesh* pMesh)
-// {
-// 	unsigned int numTriangles = (int)pMesh->m_triangles.size();
-// 	unsigned int numVertices = (int)pMesh->m_vertices.size();
-// 	unsigned int numTextureCoordinates = (int)pMesh->m_textureCoordinates.size();
-// 	unsigned int numIndices = (int)pMesh->m_triangles.size() * 3;
-// 
-// 	pMesh->m_materialId = materialID;
-// 	pMesh->m_textureId = textureID;
-// 
-// 	// Vertices
-// 	OGLPositionNormalColourVertex* meshBuffer;
-// 	meshBuffer = new OGLPositionNormalColourVertex[numVertices];
-// 	for (unsigned int i = 0; i < numVertices; i++)
-// 	{
-// 		meshBuffer[i].x = pMesh->m_vertices[i]->vertexPosition[0];
-// 		meshBuffer[i].y = pMesh->m_vertices[i]->vertexPosition[1];
-// 		meshBuffer[i].z = pMesh->m_vertices[i]->vertexPosition[2];
-// 
-// 		meshBuffer[i].nx = pMesh->m_vertices[i]->vertexNormals[0];
-// 		meshBuffer[i].ny = pMesh->m_vertices[i]->vertexNormals[1];
-// 		meshBuffer[i].nz = pMesh->m_vertices[i]->vertexNormals[2];
-// 
-// 		meshBuffer[i].r = pMesh->m_vertices[i]->vertexColour[0];
-// 		meshBuffer[i].g = pMesh->m_vertices[i]->vertexColour[1];
-// 		meshBuffer[i].b = pMesh->m_vertices[i]->vertexColour[2];
-// 		meshBuffer[i].a = pMesh->m_vertices[i]->vertexColour[3];
-// 	}
-// 
-// 	// Texture coordinates
-// 	OGLUVCoordinate* textureCoordinatesBuffer;
-// 	textureCoordinatesBuffer = new OGLUVCoordinate[numTextureCoordinates];
-// 	for (unsigned int i = 0; i < numTextureCoordinates; i++)
-// 	{
-// 		textureCoordinatesBuffer[i].u = pMesh->m_textureCoordinates[i]->s;
-// 		textureCoordinatesBuffer[i].v = pMesh->m_textureCoordinates[i]->t;
-// 	}
-// 
-// 	// Indices
-// 	unsigned int* indicesBuffer;
-// 	indicesBuffer = new unsigned int[numIndices];
-// 	int lIndexCounter = 0;
-// 	for (unsigned int i = 0; i < numTriangles; i++)
-// 	{
-// 		indicesBuffer[lIndexCounter] = pMesh->m_triangles[i]->vertexIndices[0];
-// 		indicesBuffer[lIndexCounter + 1] = pMesh->m_triangles[i]->vertexIndices[1];
-// 		indicesBuffer[lIndexCounter + 2] = pMesh->m_triangles[i]->vertexIndices[2];
-// 
-// 		lIndexCounter += 3;
-// 	}
-// 
-// 	if (pMesh->m_meshType == OGLMeshType_Colour)
-// 	{
-// 		if (pMesh->m_staticMeshId == -1)
-// 		{
-// 			CreateStaticBuffer(VT_POSITION_NORMAL_COLOUR, pMesh->m_materialId, -1, numVertices, 0, numIndices, meshBuffer, NULL, indicesBuffer, &pMesh->m_staticMeshId);
-// 		}
-// 		else
-// 		{
-// 			RecreateStaticBuffer(pMesh->m_staticMeshId, VT_POSITION_NORMAL_COLOUR, pMesh->m_materialId, -1, numVertices, 0, numIndices, meshBuffer, NULL, indicesBuffer);
-// 		}
-// 	}
-// 	else if (pMesh->m_meshType == OGLMeshType_Textured)
-// 	{
-// 		if (pMesh->m_staticMeshId == -1)
-// 		{
-// 			CreateStaticBuffer(VT_POSITION_NORMAL_UV_COLOUR, pMesh->m_materialId, pMesh->m_textureId, numVertices, numTextureCoordinates, numIndices, meshBuffer, textureCoordinatesBuffer, indicesBuffer, &pMesh->m_staticMeshId);
-// 		}
-// 		else
-// 		{
-// 			RecreateStaticBuffer(pMesh->m_staticMeshId, VT_POSITION_NORMAL_UV_COLOUR, pMesh->m_materialId, pMesh->m_textureId, numVertices, numTextureCoordinates, numIndices, meshBuffer, textureCoordinatesBuffer, indicesBuffer);
-// 		}
-// 	}
-// 
-// 	// Delete temp data
-// 	delete[] meshBuffer;
-// 	delete[] textureCoordinatesBuffer;
-// 	delete[] indicesBuffer;
-// }
-// 
+
+void Renderer::FinishMesh(unsigned int textureID, unsigned int materialID, OpenGLTriangleMesh* pMesh)
+{
+	unsigned int numTriangles = (int)pMesh->m_triangles.size();
+	unsigned int numVertices = (int)pMesh->m_vertices.size();
+	unsigned int numTextureCoordinates = (int)pMesh->m_textureCoordinates.size();
+	unsigned int numIndices = (int)pMesh->m_triangles.size() * 3;
+
+	pMesh->m_materialId = materialID;
+	pMesh->m_textureId = textureID;
+
+	// Vertices
+	OGLPositionNormalColourVertex* meshBuffer;
+	meshBuffer = new OGLPositionNormalColourVertex[numVertices];
+	for (unsigned int i = 0; i < numVertices; i++)
+	{
+		meshBuffer[i].x = pMesh->m_vertices[i]->vertexPosition[0];
+		meshBuffer[i].y = pMesh->m_vertices[i]->vertexPosition[1];
+		meshBuffer[i].z = pMesh->m_vertices[i]->vertexPosition[2];
+
+		meshBuffer[i].nx = pMesh->m_vertices[i]->vertexNormals[0];
+		meshBuffer[i].ny = pMesh->m_vertices[i]->vertexNormals[1];
+		meshBuffer[i].nz = pMesh->m_vertices[i]->vertexNormals[2];
+
+		meshBuffer[i].r = pMesh->m_vertices[i]->vertexColour[0];
+		meshBuffer[i].g = pMesh->m_vertices[i]->vertexColour[1];
+		meshBuffer[i].b = pMesh->m_vertices[i]->vertexColour[2];
+		meshBuffer[i].a = pMesh->m_vertices[i]->vertexColour[3];
+	}
+
+	// Texture coordinates
+	OGLUVCoordinate* textureCoordinatesBuffer;
+	textureCoordinatesBuffer = new OGLUVCoordinate[numTextureCoordinates];
+	for (unsigned int i = 0; i < numTextureCoordinates; i++)
+	{
+		textureCoordinatesBuffer[i].u = pMesh->m_textureCoordinates[i]->s;
+		textureCoordinatesBuffer[i].v = pMesh->m_textureCoordinates[i]->t;
+	}
+
+	// Indices
+	unsigned int* indicesBuffer;
+	indicesBuffer = new unsigned int[numIndices];
+	int lIndexCounter = 0;
+	for (unsigned int i = 0; i < numTriangles; i++)
+	{
+		indicesBuffer[lIndexCounter] = pMesh->m_triangles[i]->vertexIndices[0];
+		indicesBuffer[lIndexCounter + 1] = pMesh->m_triangles[i]->vertexIndices[1];
+		indicesBuffer[lIndexCounter + 2] = pMesh->m_triangles[i]->vertexIndices[2];
+
+		lIndexCounter += 3;
+	}
+
+	if (pMesh->m_meshType == OGLMeshType_Colour)
+	{
+		if (pMesh->m_staticMeshId == -1)
+		{
+			CreateStaticBuffer(VT_POSITION_NORMAL_COLOUR, pMesh->m_materialId, -1, numVertices, 0, numIndices, meshBuffer, NULL, indicesBuffer, &pMesh->m_staticMeshId);
+		}
+		else
+		{
+			RecreateStaticBuffer(pMesh->m_staticMeshId, VT_POSITION_NORMAL_COLOUR, pMesh->m_materialId, -1, numVertices, 0, numIndices, meshBuffer, NULL, indicesBuffer);
+		}
+	}
+	else if (pMesh->m_meshType == OGLMeshType_Textured)
+	{
+		if (pMesh->m_staticMeshId == -1)
+		{
+			CreateStaticBuffer(VT_POSITION_NORMAL_UV_COLOUR, pMesh->m_materialId, pMesh->m_textureId, numVertices, numTextureCoordinates, numIndices, meshBuffer, textureCoordinatesBuffer, indicesBuffer, &pMesh->m_staticMeshId);
+		}
+		else
+		{
+			RecreateStaticBuffer(pMesh->m_staticMeshId, VT_POSITION_NORMAL_UV_COLOUR, pMesh->m_materialId, pMesh->m_textureId, numVertices, numTextureCoordinates, numIndices, meshBuffer, textureCoordinatesBuffer, indicesBuffer);
+		}
+	}
+
+	// Delete temp data
+	delete[] meshBuffer;
+	delete[] textureCoordinatesBuffer;
+	delete[] indicesBuffer;
+}
+
 // void Renderer::RenderMesh(OpenGLTriangleMesh* pMesh)
 // {
 // 	PushMatrix();
@@ -2261,34 +2261,34 @@ void Renderer::DisableImmediateMode()
 // 		}
 // 	PopMatrix();
 // }
-// 
-// void Renderer::GetMeshInformation(int *numVerts, int *numTris, OpenGLTriangleMesh* pMesh)
-// {
-// 	*numVerts = (int)pMesh->m_vertices.size();
-// 	*numTris = (int)pMesh->m_triangles.size();
-// }
-// 
-// void Renderer::StartMeshRender()
-// {
-// 	glEnableClientState(GL_VERTEX_ARRAY);
-// 	glEnableClientState(GL_NORMAL_ARRAY);
-// 	glEnableClientState(GL_COLOR_ARRAY);
-// }
-// 
-// void Renderer::EndMeshRender()
-// {
-// 	glDisableClientState(GL_VERTEX_ARRAY);
-// 	glDisableClientState(GL_NORMAL_ARRAY);
-// 	glDisableClientState(GL_COLOR_ARRAY);
-// }
-// 
-// bool Renderer::MeshStaticBufferRender(OpenGLTriangleMesh* pMesh)
-// {
-// 	SetPrimativeMode(PM_TRIANGLES);
-// 
-// 	return RenderStaticBuffer(pMesh->m_staticMeshId);
-// }
-// 
+
+void Renderer::GetMeshInformation(int *numVerts, int *numTris, OpenGLTriangleMesh* pMesh)
+{
+	*numVerts = (int)pMesh->m_vertices.size();
+	*numTris = (int)pMesh->m_triangles.size();
+}
+
+void Renderer::StartMeshRender()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+}
+
+void Renderer::EndMeshRender()
+{
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+}
+
+bool Renderer::MeshStaticBufferRender(OpenGLTriangleMesh* pMesh)
+{
+	SetPrimativeMode(PM_TRIANGLES);
+
+	return RenderStaticBuffer(pMesh->m_staticMeshId);
+}
+
 // // Name rendering and name picking
 // void Renderer::InitNameStack()
 // {
@@ -2374,14 +2374,14 @@ void Renderer::DisableImmediateMode()
 // 
 // 	return pFrustum->PointInFrustum(point);
 // }
-// 
-// int Renderer::SphereInFrustum(unsigned int frustumid, const vec3 &point, float radius)
-// {
-// 	Frustum* pFrustum = m_frustums[frustumid];
-// 
-// 	return pFrustum->SphereInFrustum(point, radius);
-// }
-// 
+
+int Renderer::SphereInFrustum(unsigned int frustumid, const vec3 &point, float radius)
+{
+	Frustum* pFrustum = m_frustums[frustumid];
+
+	return pFrustum->SphereInFrustum(point, radius);
+}
+
 // int Renderer::CubeInFrustum(unsigned int frustumid, const vec3 &center, float x, float y, float z)
 // {
 // 	Frustum* pFrustum = m_frustums[frustumid];
@@ -2594,14 +2594,14 @@ void Renderer::DisableImmediateMode()
 // {
 // 	return m_vFrameBuffers[frameBufferId]->m_depthTexture;
 // }
-// 
-// // Rendered information
-// void Renderer::ResetRenderedStats()
-// {
-// 	m_numRenderedVertices = 0;
-// 	m_numRenderedFaces = 0;
-// }
-// 
+
+// Rendered information
+void Renderer::ResetRenderedStats()
+{
+	m_numRenderedVertices = 0;
+	m_numRenderedFaces = 0;
+}
+
 // int Renderer::GetNumRenderedVertices()
 // {
 // 	return m_numRenderedVertices;
@@ -2611,42 +2611,42 @@ void Renderer::DisableImmediateMode()
 // {
 // 	return m_numRenderedFaces;
 // }
-// 
-// // Shaders
-// bool Renderer::LoadGLSLShader(const char* vertexFile, const char* fragmentFile, unsigned int *pID)
-// {
-// 	glShader* lpShader = NULL;
-// 
-// 	// Load the shader
-// 	lpShader = ShaderManager.loadfromFile(vertexFile, fragmentFile);  // load (and compile, link) from file
-// 
-// 	if (lpShader != NULL)
-// 	{
-// 		// Push the vertex array onto the list
-// 		m_shaders.push_back(lpShader);
-// 
-// 		// Return the vertex array id
-// 		*pID = (int)m_shaders.size() - 1;
-// 
-// 		return true;
-// 	}
-// 
-// 	cout << "ERROR: Could not load GLSL shaders: " << vertexFile << ", " << fragmentFile << endl << flush;
-// 
-// 	return false;
-// }
-// 
-// void Renderer::BeginGLSLShader(unsigned int shaderID)
-// {
-// 	m_shaders[shaderID]->begin();
-// }
-// 
-// void Renderer::EndGLSLShader(unsigned int shaderID)
-// {
-// 	m_shaders[shaderID]->end();
-// }
-// 
-// glShader* Renderer::GetShader(unsigned int shaderID)
-// {
-// 	return m_shaders[shaderID];
-// }
+
+// Shaders
+bool Renderer::LoadGLSLShader(const char* vertexFile, const char* fragmentFile, unsigned int *pID)
+{
+	glShader* lpShader = NULL;
+
+	// Load the shader
+	lpShader = ShaderManager.loadfromFile(vertexFile, fragmentFile);  // load (and compile, link) from file
+
+	if (lpShader != NULL)
+	{
+		// Push the vertex array onto the list
+		m_shaders.push_back(lpShader);
+
+		// Return the vertex array id
+		*pID = (int)m_shaders.size() - 1;
+
+		return true;
+	}
+
+	cout << "ERROR: Could not load GLSL shaders: " << vertexFile << ", " << fragmentFile << endl << flush;
+
+	return false;
+}
+
+void Renderer::BeginGLSLShader(unsigned int shaderID)
+{
+	m_shaders[shaderID]->begin();
+}
+
+void Renderer::EndGLSLShader(unsigned int shaderID)
+{
+	m_shaders[shaderID]->end();
+}
+
+glShader* Renderer::GetShader(unsigned int shaderID)
+{
+	return m_shaders[shaderID];
+}

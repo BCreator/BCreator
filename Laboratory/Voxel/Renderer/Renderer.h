@@ -170,13 +170,13 @@ public:
 // 	void ResizeWindow(int newWidth, int newHeight);
 // 
 // 	// Viewport
-// 	bool CreateViewport(int bottom, int left, int width, int height, float fov, unsigned int *pID);
+ 	bool CreateViewport(int bottom, int left, int width, int height, float fov, unsigned int *pID);
 // 	bool ResizeViewport(unsigned int viewportid, int bottom, int left, int width, int height, float fov);
 // 	int GetActiveViewPort();
 // 
  	// Render modes
  	void SetRenderMode(RenderMode mode);
-// 	void SetPrimativeMode(PrimativeMode mode);
+ 	void SetPrimativeMode(PrimativeMode mode);
  	void SetCullMode(CullMode mode);
  	CullMode GetCullMode();
  	void SetLineWidth(float width);
@@ -309,7 +309,7 @@ public:
 // 	bool LoadTexture(string filename, int *width, int *height, int *width_power2, int *height_power2, unsigned int *pID);
 // 	bool RefreshTexture(unsigned int id);
 // 	bool RefreshTexture(string filename);
-// 	void BindTexture(unsigned int id);
+ 	void BindTexture(unsigned int id);
 // 	void PrepareShaderTexture(unsigned int textureIndex, unsigned int textureId);
 // 	void EmptyTextureIndex(unsigned int textureIndex);
 // 	void DisableTexture();
@@ -325,14 +325,14 @@ public:
 // 	void DisableCubeTexture();
 // 
 // 	// Vertex buffers
-// 	bool CreateStaticBuffer(VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices, unsigned int *pID);
-// 	bool RecreateStaticBuffer(unsigned int ID, VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices);
-// 	void DeleteStaticBuffer(unsigned int id);
-// 	bool RenderStaticBuffer(unsigned int id);
+ 	bool CreateStaticBuffer(VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices, unsigned int *pID);
+ 	bool RecreateStaticBuffer(unsigned int ID, VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices);
+ 	void DeleteStaticBuffer(unsigned int id);
+ 	bool RenderStaticBuffer(unsigned int id);
 // 	bool RenderStaticBuffer_NoColour(unsigned int id);
 // 	bool RenderFromArray(VertexType type, unsigned int materialID, unsigned int textureID, int nVerts, int nTextureCoordinates, int nIndices, const void *pVerts, const void *pTextureCoordinates, const unsigned int *pIndices);
-// 	unsigned int GetStride(VertexType type);
-// 
+ 	unsigned int GetStride(VertexType type);
+ 
 // 	// Mesh
  	OpenGLTriangleMesh* CreateMesh(OGLMeshType meshType);
  	void ClearMesh(OpenGLTriangleMesh* pMesh);
@@ -377,15 +377,15 @@ public:
 // 	unsigned int GetDepthTextureFromFrameBuffer(unsigned int frameBufferId);
 // 
 // 	// Rendered information
-// 	void ResetRenderedStats();
+ 	void ResetRenderedStats();
 // 	int GetNumRenderedVertices();
 // 	int GetNumRenderedFaces();
 // 
 // 	// Shaders
-// 	bool LoadGLSLShader(const char* vertexFile, const char* fragmentFile, unsigned int *pID);
-// 	void BeginGLSLShader(unsigned int shaderID);
-// 	void EndGLSLShader(unsigned int shaderID);
-// 	glShader* GetShader(unsigned int shaderID);
+ 	bool LoadGLSLShader(const char* vertexFile, const char* fragmentFile, unsigned int *pID);
+ 	void BeginGLSLShader(unsigned int shaderID);
+ 	void EndGLSLShader(unsigned int shaderID);
+ 	glShader* GetShader(unsigned int shaderID);
 
 protected:
 	/* Protected methods */
