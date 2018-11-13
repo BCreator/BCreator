@@ -396,30 +396,6 @@
     <Filter Include="c2Foundation">
       <UniqueIdentifier>{17697c95-205f-42b9-b1c5-0056337584b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="c2PresentationCG">
-      <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartGeometry">
-      <UniqueIdentifier>{a6edeb6b-846b-419e-829e-061774987dd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartGeometry\_c2PartSpacetree">
-      <UniqueIdentifier>{93449683-f696-4dc3-b487-303d937c7fcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartAudio">
-      <UniqueIdentifier>{369671e2-2545-4d9c-b36d-6564a2b70395}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartController">
-      <UniqueIdentifier>{f836451e-504d-4618-ab32-6a94be555d6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartInfoCollector">
-      <UniqueIdentifier>{aaa70403-78bb-423a-b080-e5f97339a71b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\c2PartVisual">
-      <UniqueIdentifier>{d31138b6-0a9b-4954-a1fd-7ed840c586ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="c2PresentationCG\Render">
-      <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{8319f043-88fc-4556-bc09-e0f6440e591d}</UniqueIdentifier>
     </Filter>
@@ -453,6 +429,24 @@
     <Filter Include="ThirdParty\imgui\libs\gl3w\GL">
       <UniqueIdentifier>{04e69cfa-6e37-421e-9da8-9c24a35fc53b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="c2PartAudio">
+      <UniqueIdentifier>{369671e2-2545-4d9c-b36d-6564a2b70395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PartController">
+      <UniqueIdentifier>{f836451e-504d-4618-ab32-6a94be555d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PartInfoCollector">
+      <UniqueIdentifier>{aaa70403-78bb-423a-b080-e5f97339a71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PartVisual">
+      <UniqueIdentifier>{d31138b6-0a9b-4954-a1fd-7ed840c586ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PartSpacetree">
+      <UniqueIdentifier>{a6edeb6b-846b-419e-829e-061774987dd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
@@ -461,35 +455,8 @@
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h">
       <Filter>_c2Filestream</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h">
-      <Filter>c2PresentationCG\c2PartAudio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h">
-      <Filter>c2PresentationCG\c2PartAudio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h">
-      <Filter>c2PresentationCG\c2PartAudio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartController\c2PartAnimation.h">
-      <Filter>c2PresentationCG\c2PartController</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h">
-      <Filter>c2PresentationCG\c2PartInfoCollector</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h">
-      <Filter>c2PresentationCG\c2PartVisual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h">
-      <Filter>c2PresentationCG\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h">
-      <Filter>c2PresentationCG\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h">
       <Filter>_c2Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h">
-      <Filter>c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\gleq.h">
       <Filter>_c2Application</Filter>
@@ -928,11 +895,44 @@
     <ClInclude Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\gl3w.h">
       <Filter>ThirdParty\imgui\libs\gl3w\GL</Filter>
     </ClInclude>
+    <ClInclude Include="..\Runtime\c2Foundation\OneRoute.h">
+      <Filter>c2Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Foundation\c2Filestream.h">
+      <Filter>c2Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Foundation\c2Part.h">
+      <Filter>c2Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartAudio\AudDevice.h">
+      <Filter>c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartAudio\c2PartBGM.h">
+      <Filter>c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartAudio\c2PartSFX.h">
+      <Filter>c2PartAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartController\c2PartAnimation.h">
+      <Filter>c2PartController</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartSpacetree\c2Node.h">
+      <Filter>c2PartSpacetree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartVisual\c2PartParticle.h">
+      <Filter>c2PartVisual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartInfoCollector\c2PartNavigation.h">
+      <Filter>c2PartInfoCollector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Render\Material.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Render\RenderPath.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\CMakeLists.txt">
-      <Filter>c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
-    </Text>
     <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt">
       <Filter>_c2Debugger</Filter>
     </Text>
@@ -945,21 +945,6 @@
     <Text Include="..\Runtime\_c2Filestream\CMakeLists.txt">
       <Filter>_c2Filestream</Filter>
     </Text>
-    <Text Include="..\Runtime\c2PresentationCG\c2PartAudio\CMakeLists.txt">
-      <Filter>c2PresentationCG\c2PartAudio</Filter>
-    </Text>
-    <Text Include="..\Runtime\c2PresentationCG\c2PartController\CMakeLists.txt">
-      <Filter>c2PresentationCG\c2PartController</Filter>
-    </Text>
-    <Text Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\CMakeLists.txt">
-      <Filter>c2PresentationCG\c2PartInfoCollector</Filter>
-    </Text>
-    <Text Include="..\Runtime\c2PresentationCG\c2PartVisual\CMakeLists.txt">
-      <Filter>c2PresentationCG\c2PartVisual</Filter>
-    </Text>
-    <Text Include="..\Runtime\c2PresentationCG\Render\CMakeLists.txt">
-      <Filter>c2PresentationCG\Render</Filter>
-    </Text>
     <Text Include="..\Runtime\ThirdParty\imgui\docs\TODO.txt">
       <Filter>ThirdParty\imgui\docs</Filter>
     </Text>
@@ -970,5 +955,23 @@
       <Filter>ThirdParty\glm</Filter>
     </Text>
     <Text Include="..\Runtime\CMakeLists.txt" />
+    <Text Include="..\Runtime\c2PartAudio\CMakeLists.txt">
+      <Filter>c2PartAudio</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PartController\CMakeLists.txt">
+      <Filter>c2PartController</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PartSpacetree\CMakeLists.txt">
+      <Filter>c2PartSpacetree</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PartVisual\CMakeLists.txt">
+      <Filter>c2PartVisual</Filter>
+    </Text>
+    <Text Include="..\Runtime\c2PartInfoCollector\CMakeLists.txt">
+      <Filter>c2PartInfoCollector</Filter>
+    </Text>
+    <Text Include="..\Runtime\Render\CMakeLists.txt">
+      <Filter>Render</Filter>
+    </Text>
   </ItemGroup>
 </Project>

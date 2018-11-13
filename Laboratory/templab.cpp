@@ -6,7 +6,6 @@ static void test_application();
 static void test_signalbind();
 static void test_memqueue();
 
-//以后可以规整为Unittest更标准的方式。
 int main_templab() {
 	test_application();
 //	test_memqueue();

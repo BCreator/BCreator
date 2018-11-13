@@ -72,10 +72,10 @@ public:
 	void Setup();
 	bool IsSetup();
 	bool IsUnloading();
-
-	// Saving and loading
-	void SaveChunk();
-	void LoadChunk();
+// 
+// 	// Saving and loading
+// 	void SaveChunk();
+// 	void LoadChunk();
 
 	// Position
 	void SetPosition(vec3 pos);
@@ -109,23 +109,23 @@ public:
 
 	// Active
 	bool GetActive(int x, int y, int z);
-
-	// Inside chunk
-	bool IsInsideChunk(vec3 pos);
-
-	// Items
-	void AddItem(Item* pItem);
-	void RemoveItem(Item* pItem);
-	void RemoveItems();
+// 
+// 	// Inside chunk
+// 	bool IsInsideChunk(vec3 pos);
+// 
+// 	// Items
+// 	void AddItem(Item* pItem);
+// 	void RemoveItem(Item* pItem);
+// 	void RemoveItems();
 
 	// Block colour
 	void SetColour(int x, int y, int z, float r, float g, float b, float a, bool setBlockType = false);
 	void GetColour(int x, int y, int z, float* r, float* g, float* b, float* a);
 	void SetColour(int x, int y, int z, unsigned int colour, bool setBlockType = false);
-	unsigned int GetColour(int x, int y, int z);
+//	unsigned int GetColour(int x, int y, int z);
 
 	// Block type
-	BlockType GetBlockType(int x, int y, int z);
+//	BlockType GetBlockType(int x, int y, int z);
 	void SetBlockType(int x, int y, int z, BlockType blockType);
 
 	// Flags
@@ -144,17 +144,17 @@ public:
 	void RebuildMesh();
 	void SetNeedsRebuild(bool rebuild, bool rebuildNeighours);
 	bool NeedsRebuild();
-	bool IsRebuildingMesh();
+//	bool IsRebuildingMesh();
 	void SwitchToCachedMesh();
 	void UndoCachedMesh();
 
-	// Updating
-	void Update(float dt);
+// 	// Updating
+// 	void Update(float dt);
 	
 	// Rendering
 	void Render();
-	void RenderDebug();
-	void Render2D(Camera* pCamera, unsigned int viewport, unsigned int font);
+// 	void RenderDebug();
+// 	void Render2D(Camera* pCamera, unsigned int viewport, unsigned int font);
 
 	// < Operator (Used for chunk sorting, closest to camera)
 	bool operator<(const Chunk &w) const;

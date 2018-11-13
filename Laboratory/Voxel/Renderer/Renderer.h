@@ -399,7 +399,7 @@ public:
 protected:
 	/* Protected members */
 
-private:
+public:
 	/* Private members */
 	int m_windowWidth;
 	int m_windowHeight;

@@ -56,7 +56,7 @@ public:
 	// Viewing
 	void Look() const;
 
-private:
+public:
 	Renderer *m_pRenderer;
 
 	// The camera's world position

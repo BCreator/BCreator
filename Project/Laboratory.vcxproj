@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Laboratory\main_lab.cpp" />
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
-    <ClCompile Include="..\Laboratory\tempmain.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\blocks\BiomeManager.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\blocks\Chunk.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\blocks\ChunkManager.cpp" />
@@ -499,7 +499,6 @@
     <None Include="..\Laboratory\Voxel\glm\gtx\vector_angle.inl" />
     <None Include="..\Laboratory\Voxel\glm\gtx\vector_query.inl" />
     <None Include="..\Laboratory\Voxel\glm\gtx\wrap.inl" />
-    <None Include="..\README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

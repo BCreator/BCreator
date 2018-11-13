@@ -10,20 +10,20 @@
 // ******************************************************************************
 
 #include "Player.h"
-#include "../utils/Interpolator.h"
-#include "../blocks/Chunk.h"
+//#include "../utils/Interpolator.h"
+//#include "../blocks/Chunk.h"
 //#include "../VoxGame.h"
-#include "../utils/Random.h"
-#include <glm/detail/func_geometric.hpp>
+//#include "../utils/Random.h"
 
 const vec3 Player::PLAYER_CENTER_OFFSET = vec3(0.0f, 1.525f, 0.0f);
 
 
-Player::Player(Renderer* pRenderer, ChunkManager* pChunkManager, QubicleBinaryManager* pQubicleBinaryManager, LightingManager* pLightingManager, BlockParticleManager* pBlockParticleManager)
+//Player::Player(Renderer* pRenderer, ChunkManager* pChunkManager, QubicleBinaryManager* pQubicleBinaryManager, LightingManager* pLightingManager, BlockParticleManager* pBlockParticleManager)
+Player::Player()
 {
-	m_pRenderer = pRenderer;
-	m_pChunkManager = pChunkManager;
-	m_pQubicleBinaryManager = pQubicleBinaryManager;
+// 	m_pRenderer = pRenderer;
+// 	m_pChunkManager = pChunkManager;
+// 	m_pQubicleBinaryManager = pQubicleBinaryManager;
 // 	m_pLightingManager = pLightingManager;
 // 	m_pBlockParticleManager = pBlockParticleManager;
 // 	m_pInventoryManager = NULL;
@@ -33,17 +33,25 @@ Player::Player(Renderer* pRenderer, ChunkManager* pChunkManager, QubicleBinaryMa
 // 	m_pCraftingGUI = NULL;
 // 	m_pLootGUI = NULL;
 // 	m_pActionBar = NULL;
-
-	// Create voxel character
-	m_pVoxelCharacter = new VoxelCharacter(m_pRenderer, m_pQubicleBinaryManager);
-	m_pCharacterBackup = new QubicleBinary(m_pRenderer);
-
+// 
+// 	// Create voxel character
+// 	m_pVoxelCharacter = new VoxelCharacter(m_pRenderer, m_pQubicleBinaryManager);
+// 	m_pCharacterBackup = new QubicleBinary(m_pRenderer);
+// 
 	// Reset player
 	ResetPlayer();
-
-	// Load default character model
-	SetName("Steve");
-	LoadCharacter("Steve", false);
+// 
+// 	// Load default character model
+// 	SetName("Steve");
+#if 0
+ 	LoadCharacter("Steve", false);
+#else
+	/*原来主角的半径是靠模型计算而得，被我注释了，必须这里人为给一个值，否则会导致被loading线程删除。作者是个不错的coder，像yk
+	但框架功底确实不高，或者在此项目心思不够。给他报了个issue：UpdatingChunksThread() is running in the loading thread,
+	and CreateNewChunk is running in main thread.In some case, the chunk could be deleted in the loading thread,
+	but the main thread will still use it's wild pointer.*/
+	m_radius = .571428537f;
+#endif
 }
 
 Player::~Player()
@@ -51,16 +59,16 @@ Player::~Player()
 	ResetPlayer();
 
 //	delete m_pPlayerStats;
-
-	if (m_pCharacterBackup != NULL)
-	{
-		m_pCharacterBackup->SetNullLinkage(m_pVoxelCharacter->GetQubicleModel());
-	}
-	delete m_pVoxelCharacter;
-	if (m_pCharacterBackup != NULL)
-	{
-		delete m_pCharacterBackup;
-	}
+// 
+// 	if (m_pCharacterBackup != NULL)
+// 	{
+// 		m_pCharacterBackup->SetNullLinkage(m_pVoxelCharacter->GetQubicleModel());
+// 	}
+// 	delete m_pVoxelCharacter;
+// 	if (m_pCharacterBackup != NULL)
+// 	{
+// 		delete m_pCharacterBackup;
+// 	}
 }
 // 
 // // Linkage
@@ -113,60 +121,60 @@ Player::~Player()
 // {
 // 	m_pActionBar = pActionBar;
 // }
-
-// Get voxel character pointer
-VoxelCharacter* Player::GetVoxelCharacter()
-{
-	return m_pVoxelCharacter;
-}
-
+// 
+// // Get voxel character pointer
+// VoxelCharacter* Player::GetVoxelCharacter()
+// {
+// 	return m_pVoxelCharacter;
+// }
+// 
 // Player reset
 void Player::ResetPlayer()
 {
 //	m_class = PlayerClass_Debug;
-
-	m_forward = vec3(0.0f, 0.0f, 1.0f);
-	m_right = vec3(1.0f, 0.0f, 0.0f);
-	m_up = vec3(0.0f, 1.0f, 0.0f);
-
-	m_targetForward = m_forward;
+// 
+// 	m_forward = vec3(0.0f, 0.0f, 1.0f);
+// 	m_right = vec3(1.0f, 0.0f, 0.0f);
+ 	m_up = vec3(0.0f, 1.0f, 0.0f);
+// 
+// 	m_targetForward = m_forward;
 
 	m_position = vec3(8.0f, 8.0f, 8.0f);
-	m_respawnPosition = m_position + vec3(0.0f, 0.1f, 0.0f);
-	m_gravityDirection = vec3(0.0f, -1.0f, 0.0f);
+// 	m_respawnPosition = m_position + vec3(0.0f, 0.1f, 0.0f);
+// 	m_gravityDirection = vec3(0.0f, -1.0f, 0.0f);
 
 	// Stepping up single world blocks by walking into them
 	m_bDoStepUpAnimation = false;
-	m_stepUpAnimationYAmount = 0.0f;
-	m_stepUpAnimationPrevious = 0.0f;
-	m_stepUpAnimationYOffset = 0.0f;
-	m_stepUpAdditionYAmountChangedCache = 0.0f;
+// 	m_stepUpAnimationYAmount = 0.0f;
+// 	m_stepUpAnimationPrevious = 0.0f;
+ 	m_stepUpAnimationYOffset = 0.0f;
+// 	m_stepUpAdditionYAmountChangedCache = 0.0f;
 
 	// Grid positioning
 	m_gridPositionX = 0;
 	m_gridPositionY = 0;
 	m_gridPositionZ = 0;
 
-	m_pCachedGridChunk = NULL;
-
-	// Ground check
-	m_bIsOnGround = false;
-	m_groundCheckTimer = 0.0f;
-
-	// Floor particles
-	m_floorParticleTimer = 0.25f;
-
-	// Jumping
-	m_bCanJump = true;
-	m_jumpTimer = 0.0f;
-
-	// Dead flag
-	m_dead = false;
-
-	// Ghost
-	m_createGhost = false;
-	m_createGhostTimer = 0.0f;
-
+// 	m_pCachedGridChunk = NULL;
+// 
+// 	// Ground check
+// 	m_bIsOnGround = false;
+// 	m_groundCheckTimer = 0.0f;
+// 
+// 	// Floor particles
+// 	m_floorParticleTimer = 0.25f;
+// 
+// 	// Jumping
+// 	m_bCanJump = true;
+// 	m_jumpTimer = 0.0f;
+// 
+// 	// Dead flag
+// 	m_dead = false;
+// 
+// 	// Ghost
+// 	m_createGhost = false;
+// 	m_createGhostTimer = 0.0f;
+// 
 // 	// Health
 // 	m_maxHealth = 100.0f;
 // 	m_health = m_maxHealth;
@@ -183,24 +191,24 @@ void Player::ResetPlayer()
 // 
 // 	// Target enemy
 // 	m_pTargetEnemy = NULL;
-
-	// Idle flag
-	m_bIsIdle = true;
-
+// 
+// 	// Idle flag
+// 	m_bIsIdle = true;
+// 
 // 	// Crafting
 // 	m_crafting = false;
 // 	m_workingAnimationWaitTimer = 0.0f;
 // 	m_workingAnimationDelay = 0.55f;
 // 	m_createdAnvilHitParticleEffect = true;
 // 
-	// Look at point
-	m_bLookAtPoint = false;
-	m_bodyTurnSpeedMultiplier = 3.5f;
-	m_bodyTurnStopThreshold = 0.35f;
-
-	// Moving to target position, for item interaction points, and NPC dialog
-	m_moveToTargetPosition = false;
-
+// 	// Look at point
+// 	m_bLookAtPoint = false;
+// 	m_bodyTurnSpeedMultiplier = 3.5f;
+// 	m_bodyTurnStopThreshold = 0.35f;
+// 
+// 	// Moving to target position, for item interaction points, and NPC dialog
+// 	m_moveToTargetPosition = false;
+// 
 // 	// Combat
 // 	m_bCanAttackLeft = true;
 // 	m_bCanAttackRight = true;
@@ -223,44 +231,44 @@ void Player::ResetPlayer()
 // 	m_projectileHitboxCenterOffset = vec3(0.0f, 0.75f, 0.0f);
 // 
 // 	// Charging attacks
- 	m_bIsChargingAttack = false;
+//	m_bIsChargingAttack = false;
 // 	m_chargeAmount = 0.0f;
 // 	m_chargeTime = 1.0f;
-
-	// Block selection
-	m_blockSelection = false;
-
-	// Player stats
-//	m_pPlayerStats = new PlayerStats(this);
-	m_strengthModifier = 0;
-	m_dexterityModifier = 0;
-	m_intelligenceModifier = 0;
-	m_vitalityModifier = 0;
-	m_armorModifier = 0;
-	m_luckModifier = 0;
-
+// 
+// 	// Block selection
+// 	m_blockSelection = false;
+// 
+// 	// Player stats
+// //	m_pPlayerStats = new PlayerStats(this);
+// 	m_strengthModifier = 0;
+// 	m_dexterityModifier = 0;
+// 	m_intelligenceModifier = 0;
+// 	m_vitalityModifier = 0;
+// 	m_armorModifier = 0;
+// 	m_luckModifier = 0;
+// 
 // 	// Initial equipped state
 // 	m_equippedProperties = 0;
 //	SetNormal();
-
-	// Footstep sounds
-	m_footstepSoundTimer = 0.0f;
-	m_footstepSoundDistance = 0.5f;
-	m_footstepSoundIndex = 0;
-
-	// Animation params
-	for (int i = 0; i < AnimationSections_NUMSECTIONS; i++)
-	{
-		m_animationFinished[i] = false;
-	}
-	m_animationTimer = 0.0f;
-
-	m_pVoxelCharacter->PlayAnimation(AnimationSections_FullBody, false, AnimationSections_FullBody, "BindPose");
-
+// 
+// 	// Footstep sounds
+// 	m_footstepSoundTimer = 0.0f;
+// 	m_footstepSoundDistance = 0.5f;
+// 	m_footstepSoundIndex = 0;
+// 
+// 	// Animation params
+// 	for (int i = 0; i < AnimationSections_NUMSECTIONS; i++)
+// 	{
+// 		m_animationFinished[i] = false;
+// 	}
+// 	m_animationTimer = 0.0f;
+// 
+// 	m_pVoxelCharacter->PlayAnimation(AnimationSections_FullBody, false, AnimationSections_FullBody, "BindPose");
+// 
 // 	UnloadWeapon(true);
 // 	UnloadWeapon(false);
 }
-// 
+ 
 // // Accessors / Setters
 // void Player::SetClass(PlayerClass ePlayerClass)
 // {
@@ -273,51 +281,51 @@ void Player::ResetPlayer()
 // {
 // 	return m_class;
 // }
- 
- void Player::SetName(string name)
- {
- 	m_name = name;
- }
- 
- string Player::GetName()
- {
- 	return m_name;
- }
- 
- void Player::SetType(string typeName)
- {
- 	m_type = typeName;
- }
- 
- string Player::GetType()
- {
- 	return m_type;
- }
-
-void Player::SetModelname(string modelName)
-{
-	m_modelName = modelName;
-}
-
-string Player::GetModelName()
-{
-	return m_modelName;
-}
-
-void Player::SetPosition(vec3 pos)
-{
-	m_position = pos;
-}
-
-void Player::SetRespawnPosition(vec3 pos)
-{
-	m_respawnPosition = pos;
-}
-
-vec3 Player::GetRespawnPosition()
-{
-	return m_respawnPosition;
-}
+//  
+//  void Player::SetName(string name)
+//  {
+//  	m_name = name;
+//  }
+//  
+//  string Player::GetName()
+//  {
+//  	return m_name;
+//  }
+//  
+//  void Player::SetType(string typeName)
+//  {
+//  	m_type = typeName;
+//  }
+//  
+//  string Player::GetType()
+//  {
+//  	return m_type;
+//  }
+// 
+// void Player::SetModelname(string modelName)
+// {
+// 	m_modelName = modelName;
+// }
+// 
+// string Player::GetModelName()
+// {
+// 	return m_modelName;
+// }
+// 
+// void Player::SetPosition(vec3 pos)
+// {
+// 	m_position = pos;
+// }
+// 
+// void Player::SetRespawnPosition(vec3 pos)
+// {
+// 	m_respawnPosition = pos;
+// }
+// 
+// vec3 Player::GetRespawnPosition()
+// {
+// 	return m_respawnPosition;
+// }
 
 vec3 Player::GetCenter()
 {
@@ -327,116 +335,116 @@ vec3 Player::GetCenter()
 	return center;
 }
 
-vec3 Player::GetForwardVector()
-{
-	return m_forward;
-}
-
-vec3 Player::GetRightVector()
-{
-	return m_right;
-}
-
-vec3 Player::GetUpVector()
-{
-	return m_up;
-}
-
-float Player::GetRadius()
-{
-	return m_radius;
-}
-
-void Player::UpdateRadius()
-{
-	m_radius = m_pVoxelCharacter->GetCharacterScale() / 0.14f;
-}
-
-void Player::SetForwardVector(vec3 forward)
-{
-	m_forward = normalize(forward);
-	m_right = normalize(cross(m_forward, m_up));
-
-	m_targetForward = m_forward;
-	m_targetForward.y = 0.0f;
-	m_targetForward = normalize(m_targetForward);
-}
-
-void Player::SetRotation(float rot)
-{
-	float angle = DegToRad(rot);
-	m_forward = vec3(sin(angle), 0.0f, cos(angle));
-
-	m_targetForward = m_forward;
-}
-
-float Player::GetRotation()
-{
-	float rotationAngle = acos(dot(vec3(0.0f, 0.0f, 1.0f), m_forward));
-	rotationAngle = RadToDeg(rotationAngle);
-	if (m_forward.x < 0.0f)
-	{
-		rotationAngle = (360.0f - rotationAngle);
-	}
-
-	return rotationAngle;
-}
-
-// Loading
-void Player::LoadCharacter(string characterName, bool fromCharacterSelectScreen)
-{
-	m_pVoxelCharacter->UnloadCharacter();
-	m_pVoxelCharacter->Reset();
-
-	m_type = "Human";
-	m_modelName = characterName;
-
-	char characterBaseFolder[128];
-	char qbFilename[128];
-	char ms3dFilename[128];
-	char animListFilename[128];
-	char facesFilename[128];
-	char characterFilename[128];
-
-	if (fromCharacterSelectScreen)
-	{
-		sprintf(characterBaseFolder, "media/gamedata/models");
-		sprintf(qbFilename, "saves/characters/%s/%s.qb", characterName.c_str(), characterName.c_str());
-		sprintf(ms3dFilename, "media/gamedata/models/%s/%s.ms3d", m_type.c_str(), m_type.c_str());
-		sprintf(animListFilename, "media/gamedata/models/%s/%s.animlist", m_type.c_str(), m_type.c_str());
-		sprintf(facesFilename, "saves/characters/%s/%s.faces", characterName.c_str(), characterName.c_str());
-		sprintf(characterFilename, "saves/characters/%s/%s.character", characterName.c_str(), characterName.c_str());
-	}
-	else
-	{
-		sprintf(characterBaseFolder, "media/gamedata/models");
-		sprintf(qbFilename, "media/gamedata/models/%s/%s.qb", m_type.c_str(), m_modelName.c_str());
-		sprintf(ms3dFilename, "media/gamedata/models/%s/%s.ms3d", m_type.c_str(), m_type.c_str());
-		sprintf(animListFilename, "media/gamedata/models/%s/%s.animlist", m_type.c_str(), m_type.c_str());
-		sprintf(facesFilename, "media/gamedata/models/%s/%s.faces", m_type.c_str(), m_modelName.c_str());
-		sprintf(characterFilename, "media/gamedata/models/%s/%s.character", m_type.c_str(), m_modelName.c_str());
-	}
-
-	m_pVoxelCharacter->LoadVoxelCharacter(m_type.c_str(), qbFilename, ms3dFilename, animListFilename, facesFilename, characterFilename, characterBaseFolder, true);
-
-	m_pVoxelCharacter->SetBreathingAnimationEnabled(true);
-	m_pVoxelCharacter->SetWinkAnimationEnabled(true);
-	m_pVoxelCharacter->SetTalkingAnimationEnabled(false);
-	m_pVoxelCharacter->SetRandomMouthSelection(true);
-	m_pVoxelCharacter->SetRandomLookDirection(true);
-	m_pVoxelCharacter->SetWireFrameRender(false);
-	m_pVoxelCharacter->SetCharacterScale(0.08f);
-
-	if (m_pCharacterBackup != NULL)
-	{
-		delete m_pCharacterBackup;
-		m_pCharacterBackup = new QubicleBinary(m_pRenderer);
-	}
-
-	m_pCharacterBackup->Import(qbFilename, true);
-
-	UpdateRadius();
-}
+// vec3 Player::GetForwardVector()
+// {
+// 	return m_forward;
+// }
+// 
+// vec3 Player::GetRightVector()
+// {
+// 	return m_right;
+// }
+// 
+// vec3 Player::GetUpVector()
+// {
+// 	return m_up;
+// }
+// 
+// float Player::GetRadius()
+// {
+// 	return m_radius;
+// }
+// 
+// void Player::UpdateRadius()
+// {
+// 	m_radius = m_pVoxelCharacter->GetCharacterScale() / 0.14f;
+// }
+// 
+// void Player::SetForwardVector(vec3 forward)
+// {
+// 	m_forward = normalize(forward);
+// 	m_right = normalize(cross(m_forward, m_up));
+// 
+// 	m_targetForward = m_forward;
+// 	m_targetForward.y = 0.0f;
+// 	m_targetForward = normalize(m_targetForward);
+// }
+// 
+// void Player::SetRotation(float rot)
+// {
+// 	float angle = DegToRad(rot);
+// 	m_forward = vec3(sin(angle), 0.0f, cos(angle));
+// 
+// 	m_targetForward = m_forward;
+// }
+// 
+// float Player::GetRotation()
+// {
+// 	float rotationAngle = acos(dot(vec3(0.0f, 0.0f, 1.0f), m_forward));
+// 	rotationAngle = RadToDeg(rotationAngle);
+// 	if (m_forward.x < 0.0f)
+// 	{
+// 		rotationAngle = (360.0f - rotationAngle);
+// 	}
+// 
+// 	return rotationAngle;
+// }
+// 
+// // Loading
+// void Player::LoadCharacter(string characterName, bool fromCharacterSelectScreen)
+// {
+// 	m_pVoxelCharacter->UnloadCharacter();
+// 	m_pVoxelCharacter->Reset();
+// 
+// 	m_type = "Human";
+// 	m_modelName = characterName;
+// 
+// 	char characterBaseFolder[128];
+// 	char qbFilename[128];
+// 	char ms3dFilename[128];
+// 	char animListFilename[128];
+// 	char facesFilename[128];
+// 	char characterFilename[128];
+// 
+// 	if (fromCharacterSelectScreen)
+// 	{
+// 		sprintf(characterBaseFolder, "media/gamedata/models");
+// 		sprintf(qbFilename, "saves/characters/%s/%s.qb", characterName.c_str(), characterName.c_str());
+// 		sprintf(ms3dFilename, "media/gamedata/models/%s/%s.ms3d", m_type.c_str(), m_type.c_str());
+// 		sprintf(animListFilename, "media/gamedata/models/%s/%s.animlist", m_type.c_str(), m_type.c_str());
+// 		sprintf(facesFilename, "saves/characters/%s/%s.faces", characterName.c_str(), characterName.c_str());
+// 		sprintf(characterFilename, "saves/characters/%s/%s.character", characterName.c_str(), characterName.c_str());
+// 	}
+// 	else
+// 	{
+// 		sprintf(characterBaseFolder, "media/gamedata/models");
+// 		sprintf(qbFilename, "media/gamedata/models/%s/%s.qb", m_type.c_str(), m_modelName.c_str());
+// 		sprintf(ms3dFilename, "media/gamedata/models/%s/%s.ms3d", m_type.c_str(), m_type.c_str());
+// 		sprintf(animListFilename, "media/gamedata/models/%s/%s.animlist", m_type.c_str(), m_type.c_str());
+// 		sprintf(facesFilename, "media/gamedata/models/%s/%s.faces", m_type.c_str(), m_modelName.c_str());
+// 		sprintf(characterFilename, "media/gamedata/models/%s/%s.character", m_type.c_str(), m_modelName.c_str());
+// 	}
+// 
+// 	m_pVoxelCharacter->LoadVoxelCharacter(m_type.c_str(), qbFilename, ms3dFilename, animListFilename, facesFilename, characterFilename, characterBaseFolder, true);
+// 
+// 	m_pVoxelCharacter->SetBreathingAnimationEnabled(true);
+// 	m_pVoxelCharacter->SetWinkAnimationEnabled(true);
+// 	m_pVoxelCharacter->SetTalkingAnimationEnabled(false);
+// 	m_pVoxelCharacter->SetRandomMouthSelection(true);
+// 	m_pVoxelCharacter->SetRandomLookDirection(true);
+// 	m_pVoxelCharacter->SetWireFrameRender(false);
+// 	m_pVoxelCharacter->SetCharacterScale(0.08f);
+// 
+// 	if (m_pCharacterBackup != NULL)
+// 	{
+// 		delete m_pCharacterBackup;
+// 		m_pCharacterBackup = new QubicleBinary(m_pRenderer);
+// 	}
+// 
+// 	m_pCharacterBackup->Import(qbFilename, true);
+// 
+// 	UpdateRadius();
+// }
 // 
 // // Unloading
 // void Player::LoadWeapon(bool left, string weaponFile)
@@ -1076,287 +1084,287 @@ void Player::LoadCharacter(string characterName, bool fromCharacterSelectScreen)
 // 
 // 	VoxGame::GetInstance()->GetCharacterGUI()->UpdatePlayerStats();
 // }
- 
-// Collision
-bool Player::CheckCollisions(vec3 positionCheck, vec3 previousPosition, vec3 *pNormal, vec3 *pMovement, bool *pStepUpBlock)
-{
-	vec3 movementCache = *pMovement;
-
-	float radius = GetRadius();
-
-// 	// Item collisions
-// 	bool itemCollision = m_pItemManager->CheckCollisions(positionCheck, previousPosition, radius, pNormal, pMovement);
-
-	// World collision
-	bool worldCollision = false;
-
-	vec3 floorPosition;
-	if (m_pChunkManager->FindClosestFloor(positionCheck, &floorPosition) == false)
-	{
-		*pMovement = vec3(0.0f, 0.0f, 0.0f);
-		return true;
-	}
-	else
-	{
-		int blockX, blockY, blockZ;
-		vec3 blockPos;
-		int blockXAbove, blockYAbove, blockZAbove;
-		vec3 blockPosAbove;
-		int numChecks = 1 + (int)(radius / (Chunk::BLOCK_RENDER_SIZE* 2.0f));
-		bool canAllStepUp = false;
-		bool firstStepUp = true;
-		for (int x = -numChecks; x <= numChecks; x++)
-		{
-			for (int y = -numChecks; y <= numChecks; y++)
-			{
-				for (int z = -numChecks; z <= numChecks; z++)
-				{
-					bool isStepUp = false;
-					*pNormal = vec3(0.0f, 0.0f, 0.0f);
-
-					Chunk* pChunk = GetCachedGridChunkOrFromPosition(positionCheck + vec3((Chunk::BLOCK_RENDER_SIZE*2.0f)*x, (Chunk::BLOCK_RENDER_SIZE*2.0f)*y, (Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
-					bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*y), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z), &blockPos, &blockX, &blockY, &blockZ, &pChunk);
-					bool activeAbove = false;
-					bool activeAbove2 = false;
-
-					if (active == false)
-					{
-						if (pChunk == NULL || pChunk->IsSetup() == false)
-						{
-							*pMovement = vec3(0.0f, 0.0f, 0.0f);
-							worldCollision = true;
-						}
-					}
-					else if (active == true)
-					{
-						Plane3D planes[6];
-						planes[0] = Plane3D(vec3(-1.0f, 0.0f, 0.0f), vec3(Chunk::BLOCK_RENDER_SIZE, 0.0f, 0.0f));
-						planes[1] = Plane3D(vec3(1.0f, 0.0f, 0.0f), vec3(-Chunk::BLOCK_RENDER_SIZE, 0.0f, 0.0f));
-						planes[2] = Plane3D(vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f));
-						planes[3] = Plane3D(vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, -Chunk::BLOCK_RENDER_SIZE, 0.0f));
-						planes[4] = Plane3D(vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, Chunk::BLOCK_RENDER_SIZE));
-						planes[5] = Plane3D(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, -Chunk::BLOCK_RENDER_SIZE));
-
-						float distance;
-						int inside = 0;
-						bool insideCache[6];
-
-						for (int i = 0; i < 6; i++)
-						{
-							vec3 pointToCheck = blockPos - previousPosition;
-							distance = planes[i].GetPointDistance(pointToCheck);
-
-							if (distance < -radius)
-							{
-								// Outside...
-								insideCache[i] = false;
-							}
-							else if (distance < radius)
-							{
-								// Intersecting..
-								insideCache[i] = true;
-							}
-							else
-							{
-								// Inside...
-								insideCache[i] = true;
-							}
-						}
-
-						for (int i = 0; i < 6; i++)
-						{
-							vec3 pointToCheck = blockPos - positionCheck;
-							distance = planes[i].GetPointDistance(pointToCheck);
-
-							if (distance < -radius)
-							{
-								// Outside...
-							}
-							else if (distance < radius)
-							{
-								// Intersecting..
-								inside++;
-								if (insideCache[i] == false)
-								{
-									*pNormal += planes[i].mNormal;
-								}
-							}
-							else
-							{
-								// Inside...
-								inside++;
-								if (insideCache[i] == false)
-								{
-									*pNormal += planes[i].mNormal;
-								}
-							}
-						}
-
-						if (inside == 6)
-						{
-							if (y == 0) // We only want to check on the same y-level as the players position.
-							{
-								vec3 posCheck1 = vec3(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + (Chunk::BLOCK_RENDER_SIZE*2.0f), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
-								vec3 posCheck2 = vec3(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + (Chunk::BLOCK_RENDER_SIZE*4.0f), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
-
-								Chunk* pChunkAbove = GetCachedGridChunkOrFromPosition(vec3(posCheck1.x, posCheck1.y, posCheck1.z));
-								activeAbove = m_pChunkManager->GetBlockActiveFrom3DPosition(posCheck1.x, posCheck1.y, posCheck1.z, &blockPosAbove, &blockXAbove, &blockYAbove, &blockZAbove, &pChunkAbove);
-								Chunk* pChunkAbove2 = GetCachedGridChunkOrFromPosition(vec3(posCheck2.x, posCheck2.y, posCheck2.z));
-								activeAbove2 = m_pChunkManager->GetBlockActiveFrom3DPosition(posCheck2.x, posCheck2.y, posCheck2.z, &blockPosAbove, &blockXAbove, &blockYAbove, &blockZAbove, &pChunkAbove2);
-
-								if ((activeAbove == false) && (activeAbove2 == false))
-								{
-									if (firstStepUp)
-									{
-										canAllStepUp = true;
-									}
-
-									isStepUp = true;
-								}
-								else
-								{
-									canAllStepUp = false;
-								}
-
-								firstStepUp = false;
-							}
-
-							if (length(*pNormal) <= 1.0f)
-							{
-								if (length(*pNormal) > 0.0f)
-								{
-									*pNormal = normalize(*pNormal);
-								}
-
-								float dotResult = dot(*pNormal, *pMovement);
-								*pNormal *= dotResult;
-
-								*pMovement -= *pNormal;
-
-								worldCollision = true;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		*pStepUpBlock = canAllStepUp;
-	}
-
-// 	if (itemCollision)
+//  
+// // Collision
+// bool Player::CheckCollisions(vec3 positionCheck, vec3 previousPosition, vec3 *pNormal, vec3 *pMovement, bool *pStepUpBlock)
+// {
+// 	vec3 movementCache = *pMovement;
+// 
+// 	float radius = GetRadius();
+// 
+// // 	// Item collisions
+// // 	bool itemCollision = m_pItemManager->CheckCollisions(positionCheck, previousPosition, radius, pNormal, pMovement);
+// 
+// 	// World collision
+// 	bool worldCollision = false;
+// 
+// 	vec3 floorPosition;
+// 	if (m_pChunkManager->FindClosestFloor(positionCheck, &floorPosition) == false)
+// 	{
+// 		*pMovement = vec3(0.0f, 0.0f, 0.0f);
 // 		return true;
-
-	if (worldCollision)
-		return true;
-
-	*pMovement = movementCache;
-
-	return false;
-}
-
-// Selection
-bool Player::GetSelectionBlock(vec3 *blockPos, int* chunkIndex, int* blockX, int* blockY, int* blockZ)
-{
-	float distance = 0.0f;
-	bool collides = false;
-	int interations = 0;
-	float increments = 0.025f;
-
-	while (collides == false && interations < 110)
-	{
-		vec3 testPos = GetCenter() + PLAYER_CENTER_OFFSET + normalize(m_cameraForward) * distance;
-
-		Chunk* pChunk = NULL;
-		bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
-		if (active == true)
-		{
-			collides = true;
-		}
-
-		distance += increments;
-		interations++;
-	}
-
-	return collides;
-}
-
-bool Player::GetPlacementBlock(vec3 *blockPos, int* chunkIndex, int* blockX, int* blockY, int* blockZ)
-{
-	float distance = 0.0f;
-	bool collides = false;
-	int interations = 0;
-	float increments = 0.025f;
-
-	while (collides == false && interations < 175)
-	{
-		vec3 testPos = GetCenter() + PLAYER_CENTER_OFFSET + normalize(m_cameraForward) * distance;
-
-		Chunk* pChunk = NULL;
-		bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
-		if (active == true)
-		{
-			// Get an empty block position
-			vec3 EmptyPos = testPos - normalize(m_cameraForward) * Chunk::BLOCK_RENDER_SIZE;
-			bool active2 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
-			Chunk* pChunk = m_pChunkManager->GetChunkFromPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z);
-
-			if (pChunk != NULL && active2 == false)
-			{
-				vec3 blockPosTest;
-				int blockXTest;
-				int blockYTest;
-				int blockZTest;
-				bool pBlock1 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x - (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.y, EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-				bool pBlock2 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x + (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.y, EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-				bool pBlock3 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y - (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-				bool pBlock4 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y + (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-				bool pBlock5 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z - (Chunk::BLOCK_RENDER_SIZE*2.0f), &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-				bool pBlock6 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z + (Chunk::BLOCK_RENDER_SIZE*2.0f), &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
-
-				// ONLY allow non-diagonal block placements
-				if (pBlock1 == true || pBlock2 == true || pBlock3 == true || pBlock4 == true || pBlock5 == true || pBlock6 == true)
-				{
-					vec3 dist = (*blockPos) - m_position + PLAYER_CENTER_OFFSET;
-					//dist.y = 0.0f;
-					if (length(dist) > m_radius)
-					{
-						collides = true;
-					}
-				}
-			}
-		}
-
-		distance += increments;
-		interations++;
-	}
-
-	return collides;
-}
-
-// World
-void Player::UpdateGridPosition()
-{
-	int gridPositionX = (int)((m_position.x + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-	int gridPositionY = (int)((m_position.y + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-	int gridPositionZ = (int)((m_position.z + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-
-	if (m_position.x <= -0.5f)
-		gridPositionX -= 1;
-	if (m_position.y <= -0.5f)
-		gridPositionY -= 1;
-	if (m_position.z <= -0.5f)
-		gridPositionZ -= 1;
-
-	if (gridPositionX != m_gridPositionX || gridPositionY != m_gridPositionY || gridPositionZ != m_gridPositionZ || m_pCachedGridChunk == NULL)
-	{
-		m_gridPositionX = gridPositionX;
-		m_gridPositionY = gridPositionY;
-		m_gridPositionZ = gridPositionZ;
-
-		m_pCachedGridChunk = m_pChunkManager->GetChunk(m_gridPositionX, m_gridPositionY, m_gridPositionZ);
-	}
-}
+// 	}
+// 	else
+// 	{
+// 		int blockX, blockY, blockZ;
+// 		vec3 blockPos;
+// 		int blockXAbove, blockYAbove, blockZAbove;
+// 		vec3 blockPosAbove;
+// 		int numChecks = 1 + (int)(radius / (Chunk::BLOCK_RENDER_SIZE* 2.0f));
+// 		bool canAllStepUp = false;
+// 		bool firstStepUp = true;
+// 		for (int x = -numChecks; x <= numChecks; x++)
+// 		{
+// 			for (int y = -numChecks; y <= numChecks; y++)
+// 			{
+// 				for (int z = -numChecks; z <= numChecks; z++)
+// 				{
+// 					bool isStepUp = false;
+// 					*pNormal = vec3(0.0f, 0.0f, 0.0f);
+// 
+// 					Chunk* pChunk = GetCachedGridChunkOrFromPosition(positionCheck + vec3((Chunk::BLOCK_RENDER_SIZE*2.0f)*x, (Chunk::BLOCK_RENDER_SIZE*2.0f)*y, (Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
+// 					bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*y), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z), &blockPos, &blockX, &blockY, &blockZ, &pChunk);
+// 					bool activeAbove = false;
+// 					bool activeAbove2 = false;
+// 
+// 					if (active == false)
+// 					{
+// 						if (pChunk == NULL || pChunk->IsSetup() == false)
+// 						{
+// 							*pMovement = vec3(0.0f, 0.0f, 0.0f);
+// 							worldCollision = true;
+// 						}
+// 					}
+// 					else if (active == true)
+// 					{
+// 						Plane3D planes[6];
+// 						planes[0] = Plane3D(vec3(-1.0f, 0.0f, 0.0f), vec3(Chunk::BLOCK_RENDER_SIZE, 0.0f, 0.0f));
+// 						planes[1] = Plane3D(vec3(1.0f, 0.0f, 0.0f), vec3(-Chunk::BLOCK_RENDER_SIZE, 0.0f, 0.0f));
+// 						planes[2] = Plane3D(vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f));
+// 						planes[3] = Plane3D(vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, -Chunk::BLOCK_RENDER_SIZE, 0.0f));
+// 						planes[4] = Plane3D(vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, Chunk::BLOCK_RENDER_SIZE));
+// 						planes[5] = Plane3D(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, -Chunk::BLOCK_RENDER_SIZE));
+// 
+// 						float distance;
+// 						int inside = 0;
+// 						bool insideCache[6];
+// 
+// 						for (int i = 0; i < 6; i++)
+// 						{
+// 							vec3 pointToCheck = blockPos - previousPosition;
+// 							distance = planes[i].GetPointDistance(pointToCheck);
+// 
+// 							if (distance < -radius)
+// 							{
+// 								// Outside...
+// 								insideCache[i] = false;
+// 							}
+// 							else if (distance < radius)
+// 							{
+// 								// Intersecting..
+// 								insideCache[i] = true;
+// 							}
+// 							else
+// 							{
+// 								// Inside...
+// 								insideCache[i] = true;
+// 							}
+// 						}
+// 
+// 						for (int i = 0; i < 6; i++)
+// 						{
+// 							vec3 pointToCheck = blockPos - positionCheck;
+// 							distance = planes[i].GetPointDistance(pointToCheck);
+// 
+// 							if (distance < -radius)
+// 							{
+// 								// Outside...
+// 							}
+// 							else if (distance < radius)
+// 							{
+// 								// Intersecting..
+// 								inside++;
+// 								if (insideCache[i] == false)
+// 								{
+// 									*pNormal += planes[i].mNormal;
+// 								}
+// 							}
+// 							else
+// 							{
+// 								// Inside...
+// 								inside++;
+// 								if (insideCache[i] == false)
+// 								{
+// 									*pNormal += planes[i].mNormal;
+// 								}
+// 							}
+// 						}
+// 
+// 						if (inside == 6)
+// 						{
+// 							if (y == 0) // We only want to check on the same y-level as the players position.
+// 							{
+// 								vec3 posCheck1 = vec3(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + (Chunk::BLOCK_RENDER_SIZE*2.0f), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
+// 								vec3 posCheck2 = vec3(positionCheck.x + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*x), positionCheck.y + (Chunk::BLOCK_RENDER_SIZE*4.0f), positionCheck.z + ((Chunk::BLOCK_RENDER_SIZE*2.0f)*z));
+// 
+// 								Chunk* pChunkAbove = GetCachedGridChunkOrFromPosition(vec3(posCheck1.x, posCheck1.y, posCheck1.z));
+// 								activeAbove = m_pChunkManager->GetBlockActiveFrom3DPosition(posCheck1.x, posCheck1.y, posCheck1.z, &blockPosAbove, &blockXAbove, &blockYAbove, &blockZAbove, &pChunkAbove);
+// 								Chunk* pChunkAbove2 = GetCachedGridChunkOrFromPosition(vec3(posCheck2.x, posCheck2.y, posCheck2.z));
+// 								activeAbove2 = m_pChunkManager->GetBlockActiveFrom3DPosition(posCheck2.x, posCheck2.y, posCheck2.z, &blockPosAbove, &blockXAbove, &blockYAbove, &blockZAbove, &pChunkAbove2);
+// 
+// 								if ((activeAbove == false) && (activeAbove2 == false))
+// 								{
+// 									if (firstStepUp)
+// 									{
+// 										canAllStepUp = true;
+// 									}
+// 
+// 									isStepUp = true;
+// 								}
+// 								else
+// 								{
+// 									canAllStepUp = false;
+// 								}
+// 
+// 								firstStepUp = false;
+// 							}
+// 
+// 							if (length(*pNormal) <= 1.0f)
+// 							{
+// 								if (length(*pNormal) > 0.0f)
+// 								{
+// 									*pNormal = normalize(*pNormal);
+// 								}
+// 
+// 								float dotResult = dot(*pNormal, *pMovement);
+// 								*pNormal *= dotResult;
+// 
+// 								*pMovement -= *pNormal;
+// 
+// 								worldCollision = true;
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 
+// 		*pStepUpBlock = canAllStepUp;
+// 	}
+// 
+// // 	if (itemCollision)
+// // 		return true;
+// 
+// 	if (worldCollision)
+// 		return true;
+// 
+// 	*pMovement = movementCache;
+// 
+// 	return false;
+// }
+//  
+// // Selection
+// bool Player::GetSelectionBlock(vec3 *blockPos, int* chunkIndex, int* blockX, int* blockY, int* blockZ)
+// {
+// 	float distance = 0.0f;
+// 	bool collides = false;
+// 	int interations = 0;
+// 	float increments = 0.025f;
+// 
+// 	while (collides == false && interations < 110)
+// 	{
+// 		vec3 testPos = GetCenter() + PLAYER_CENTER_OFFSET + normalize(m_cameraForward) * distance;
+// 
+// 		Chunk* pChunk = NULL;
+// 		bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
+// 		if (active == true)
+// 		{
+// 			collides = true;
+// 		}
+// 
+// 		distance += increments;
+// 		interations++;
+// 	}
+// 
+// 	return collides;
+// }
+// 
+// bool Player::GetPlacementBlock(vec3 *blockPos, int* chunkIndex, int* blockX, int* blockY, int* blockZ)
+// {
+// 	float distance = 0.0f;
+// 	bool collides = false;
+// 	int interations = 0;
+// 	float increments = 0.025f;
+// 
+// 	while (collides == false && interations < 175)
+// 	{
+// 		vec3 testPos = GetCenter() + PLAYER_CENTER_OFFSET + normalize(m_cameraForward) * distance;
+// 
+// 		Chunk* pChunk = NULL;
+// 		bool active = m_pChunkManager->GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
+// 		if (active == true)
+// 		{
+// 			// Get an empty block position
+// 			vec3 EmptyPos = testPos - normalize(m_cameraForward) * Chunk::BLOCK_RENDER_SIZE;
+// 			bool active2 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z, blockPos, blockX, blockY, blockZ, &pChunk);
+// 			Chunk* pChunk = m_pChunkManager->GetChunkFromPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z);
+// 
+// 			if (pChunk != NULL && active2 == false)
+// 			{
+// 				vec3 blockPosTest;
+// 				int blockXTest;
+// 				int blockYTest;
+// 				int blockZTest;
+// 				bool pBlock1 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x - (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.y, EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 				bool pBlock2 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x + (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.y, EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 				bool pBlock3 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y - (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 				bool pBlock4 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y + (Chunk::BLOCK_RENDER_SIZE*2.0f), EmptyPos.z, &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 				bool pBlock5 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z - (Chunk::BLOCK_RENDER_SIZE*2.0f), &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 				bool pBlock6 = m_pChunkManager->GetBlockActiveFrom3DPosition(EmptyPos.x, EmptyPos.y, EmptyPos.z + (Chunk::BLOCK_RENDER_SIZE*2.0f), &blockPosTest, &blockXTest, &blockYTest, &blockZTest, &pChunk);
+// 
+// 				// ONLY allow non-diagonal block placements
+// 				if (pBlock1 == true || pBlock2 == true || pBlock3 == true || pBlock4 == true || pBlock5 == true || pBlock6 == true)
+// 				{
+// 					vec3 dist = (*blockPos) - m_position + PLAYER_CENTER_OFFSET;
+// 					//dist.y = 0.0f;
+// 					if (length(dist) > m_radius)
+// 					{
+// 						collides = true;
+// 					}
+// 				}
+// 			}
+// 		}
+// 
+// 		distance += increments;
+// 		interations++;
+// 	}
+// 
+// 	return collides;
+// }
+//  
+// // World
+// void Player::UpdateGridPosition()
+// {
+// 	int gridPositionX = (int)((m_position.x + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 	int gridPositionY = (int)((m_position.y + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 	int gridPositionZ = (int)((m_position.z + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 
+// 	if (m_position.x <= -0.5f)
+// 		gridPositionX -= 1;
+// 	if (m_position.y <= -0.5f)
+// 		gridPositionY -= 1;
+// 	if (m_position.z <= -0.5f)
+// 		gridPositionZ -= 1;
+// 
+// 	if (gridPositionX != m_gridPositionX || gridPositionY != m_gridPositionY || gridPositionZ != m_gridPositionZ || m_pCachedGridChunk == NULL)
+// 	{
+// 		m_gridPositionX = gridPositionX;
+// 		m_gridPositionY = gridPositionY;
+// 		m_gridPositionZ = gridPositionZ;
+// 
+// 		m_pCachedGridChunk = m_pChunkManager->GetChunk(m_gridPositionX, m_gridPositionY, m_gridPositionZ);
+// 	}
+// }
 
 int Player::GetGridX() const
 {
@@ -1373,58 +1381,58 @@ int Player::GetGridZ() const
 	return m_gridPositionZ;
 }
 
-Chunk* Player::GetCachedGridChunkOrFromPosition(vec3 pos)
-{
-	// First check if the position is in the same grid as the cached chunk
-	int gridPositionX = (int)((pos.x + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-	int gridPositionY = (int)((pos.y + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-	int gridPositionZ = (int)((pos.z + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
-
-	if (pos.x <= -0.5f)
-		gridPositionX -= 1;
-	if (pos.y <= -0.5f)
-		gridPositionY -= 1;
-	if (pos.z <= -0.5f)
-		gridPositionZ -= 1;
-
-	if (gridPositionX != m_gridPositionX || gridPositionY != m_gridPositionY || gridPositionZ != m_gridPositionZ)
-	{
-		return NULL;
-	}
-	else
-	{
-		return m_pCachedGridChunk;
-	}
-}
-
-void Player::ClearChunkCacheForChunk(Chunk* pChunk)
-{
-	if (m_pCachedGridChunk == pChunk)
-	{
-		m_pCachedGridChunk = NULL;
-	}
-}
-
-// Camera
-void Player::SetCameraPosition(vec3 cameraPos)
-{
-	m_cameraPosition = cameraPos;
-}
-
-void Player::SetCameraForward(vec3 cameraForward)
-{
-	m_cameraForward = cameraForward;
-}
-
-void Player::SetCameraUp(vec3 up)
-{
-	m_cameraUp = up;
-}
-
-void Player::SetCameraRight(vec3 right)
-{
-	m_cameraRight = right;
-}
+// Chunk* Player::GetCachedGridChunkOrFromPosition(vec3 pos)
+// {
+// 	// First check if the position is in the same grid as the cached chunk
+// 	int gridPositionX = (int)((pos.x + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 	int gridPositionY = (int)((pos.y + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 	int gridPositionZ = (int)((pos.z + Chunk::BLOCK_RENDER_SIZE) / Chunk::CHUNK_SIZE);
+// 
+// 	if (pos.x <= -0.5f)
+// 		gridPositionX -= 1;
+// 	if (pos.y <= -0.5f)
+// 		gridPositionY -= 1;
+// 	if (pos.z <= -0.5f)
+// 		gridPositionZ -= 1;
+// 
+// 	if (gridPositionX != m_gridPositionX || gridPositionY != m_gridPositionY || gridPositionZ != m_gridPositionZ)
+// 	{
+// 		return NULL;
+// 	}
+// 	else
+// 	{
+// 		return m_pCachedGridChunk;
+// 	}
+// }
+// 
+// void Player::ClearChunkCacheForChunk(Chunk* pChunk)
+// {
+// 	if (m_pCachedGridChunk == pChunk)
+// 	{
+// 		m_pCachedGridChunk = NULL;
+// 	}
+// }
+// 
+// // Camera
+// void Player::SetCameraPosition(vec3 cameraPos)
+// {
+// 	m_cameraPosition = cameraPos;
+// }
+// 
+// void Player::SetCameraForward(vec3 cameraForward)
+// {
+// 	m_cameraForward = cameraForward;
+// }
+// 
+// void Player::SetCameraUp(vec3 up)
+// {
+// 	m_cameraUp = up;
+// }
+// 
+// void Player::SetCameraRight(vec3 right)
+// {
+// 	m_cameraRight = right;
+// }
 // 
 // // Loading configuration and settings for the game
 // void Player::LoadCharacterSettings()
@@ -1441,14 +1449,14 @@ void Player::SetCameraRight(vec3 right)
 // 	m_pPlayerStats->ResetStats();
 // 	m_pPlayerStats->ExportStats(m_name);
 // }
-
-void Player::StartGame()
-{
+// 
+// void Player::StartGame()
+// {
 // 	// Remove supress export
 // 	m_pInventoryManager->SetSupressExport(false);
 // 	m_pActionBar->SetSupressExport(false);
 // 	m_pPlayerStats->SetSupressExport(false);
- 
+//  
 // 	// Load inventory from the character's inventory file
 // 	m_pInventoryManager->ImportInventory(m_name);
 // 	m_pInventoryGUI->DeleteInventoryItems();
@@ -1463,15 +1471,15 @@ void Player::StartGame()
 //  	m_pPlayerStats->ImportStats(m_name);
 //  	SetClass(m_pPlayerStats->GetClass());
 //  
- 	// Make sure to set the chunk loading from the player position
- 	int gridX;
- 	int gridY;
- 	int gridZ;
- 	m_pChunkManager->GetGridFromPosition(m_position, &gridX, &gridY, &gridZ);
- 
+//  	// Make sure to set the chunk loading from the player position
+//  	int gridX;
+//  	int gridY;
+//  	int gridZ;
+//  	m_pChunkManager->GetGridFromPosition(m_position, &gridX, &gridY, &gridZ);
+//  
 // 	// Update initial HUD for player
 // 	VoxGame::GetInstance()->GetHUD()->UpdatePlayerData();
-}
+// }
 // 
 // // Movement
 // vec3 Player::GetPositionMovementAmount()
@@ -1859,12 +1867,12 @@ void Player::StartGame()
 // 	float randomNumber = GetRandomNumber(0, 100, 2);
 // 	m_floorParticleTimer = randomNumber * 0.0025f;
 // }
-
-// Dead
-bool Player::IsDead()
-{
-	return m_dead;
-}
+// 
+// // Dead
+// bool Player::IsDead()
+// {
+// 	return m_dead;
+// }
 // 
 // // Level up
 // void Player::LevelUp()
@@ -2129,31 +2137,31 @@ bool Player::IsDead()
 // {
 // 	return m_crafting;
 // }
-
-// Looking
-void Player::LookAtPoint(vec3 point)
-{
-	m_bLookAtPoint = true;
-	m_lookPoint = point;
-}
-
-void Player::SetRandomLookMode()
-{
-	m_pVoxelCharacter->SetFaceTargetDirection(m_pVoxelCharacter->GetFaceLookingDirection());
-	m_pVoxelCharacter->SetRandomLookDirection(true);
-	m_pVoxelCharacter->SetFaceLookToTargetSpeedMultiplier(1.0f);
-	m_bLookAtPoint = false;
-}
-
-void Player::SetBodyTurnStopThreshold(float threshold)
-{
-	m_bodyTurnStopThreshold = threshold;
-}
-
-void Player::SetBodyTurnSpeedMultiplier(float multiplier)
-{
-	m_bodyTurnSpeedMultiplier = multiplier;
-}
+// 
+// // Looking
+// void Player::LookAtPoint(vec3 point)
+// {
+// 	m_bLookAtPoint = true;
+// 	m_lookPoint = point;
+// }
+// 
+// void Player::SetRandomLookMode()
+// {
+// 	m_pVoxelCharacter->SetFaceTargetDirection(m_pVoxelCharacter->GetFaceLookingDirection());
+// 	m_pVoxelCharacter->SetRandomLookDirection(true);
+// 	m_pVoxelCharacter->SetFaceLookToTargetSpeedMultiplier(1.0f);
+// 	m_bLookAtPoint = false;
+// }
+// 
+// void Player::SetBodyTurnStopThreshold(float threshold)
+// {
+// 	m_bodyTurnStopThreshold = threshold;
+// }
+// 
+// void Player::SetBodyTurnSpeedMultiplier(float multiplier)
+// {
+// 	m_bodyTurnSpeedMultiplier = multiplier;
+// }
 // 
 // // Player equipped attributes
 // void Player::SetNormal()
@@ -2505,69 +2513,69 @@ void Player::SetBodyTurnSpeedMultiplier(float multiplier)
 // {
 // 	return (m_equippedProperties & PlayerEquippedProperties_SpellHands) == PlayerEquippedProperties_SpellHands;
 // }
-
-// Rendering modes
-void Player::SetWireFrameRender(bool wireframe)
-{
-	m_pVoxelCharacter->SetWireFrameRender(wireframe);
-}
-
-void Player::SetPlayerAlpha(float alpha)
-{
-	m_pVoxelCharacter->SetMeshAlpha(alpha);
-}
-
-void Player::SetFirstPersonMode()
-{
-	m_pVoxelCharacter->SetBreathingAnimationEnabled(false);
-	m_pVoxelCharacter->SetRandomLookDirection(false);
-
-	m_pVoxelCharacter->SetFaceLookingDirection(vec3(0.0f, 0.0f, 1.0f));
-	m_pVoxelCharacter->SetFaceTargetDirection(m_pVoxelCharacter->GetFaceLookingDirection());
-}
-
-void Player::SetThirdPersonMode()
-{
-	m_pVoxelCharacter->SetBreathingAnimationEnabled(true);
-	m_pVoxelCharacter->SetRandomLookDirection(true);
-}
-
-// Rendering Helpers
-void Player::CalculateWorldTransformMatrix()
-{
-	m_right = normalize(cross(m_up, m_forward));
-	m_forward = normalize(cross(m_right, m_up));
-
-	float lMatrix[16] =
-	{
-		m_right.x, m_right.y, m_right.z, 0.0f,
-		m_up.x, m_up.y, m_up.z, 0.0f,
-		m_forward.x, m_forward.y, m_forward.z, 0.0f,
-		m_position.x, m_position.y - (m_bDoStepUpAnimation ? 0.0f : m_stepUpAnimationYOffset), m_position.z, 1.0f
-	};
-
-	m_worldMatrix.SetValues(lMatrix);
-}
-
-void Player::RebuildVoxelCharacter(bool faceMerge)
-{
-	m_pVoxelCharacter->RebuildVoxelModel(faceMerge);
-}
-
-// Updating
-void Player::Update(float dt)
-{
- 	// Update grid position
- 	UpdateGridPosition();
- 
- 	// Update the voxel model
- 	float animationSpeeds[AnimationSections_NUMSECTIONS] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
- 	m_pVoxelCharacter->Update(dt, animationSpeeds);
- 	m_pVoxelCharacter->SetWeaponTrailsOriginMatrix(dt, m_worldMatrix);
- 
- 	// Update animations
- 	UpdateAnimations(dt);
- 
+// 
+// // Rendering modes
+// void Player::SetWireFrameRender(bool wireframe)
+// {
+// 	m_pVoxelCharacter->SetWireFrameRender(wireframe);
+// }
+// 
+// void Player::SetPlayerAlpha(float alpha)
+// {
+// 	m_pVoxelCharacter->SetMeshAlpha(alpha);
+// }
+// 
+// void Player::SetFirstPersonMode()
+// {
+// 	m_pVoxelCharacter->SetBreathingAnimationEnabled(false);
+// 	m_pVoxelCharacter->SetRandomLookDirection(false);
+// 
+// 	m_pVoxelCharacter->SetFaceLookingDirection(vec3(0.0f, 0.0f, 1.0f));
+// 	m_pVoxelCharacter->SetFaceTargetDirection(m_pVoxelCharacter->GetFaceLookingDirection());
+// }
+// 
+// void Player::SetThirdPersonMode()
+// {
+// 	m_pVoxelCharacter->SetBreathingAnimationEnabled(true);
+// 	m_pVoxelCharacter->SetRandomLookDirection(true);
+// }
+// 
+// // Rendering Helpers
+// void Player::CalculateWorldTransformMatrix()
+// {
+// 	m_right = normalize(cross(m_up, m_forward));
+// 	m_forward = normalize(cross(m_right, m_up));
+// 
+// 	float lMatrix[16] =
+// 	{
+// 		m_right.x, m_right.y, m_right.z, 0.0f,
+// 		m_up.x, m_up.y, m_up.z, 0.0f,
+// 		m_forward.x, m_forward.y, m_forward.z, 0.0f,
+// 		m_position.x, m_position.y - (m_bDoStepUpAnimation ? 0.0f : m_stepUpAnimationYOffset), m_position.z, 1.0f
+// 	};
+// 
+// 	m_worldMatrix.SetValues(lMatrix);
+// }
+// 
+// void Player::RebuildVoxelCharacter(bool faceMerge)
+// {
+// 	m_pVoxelCharacter->RebuildVoxelModel(faceMerge);
+// }
+// 
+// // Updating
+// void Player::Update(float dt)
+// {
+//  	// Update grid position
+//  	UpdateGridPosition();
+//  
+//  	// Update the voxel model
+//  	float animationSpeeds[AnimationSections_NUMSECTIONS] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+//  	m_pVoxelCharacter->Update(dt, animationSpeeds);
+//  	m_pVoxelCharacter->SetWeaponTrailsOriginMatrix(dt, m_worldMatrix);
+//  
+//  	// Update animations
+//  	UpdateAnimations(dt);
+//  
 //  	// Update charging attack
 //  	UpdateChargingAttack(dt);
 //  
@@ -2595,21 +2603,21 @@ void Player::Update(float dt)
 //  
 //  	// Update timers
 //  	UpdateTimers(dt);
- 
- 	// Physics update
- 	UpdatePhysics(dt);
-}
-
-void Player::UpdateAnimations(float dt)
-{
-	if (m_pVoxelCharacter != NULL)
-	{
-		for (int i = 0; i < AnimationSections_NUMSECTIONS; i++)
-		{
-			m_animationFinished[i] = m_pVoxelCharacter->HasAnimationFinished((AnimationSections)i);
-		}
-	}
-
+//  
+//  	// Physics update
+//  	UpdatePhysics(dt);
+// }
+// 
+// void Player::UpdateAnimations(float dt)
+// {
+// 	if (m_pVoxelCharacter != NULL)
+// 	{
+// 		for (int i = 0; i < AnimationSections_NUMSECTIONS; i++)
+// 		{
+// 			m_animationFinished[i] = m_pVoxelCharacter->HasAnimationFinished((AnimationSections)i);
+// 		}
+// 	}
+// 
 // 	if (m_bCanInteruptCombatAnim == false && m_animationFinished[AnimationSections_FullBody] == true)
 // 	{
 // 		m_bCanInteruptCombatAnim = true;
@@ -2622,87 +2630,87 @@ void Player::UpdateAnimations(float dt)
 // 	{
 // 		m_bCanAttackRight = true;
 // 	}
-}
-
-void Player::UpdatePhysics(float dt)
-{
-	m_positionMovementAmount = vec3(0.0f, 0.0f, 0.0f);
-
-	if (m_groundCheckTimer <= 0.0f)
-	{
-		m_bIsOnGround = false;
-	}
-
-	// Step up animation
-	float stepUpAddition = 0.0f;	
-	if (m_bDoStepUpAnimation)
-	{
-		stepUpAddition = m_stepUpAnimationYAmount - m_stepUpAnimationPrevious;
-		m_position.y += stepUpAddition;
-
-		m_stepUpAnimationPrevious = m_stepUpAnimationYAmount;
-	}
-
-	// Gravity multiplier
-	float gravityMultiplier = 4.0f;
-	if (m_pChunkManager->IsUnderWater(GetCenter()))
-	{
-		gravityMultiplier = 0.5f;
-	}
-
-	// Integrate velocity
-	vec3 acceleration = m_force + (m_gravityDirection * 9.81f)*gravityMultiplier;
-	m_velocity += acceleration * dt;
-
-	// Check collision
-	{
-		vec3 velocityToUse = m_velocity;
-		vec3 velAmount = velocityToUse*dt;
-		vec3 pNormal;
-		int numberDivision = 1;
-		while (length(velAmount) >= 1.0f)
-		{
-			numberDivision++;
-			velAmount = velocityToUse*(dt / numberDivision);
-		}
-		for (int i = 0; i < numberDivision; i++)
-		{
-			float dtToUse = (dt / numberDivision) + ((dt / numberDivision) * i);
-			vec3 posToCheck = GetCenter() + velocityToUse*dtToUse;
-			bool stepUp = false;
-			if (CheckCollisions(posToCheck, m_previousPosition, &pNormal, &velAmount, &stepUp))
-			{
-				// Reset velocity, we don't have any bounce
-				m_velocity = vec3(0.0f, 0.0f, 0.0f);
-				velocityToUse = vec3(0.0f, 0.0f, 0.0f);
-
-				if (velocityToUse.y <= 0.0f)
-				{
-					m_bIsOnGround = true;
-					m_groundCheckTimer = 0.1f;
-
-					if (m_bCanJump == false)
-					{
-						m_bCanJump = true;
-
-//						VoxGame::GetInstance()->PlaySoundEffect(eSoundEffect_JumpLand);
-					}
-				}
-			}
-		}
-
-		// Integrate position
-		m_position += velocityToUse * dt;
-
-		m_positionMovementAmount += vec3(0.0f, stepUpAddition + m_stepUpAdditionYAmountChangedCache, 0.0f);
-		m_positionMovementAmount += velocityToUse * dt;
-	}
-
-	m_stepUpAdditionYAmountChangedCache = 0.0f;
-
-	// Store previous position
-	m_previousPosition = GetCenter();
-}
+//}
+// 
+// void Player::UpdatePhysics(float dt)
+// {
+// 	m_positionMovementAmount = vec3(0.0f, 0.0f, 0.0f);
+// 
+// 	if (m_groundCheckTimer <= 0.0f)
+// 	{
+// 		m_bIsOnGround = false;
+// 	}
+// 
+// 	// Step up animation
+// 	float stepUpAddition = 0.0f;	
+// 	if (m_bDoStepUpAnimation)
+// 	{
+// 		stepUpAddition = m_stepUpAnimationYAmount - m_stepUpAnimationPrevious;
+// 		m_position.y += stepUpAddition;
+// 
+// 		m_stepUpAnimationPrevious = m_stepUpAnimationYAmount;
+// 	}
+// 
+// 	// Gravity multiplier
+// 	float gravityMultiplier = 4.0f;
+// 	if (m_pChunkManager->IsUnderWater(GetCenter()))
+// 	{
+// 		gravityMultiplier = 0.5f;
+// 	}
+// 
+// 	// Integrate velocity
+// 	vec3 acceleration = m_force + (m_gravityDirection * 9.81f)*gravityMultiplier;
+// 	m_velocity += acceleration * dt;
+// 
+// 	// Check collision
+// 	{
+// 		vec3 velocityToUse = m_velocity;
+// 		vec3 velAmount = velocityToUse*dt;
+// 		vec3 pNormal;
+// 		int numberDivision = 1;
+// 		while (length(velAmount) >= 1.0f)
+// 		{
+// 			numberDivision++;
+// 			velAmount = velocityToUse*(dt / numberDivision);
+// 		}
+// 		for (int i = 0; i < numberDivision; i++)
+// 		{
+// 			float dtToUse = (dt / numberDivision) + ((dt / numberDivision) * i);
+// 			vec3 posToCheck = GetCenter() + velocityToUse*dtToUse;
+// 			bool stepUp = false;
+// 			if (CheckCollisions(posToCheck, m_previousPosition, &pNormal, &velAmount, &stepUp))
+// 			{
+// 				// Reset velocity, we don't have any bounce
+// 				m_velocity = vec3(0.0f, 0.0f, 0.0f);
+// 				velocityToUse = vec3(0.0f, 0.0f, 0.0f);
+// 
+// 				if (velocityToUse.y <= 0.0f)
+// 				{
+// 					m_bIsOnGround = true;
+// 					m_groundCheckTimer = 0.1f;
+// 
+// 					if (m_bCanJump == false)
+// 					{
+// 						m_bCanJump = true;
+// 
+// //						VoxGame::GetInstance()->PlaySoundEffect(eSoundEffect_JumpLand);
+// 					}
+// 				}
+// 			}
+// 		}
+// 
+// 		// Integrate position
+// 		m_position += velocityToUse * dt;
+// 
+// 		m_positionMovementAmount += vec3(0.0f, stepUpAddition + m_stepUpAdditionYAmountChangedCache, 0.0f);
+// 		m_positionMovementAmount += velocityToUse * dt;
+// 	}
+// 
+// 	m_stepUpAdditionYAmountChangedCache = 0.0f;
+// 
+// 	// Store previous position
+// 	m_previousPosition = GetCenter();
+// }
 // 
 // void Player::UpdateMovement(float dt)
 // {
@@ -3193,179 +3201,179 @@ void Player::UpdatePhysics(float dt)
 // 		}
 // 	}
 // }
-
-// Rendering
-void Player::Render()
-{
-	if (IsDead())
-	{
-		return;
-	}
-
-	Colour OulineColour(1.0f, 1.0f, 0.0f, 1.0f);
-	m_pRenderer->PushMatrix();
-		m_pRenderer->MultiplyWorldMatrix(m_worldMatrix);
-
-		m_pRenderer->PushMatrix();
-			if (m_bIsChargingAttack)
-			{
-				m_pRenderer->RotateWorldMatrix(-m_cameraForward.y*20.0f, 0.0f, 0.0f);
-			}
-			m_pVoxelCharacter->RenderWeapons(false, false, false, OulineColour);
-		m_pRenderer->PopMatrix();
-
-		m_pVoxelCharacter->Render(false, false, false, OulineColour, false);
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderFirstPerson()
-{
-	if (IsDead())
-	{
-		return;
-	}
-
-	Colour OulineColour(1.0f, 1.0f, 0.0f, 1.0f);
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderWeapons(false, false, false, OulineColour);
-		m_pVoxelCharacter->RenderSubSelection("Left_Hand", false, false, OulineColour);
-		m_pVoxelCharacter->RenderSubSelection("Right_Hand", false, false, OulineColour);
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderWeaponTrails()
-{
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderWeaponTrails();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderFace()
-{
-	if (IsDead())
-	{
-		return;
-	}
-
-	m_pRenderer->PushMatrix();
-		m_pRenderer->MultiplyWorldMatrix(m_worldMatrix);
-		m_pRenderer->EmptyTextureIndex(0);
-		m_pVoxelCharacter->RenderFace();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderPaperdoll()
-{
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderPaperdoll();
-		m_pVoxelCharacter->RenderWeaponsPaperdoll();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderPaperdollFace()
-{
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderFacePaperdoll();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderPortrait()
-{
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderPortrait();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderPortraitFace()
-{
-	m_pRenderer->PushMatrix();
-		m_pVoxelCharacter->RenderFacePortrait();
-	m_pRenderer->PopMatrix();
-}
-
-void Player::RenderSelectionBlock()
-{
-	if(m_dead == true)
-	{
-		return;
-	}
-
-// 	if(IsPickaxe() == false && IsBlockPlacing() == false && IsItemPlacing() == false)
+// 
+// // Rendering
+// void Player::Render()
+// {
+// 	if (IsDead())
 // 	{
 // 		return;
 // 	}
-
-	if(m_blockSelection)
-	{
-		float l_length = Chunk::BLOCK_RENDER_SIZE * 1.1f;
-		float l_height = Chunk::BLOCK_RENDER_SIZE * 1.1f;
-		float l_width = Chunk::BLOCK_RENDER_SIZE * 1.1f;
-
-		m_pRenderer->PushMatrix();
-			m_pRenderer->TranslateWorldMatrix(m_blockSelectionPos.x, m_blockSelectionPos.y, m_blockSelectionPos.z);
-			for(int i = 0; i < 2; i ++)
-			{
-				if(i == 0)
-				{
-					m_pRenderer->SetRenderMode(RM_WIREFRAME);
-					m_pRenderer->SetCullMode(CM_NOCULL);
-					m_pRenderer->SetLineWidth(1.0f);
-				}
-				else
-				{
-					m_pRenderer->EnableTransparency(BF_SRC_ALPHA, BF_ONE_MINUS_SRC_ALPHA);
-					m_pRenderer->SetRenderMode(RM_SOLID);
-				}
-			
-				m_pRenderer->EnableImmediateMode(IM_QUADS);
-					m_pRenderer->ImmediateColourAlpha(1.0f, 0.9f, 0.25f, 0.25f);
-					m_pRenderer->ImmediateNormal(0.0f, 0.0f, -1.0f);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-
-					m_pRenderer->ImmediateNormal(0.0f, 0.0f, 1.0f);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-
-					m_pRenderer->ImmediateNormal(1.0f, 0.0f, 0.0f);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-
-					m_pRenderer->ImmediateNormal(-1.0f, 0.0f, 0.0f);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-
-					m_pRenderer->ImmediateNormal(0.0f, -1.0f, 0.0f);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-
-					m_pRenderer->ImmediateNormal(0.0f, 1.0f, 0.0f);
-					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-				m_pRenderer->DisableImmediateMode();
-
-				if(i == 1)
-				{
-					m_pRenderer->DisableTransparency();
-				}
-			}		
-
-			m_pRenderer->SetCullMode(CM_BACK);
-		m_pRenderer->PopMatrix();
-	}
-}
+// 
+// 	Colour OulineColour(1.0f, 1.0f, 0.0f, 1.0f);
+// 	m_pRenderer->PushMatrix();
+// 		m_pRenderer->MultiplyWorldMatrix(m_worldMatrix);
+// 
+// 		m_pRenderer->PushMatrix();
+// 			if (m_bIsChargingAttack)
+// 			{
+// 				m_pRenderer->RotateWorldMatrix(-m_cameraForward.y*20.0f, 0.0f, 0.0f);
+// 			}
+// 			m_pVoxelCharacter->RenderWeapons(false, false, false, OulineColour);
+// 		m_pRenderer->PopMatrix();
+// 
+// 		m_pVoxelCharacter->Render(false, false, false, OulineColour, false);
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderFirstPerson()
+// {
+// 	if (IsDead())
+// 	{
+// 		return;
+// 	}
+// 
+// 	Colour OulineColour(1.0f, 1.0f, 0.0f, 1.0f);
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderWeapons(false, false, false, OulineColour);
+// 		m_pVoxelCharacter->RenderSubSelection("Left_Hand", false, false, OulineColour);
+// 		m_pVoxelCharacter->RenderSubSelection("Right_Hand", false, false, OulineColour);
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderWeaponTrails()
+// {
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderWeaponTrails();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderFace()
+// {
+// 	if (IsDead())
+// 	{
+// 		return;
+// 	}
+// 
+// 	m_pRenderer->PushMatrix();
+// 		m_pRenderer->MultiplyWorldMatrix(m_worldMatrix);
+// 		m_pRenderer->EmptyTextureIndex(0);
+// 		m_pVoxelCharacter->RenderFace();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderPaperdoll()
+// {
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderPaperdoll();
+// 		m_pVoxelCharacter->RenderWeaponsPaperdoll();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderPaperdollFace()
+// {
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderFacePaperdoll();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderPortrait()
+// {
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderPortrait();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderPortraitFace()
+// {
+// 	m_pRenderer->PushMatrix();
+// 		m_pVoxelCharacter->RenderFacePortrait();
+// 	m_pRenderer->PopMatrix();
+// }
+// 
+// void Player::RenderSelectionBlock()
+// {
+// 	if(m_dead == true)
+// 	{
+// 		return;
+// 	}
+// 
+// // 	if(IsPickaxe() == false && IsBlockPlacing() == false && IsItemPlacing() == false)
+// // 	{
+// // 		return;
+// // 	}
+// 
+// 	if(m_blockSelection)
+// 	{
+// 		float l_length = Chunk::BLOCK_RENDER_SIZE * 1.1f;
+// 		float l_height = Chunk::BLOCK_RENDER_SIZE * 1.1f;
+// 		float l_width = Chunk::BLOCK_RENDER_SIZE * 1.1f;
+// 
+// 		m_pRenderer->PushMatrix();
+// 			m_pRenderer->TranslateWorldMatrix(m_blockSelectionPos.x, m_blockSelectionPos.y, m_blockSelectionPos.z);
+// 			for(int i = 0; i < 2; i ++)
+// 			{
+// 				if(i == 0)
+// 				{
+// 					m_pRenderer->SetRenderMode(RM_WIREFRAME);
+// 					m_pRenderer->SetCullMode(CM_NOCULL);
+// 					m_pRenderer->SetLineWidth(1.0f);
+// 				}
+// 				else
+// 				{
+// 					m_pRenderer->EnableTransparency(BF_SRC_ALPHA, BF_ONE_MINUS_SRC_ALPHA);
+// 					m_pRenderer->SetRenderMode(RM_SOLID);
+// 				}
+// 			
+// 				m_pRenderer->EnableImmediateMode(IM_QUADS);
+// 					m_pRenderer->ImmediateColourAlpha(1.0f, 0.9f, 0.25f, 0.25f);
+// 					m_pRenderer->ImmediateNormal(0.0f, 0.0f, -1.0f);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 
+// 					m_pRenderer->ImmediateNormal(0.0f, 0.0f, 1.0f);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 
+// 					m_pRenderer->ImmediateNormal(1.0f, 0.0f, 0.0f);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 
+// 					m_pRenderer->ImmediateNormal(-1.0f, 0.0f, 0.0f);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 
+// 					m_pRenderer->ImmediateNormal(0.0f, -1.0f, 0.0f);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 
+// 					m_pRenderer->ImmediateNormal(0.0f, 1.0f, 0.0f);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 					m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 					m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 				m_pRenderer->DisableImmediateMode();
+// 
+// 				if(i == 1)
+// 				{
+// 					m_pRenderer->DisableTransparency();
+// 				}
+// 			}		
+// 
+// 			m_pRenderer->SetCullMode(CM_BACK);
+// 		m_pRenderer->PopMatrix();
+// 	}
+// }
 // 
 // void Player::RenderDebug()
 // {
@@ -3518,18 +3526,18 @@ void Player::RenderSelectionBlock()
 // 		}
 // 	m_pRenderer->PopMatrix();
 // }
-
-void Player::_StepUpAnimationFinished(void *apData)
-{
-	Player* lpPlayer = (Player*)apData;
-	lpPlayer->StepUpAnimationFinished();
-}
-
-void Player::StepUpAnimationFinished()
-{
-	// Final addition
-	m_stepUpAdditionYAmountChangedCache = m_stepUpAnimationYAmount - m_stepUpAnimationPrevious;
-	m_position.y += m_stepUpAdditionYAmountChangedCache;
-
-	m_bDoStepUpAnimation = false;
-}
+// 
+// void Player::_StepUpAnimationFinished(void *apData)
+// {
+// 	Player* lpPlayer = (Player*)apData;
+// 	lpPlayer->StepUpAnimationFinished();
+// }
+// 
+// void Player::StepUpAnimationFinished()
+// {
+// 	// Final addition
+// 	m_stepUpAdditionYAmountChangedCache = m_stepUpAnimationYAmount - m_stepUpAnimationPrevious;
+// 	m_position.y += m_stepUpAdditionYAmountChangedCache;
+// 
+// 	m_bDoStepUpAnimation = false;
+// }

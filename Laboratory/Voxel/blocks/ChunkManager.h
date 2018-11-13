@@ -168,18 +168,18 @@ public:
 
 	// Chunk rendering material
 	unsigned int GetChunkMaterialID();
-
-	// Chunk counters
-	int GetNumChunksLoaded();
-	int GetNumChunksRender();
-
-	// Loader radius
-	void SetLoaderRadius(float radius);
+// 
+// 	// Chunk counters
+// 	int GetNumChunksLoaded();
+// 	int GetNumChunksRender();
+// 
+// 	// Loader radius
+// 	void SetLoaderRadius(float radius);
 	float GetLoaderRadius();
 
 	// Step update
 	void SetStepLockEnabled(bool enabled);
-	void StepNextUpdate();
+//	void StepNextUpdate();
 
 	// Chunk Creation
 	void CreateNewChunk(int x, int y, int z);
@@ -190,7 +190,7 @@ public:
 	void GetGridFromPosition(vec3 position, int* gridX, int* gridY, int* gridZ);
 	Chunk* GetChunkFromPosition(float posX, float posY, float posZ);
 	Chunk* GetChunk(int aX, int aY, int aZ);
-	bool FindClosestFloor(vec3 position, vec3* floorPosition);
+//	bool FindClosestFloor(vec3 position, vec3* floorPosition);
 
 	// Getting the active block state given a position and chunk information
 	bool GetBlockActiveFrom3DPosition(float x, float y, float z, vec3 *blockPos, int* blockX, int* blockY, int* blockZ, Chunk** pChunk);
@@ -217,14 +217,14 @@ public:
 // 	// Collectible block objects
 // 	void CreateCollectibleBlock(BlockType blockType, vec3 blockPos);
 
-	// Water
-	void SetWaterHeight(float height);
-	float GetWaterHeight();
-	bool IsUnderWater(vec3 position);
-
-	// Rendering modes
-	void SetWireframeRender(bool wireframe);
-	void SetFaceMerging(bool faceMerge);
+// 	// Water
+// 	void SetWaterHeight(float height);
+// 	float GetWaterHeight();
+// 	bool IsUnderWater(vec3 position);
+// 
+// 	// Rendering modes
+// 	void SetWireframeRender(bool wireframe);
+// 	void SetFaceMerging(bool faceMerge);
 	bool GetFaceMerging();
 
 	// Updating
@@ -235,9 +235,9 @@ public:
 	// Rendering
 //	void Render(bool shadowRender);
 	void Render(bool shadowRender, int GMode, unsigned int ViewPort, const vec3& CameraPos);
-	void RenderWater();
-	void RenderDebug();
-	void Render2D(Camera* pCamera, unsigned int viewport, unsigned int font);
+// 	void RenderWater();
+// 	void RenderDebug();
+// 	void Render2D(Camera* pCamera, unsigned int viewport, unsigned int font);
 
 protected:
 	/* Protected methods */

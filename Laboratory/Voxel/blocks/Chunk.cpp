@@ -132,44 +132,44 @@ bool Chunk::IsCreated()
 {
 	return m_created;
 }
-
-void Chunk::Unload()
-{
-	m_isUnloading = true;
-
-	if (m_pMesh != NULL)
-	{
-		m_pRenderer->ClearMesh(m_pMesh);
-		m_pMesh = NULL;
-	}
-
-	if (m_setup == true)
-	{
-		// If we are already setup, when we unload, also tell our neighbours to update their flags
-		Chunk* pChunkXMinus = m_pChunkManager->GetChunk(m_gridX - 1, m_gridY, m_gridZ);
-		Chunk* pChunkXPlus = m_pChunkManager->GetChunk(m_gridX + 1, m_gridY, m_gridZ);
-		Chunk* pChunkYMinus = m_pChunkManager->GetChunk(m_gridX, m_gridY - 1, m_gridZ);
-		Chunk* pChunkYPlus = m_pChunkManager->GetChunk(m_gridX, m_gridY + 1, m_gridZ);
-		Chunk* pChunkZMinus = m_pChunkManager->GetChunk(m_gridX, m_gridY, m_gridZ - 1);
-		Chunk* pChunkZPlus = m_pChunkManager->GetChunk(m_gridX, m_gridY, m_gridZ + 1);
-
-		if (pChunkXMinus != NULL && pChunkXMinus->IsSetup() == true)
-			pChunkXMinus->UpdateSurroundedFlag();
-		if (pChunkXPlus != NULL && pChunkXPlus->IsSetup() == true)
-			pChunkXPlus->UpdateSurroundedFlag();
-		if (pChunkYMinus != NULL && pChunkYMinus->IsSetup() == true)
-			pChunkYMinus->UpdateSurroundedFlag();
-		if (pChunkYPlus != NULL && pChunkYPlus->IsSetup() == true)
-			pChunkYPlus->UpdateSurroundedFlag();
-		if (pChunkZMinus != NULL && pChunkZMinus->IsSetup() == true)
-			pChunkZMinus->UpdateSurroundedFlag();
-		if (pChunkZPlus != NULL && pChunkZPlus->IsSetup() == true)
-			pChunkZPlus->UpdateSurroundedFlag();
-	}
-
-	RemoveItems();
-}
-
+ 
+ void Chunk::Unload()
+ {
+ 	m_isUnloading = true;
+ 
+ 	if (m_pMesh != NULL)
+ 	{
+ 		m_pRenderer->ClearMesh(m_pMesh);
+ 		m_pMesh = NULL;
+ 	}
+ 
+ 	if (m_setup == true)
+ 	{
+ 		// If we are already setup, when we unload, also tell our neighbours to update their flags
+ 		Chunk* pChunkXMinus = m_pChunkManager->GetChunk(m_gridX - 1, m_gridY, m_gridZ);
+ 		Chunk* pChunkXPlus = m_pChunkManager->GetChunk(m_gridX + 1, m_gridY, m_gridZ);
+ 		Chunk* pChunkYMinus = m_pChunkManager->GetChunk(m_gridX, m_gridY - 1, m_gridZ);
+ 		Chunk* pChunkYPlus = m_pChunkManager->GetChunk(m_gridX, m_gridY + 1, m_gridZ);
+ 		Chunk* pChunkZMinus = m_pChunkManager->GetChunk(m_gridX, m_gridY, m_gridZ - 1);
+ 		Chunk* pChunkZPlus = m_pChunkManager->GetChunk(m_gridX, m_gridY, m_gridZ + 1);
+ 
+ 		if (pChunkXMinus != NULL && pChunkXMinus->IsSetup() == true)
+ 			pChunkXMinus->UpdateSurroundedFlag();
+ 		if (pChunkXPlus != NULL && pChunkXPlus->IsSetup() == true)
+ 			pChunkXPlus->UpdateSurroundedFlag();
+ 		if (pChunkYMinus != NULL && pChunkYMinus->IsSetup() == true)
+ 			pChunkYMinus->UpdateSurroundedFlag();
+ 		if (pChunkYPlus != NULL && pChunkYPlus->IsSetup() == true)
+ 			pChunkYPlus->UpdateSurroundedFlag();
+ 		if (pChunkZMinus != NULL && pChunkZMinus->IsSetup() == true)
+ 			pChunkZMinus->UpdateSurroundedFlag();
+ 		if (pChunkZPlus != NULL && pChunkZPlus->IsSetup() == true)
+ 			pChunkZPlus->UpdateSurroundedFlag();
+ 	}
+ 
+// 	RemoveItems();
+ }
+ 
 void Chunk::Setup()
 {
 	ChunkStorageLoader* pChunkStorage = m_pChunkManager->GetChunkStorage(m_gridX, m_gridY, m_gridZ, false);
@@ -311,17 +311,17 @@ bool Chunk::IsUnloading()
 {
 	return m_isUnloading;
 }
-
-// Saving and loading
-void Chunk::SaveChunk()
-{
-	// TODO : Write Chunk::SaveChunk()
-}
-
-void Chunk::LoadChunk()
-{
-	// TODO : Write Chunk::LoadChunk()
-}
+// 
+// // Saving and loading
+// void Chunk::SaveChunk()
+// {
+// 	// TODO : Write Chunk::SaveChunk()
+// }
+// 
+// void Chunk::LoadChunk()
+// {
+// 	// TODO : Write Chunk::LoadChunk()
+// }
 
 // Position
 void Chunk::SetPosition(vec3 pos)
@@ -458,56 +458,54 @@ bool Chunk::GetActive(int x, int y, int z)
 
 	return true;
 }
-
-// Inside chunk
-bool Chunk::IsInsideChunk(vec3 pos)
-{
-	if ((pos.x < m_position.x - BLOCK_RENDER_SIZE) || (pos.x - m_position.x > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
-		return false;
-
-	if ((pos.y < m_position.y - BLOCK_RENDER_SIZE) || (pos.y - m_position.y > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
-		return false;
-
-	if ((pos.z < m_position.z - BLOCK_RENDER_SIZE) || (pos.z - m_position.z > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
-		return false;
-
-	return true;
-}
-
-// Items
-void Chunk::AddItem(Item* pItem)
-{
-	m_itemMutexLock.lock();
-	m_vpItemList.push_back(pItem);
-	m_itemMutexLock.unlock();
-}
-
-void Chunk::RemoveItem(Item* pItem)
-{
-	m_itemMutexLock.lock();
-	vector<Item*>::iterator iter = std::find(m_vpItemList.begin(), m_vpItemList.end(), pItem);
-	if (iter != m_vpItemList.end())
-	{
-		m_vpItemList.erase(iter);
-	}
-	m_itemMutexLock.unlock();
-}
-
-void Chunk::RemoveItems()
-{
-#if 0 //houstond
-	// Delete the chunk items data
-	m_itemMutexLock.lock();
-	for (unsigned int i = 0; i < m_vpItemList.size(); i++)
-	{
-		m_vpItemList[i]->SetChunk(NULL);
-		m_vpItemList[i]->SetErase(true);
-	}
-	m_vpItemList.clear();
-	m_itemMutexLock.unlock();
-#endif
-}
-
+// 
+// // Inside chunk
+// bool Chunk::IsInsideChunk(vec3 pos)
+// {
+// 	if ((pos.x < m_position.x - BLOCK_RENDER_SIZE) || (pos.x - m_position.x > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
+// 		return false;
+// 
+// 	if ((pos.y < m_position.y - BLOCK_RENDER_SIZE) || (pos.y - m_position.y > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
+// 		return false;
+// 
+// 	if ((pos.z < m_position.z - BLOCK_RENDER_SIZE) || (pos.z - m_position.z > CHUNK_SIZE * (BLOCK_RENDER_SIZE*2.0f) - BLOCK_RENDER_SIZE))
+// 		return false;
+// 
+// 	return true;
+// }
+// 
+// // Items
+// void Chunk::AddItem(Item* pItem)
+// {
+// 	m_itemMutexLock.lock();
+// 	m_vpItemList.push_back(pItem);
+// 	m_itemMutexLock.unlock();
+// }
+// 
+// void Chunk::RemoveItem(Item* pItem)
+// {
+// 	m_itemMutexLock.lock();
+// 	vector<Item*>::iterator iter = std::find(m_vpItemList.begin(), m_vpItemList.end(), pItem);
+// 	if (iter != m_vpItemList.end())
+// 	{
+// 		m_vpItemList.erase(iter);
+// 	}
+// 	m_itemMutexLock.unlock();
+// }
+// 
+// void Chunk::RemoveItems()
+// {
+// 	// Delete the chunk items data
+// 	m_itemMutexLock.lock();
+// 	for (unsigned int i = 0; i < m_vpItemList.size(); i++)
+// 	{
+// 		m_vpItemList[i]->SetChunk(NULL);
+// 		m_vpItemList[i]->SetErase(true);
+// 	}
+// 	m_vpItemList.clear();
+// 	m_itemMutexLock.unlock();
+// }
+// 
 // Block colour
 void Chunk::SetColour(int x, int y, int z, float r, float g, float b, float a, bool setBlockType)
 {
@@ -567,17 +565,17 @@ void Chunk::SetColour(int x, int y, int z, unsigned int colour, bool setBlockTyp
 	}
 }
 
-unsigned int Chunk::GetColour(int x, int y, int z)
-{
-	return m_colour[x + y * CHUNK_SIZE + z * CHUNK_SIZE_SQUARED];
-}
-
-// Block type
-BlockType Chunk::GetBlockType(int x, int y, int z)
-{
-	return m_blockType[x + y * CHUNK_SIZE + z * CHUNK_SIZE_SQUARED];
-}
-
+// unsigned int Chunk::GetColour(int x, int y, int z)
+// {
+// 	return m_colour[x + y * CHUNK_SIZE + z * CHUNK_SIZE_SQUARED];
+// }
+// 
+// // Block type
+// BlockType Chunk::GetBlockType(int x, int y, int z)
+// {
+// 	return m_blockType[x + y * CHUNK_SIZE + z * CHUNK_SIZE_SQUARED];
+// }
+// 
 void Chunk::SetBlockType(int x, int y, int z, BlockType blockType)
 {
 	m_blockType[x + y * CHUNK_SIZE + z * CHUNK_SIZE_SQUARED] = blockType;
@@ -1497,10 +1495,10 @@ bool Chunk::NeedsRebuild()
 	return m_rebuild;
 }
 
-bool Chunk::IsRebuildingMesh()
-{
-	return m_isRebuildingMesh;
-}
+// bool Chunk::IsRebuildingMesh()
+// {
+// 	return m_isRebuildingMesh;
+// }
 
 void Chunk::SwitchToCachedMesh()
 {
@@ -1512,12 +1510,12 @@ void Chunk::UndoCachedMesh()
 {
 	m_deleteCachedMesh = true;
 }
-
-// Updating
-void Chunk::Update(float dt)
-{
-
-}
+// 
+// // Updating
+// void Chunk::Update(float dt)
+// {
+// 
+// }
 
 // Rendering
 void Chunk::Render()
@@ -1563,110 +1561,110 @@ void Chunk::Render()
 	}
 }
 
-void Chunk::RenderDebug()
-{
-	float l_length = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
-	float l_height = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
-	float l_width = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
-
-	m_pRenderer->SetRenderMode(RM_WIREFRAME);
-	m_pRenderer->SetCullMode(CM_NOCULL);
-	m_pRenderer->SetLineWidth(1.0f);
-
-	m_pRenderer->PushMatrix();
-		m_pRenderer->TranslateWorldMatrix(m_position.x, m_position.y, m_position.z);
-		m_pRenderer->TranslateWorldMatrix(Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE);
-		m_pRenderer->TranslateWorldMatrix(-Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE);
-
-		m_pRenderer->ImmediateColourAlpha(1.0f, 1.0f, 0.0f, 1.0f);
-		if (IsEmpty())
-		{
-			m_pRenderer->ImmediateColourAlpha(1.0f, 0.0f, 0.0f, 1.0f);
-		}
-		else if (IsSurrounded())
-		{
-			m_pRenderer->ImmediateColourAlpha(0.0f, 1.0f, 1.0f, 1.0f);
-		}
-
-		m_pRenderer->EnableImmediateMode(IM_QUADS);
-			m_pRenderer->ImmediateNormal(0.0f, 0.0f, -1.0f);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-
-			m_pRenderer->ImmediateNormal(0.0f, 0.0f, 1.0f);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-
-			m_pRenderer->ImmediateNormal(1.0f, 0.0f, 0.0f);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-
-			m_pRenderer->ImmediateNormal(-1.0f, 0.0f, 0.0f);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-
-			m_pRenderer->ImmediateNormal(0.0f, -1.0f, 0.0f);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
-			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
-			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
-
-			m_pRenderer->ImmediateNormal(0.0f, 1.0f, 0.0f);
-			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
-			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
-			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
-		m_pRenderer->DisableImmediateMode();
-	m_pRenderer->PopMatrix();
-
-	m_pRenderer->SetCullMode(CM_BACK);
-}
-
-void Chunk::Render2D(Camera* pCamera, unsigned int viewport, unsigned int font)
-{
-	int winx, winy;
-	vec3 centerPos = m_position + vec3(Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE);
-	centerPos += vec3(-Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE);
-	m_pRenderer->PushMatrix();
-		m_pRenderer->SetProjectionMode(PM_PERSPECTIVE, viewport);
-		pCamera->Look();
-		m_pRenderer->GetScreenCoordinatesFromWorldPosition(centerPos, &winx, &winy);
-	m_pRenderer->PopMatrix();
-
-	bool renderChunkInfo = true;
-	if (renderChunkInfo)
-	{
-		char lLine1[64];
-		sprintf(lLine1, "%i, %i, %i", m_gridX, m_gridY, m_gridZ);
-		char lLine2[64];
-		sprintf(lLine2, "Neighbours: %i", m_numNeighbours);
-		char lLine3[64];
-		sprintf(lLine3, "Empty: %s", m_emptyChunk ? "true" : "false");
-		char lLine4[64];
-		sprintf(lLine4, "Surrounded: %s", m_surroundedChunk ? "true" : "false");
-		char lLine5[64];
-		sprintf(lLine5, "Rebuilds: %i", m_numRebuilds);
-		
-		m_pRenderer->PushMatrix();
-			m_pRenderer->SetRenderMode(RM_SOLID);
-			m_pRenderer->SetProjectionMode(PM_2D, viewport);
-			m_pRenderer->SetLookAtCamera(vec3(0.0f, 0.0f, 250.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine1);
-			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 20.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine2);
-			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 40.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine3);
-			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 60.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine4);
-			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 80.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine5);
-		m_pRenderer->PopMatrix();
-	}
-}
+// void Chunk::RenderDebug()
+// {
+// 	float l_length = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
+// 	float l_height = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
+// 	float l_width = (Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE) - 0.05f;
+// 
+// 	m_pRenderer->SetRenderMode(RM_WIREFRAME);
+// 	m_pRenderer->SetCullMode(CM_NOCULL);
+// 	m_pRenderer->SetLineWidth(1.0f);
+// 
+// 	m_pRenderer->PushMatrix();
+// 		m_pRenderer->TranslateWorldMatrix(m_position.x, m_position.y, m_position.z);
+// 		m_pRenderer->TranslateWorldMatrix(Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE);
+// 		m_pRenderer->TranslateWorldMatrix(-Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE);
+// 
+// 		m_pRenderer->ImmediateColourAlpha(1.0f, 1.0f, 0.0f, 1.0f);
+// 		if (IsEmpty())
+// 		{
+// 			m_pRenderer->ImmediateColourAlpha(1.0f, 0.0f, 0.0f, 1.0f);
+// 		}
+// 		else if (IsSurrounded())
+// 		{
+// 			m_pRenderer->ImmediateColourAlpha(0.0f, 1.0f, 1.0f, 1.0f);
+// 		}
+// 
+// 		m_pRenderer->EnableImmediateMode(IM_QUADS);
+// 			m_pRenderer->ImmediateNormal(0.0f, 0.0f, -1.0f);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 
+// 			m_pRenderer->ImmediateNormal(0.0f, 0.0f, 1.0f);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 
+// 			m_pRenderer->ImmediateNormal(1.0f, 0.0f, 0.0f);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 
+// 			m_pRenderer->ImmediateNormal(-1.0f, 0.0f, 0.0f);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 
+// 			m_pRenderer->ImmediateNormal(0.0f, -1.0f, 0.0f);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, -l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, -l_height, l_width);
+// 
+// 			m_pRenderer->ImmediateNormal(0.0f, 1.0f, 0.0f);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, -l_width);
+// 			m_pRenderer->ImmediateVertex(-l_length, l_height, l_width);
+// 			m_pRenderer->ImmediateVertex(l_length, l_height, l_width);
+// 		m_pRenderer->DisableImmediateMode();
+// 	m_pRenderer->PopMatrix();
+// 
+// 	m_pRenderer->SetCullMode(CM_BACK);
+// }
+//
+// void Chunk::Render2D(Camera* pCamera, unsigned int viewport, unsigned int font)
+// {
+// 	int winx, winy;
+// 	vec3 centerPos = m_position + vec3(Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE, Chunk::CHUNK_SIZE*Chunk::BLOCK_RENDER_SIZE);
+// 	centerPos += vec3(-Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE, -Chunk::BLOCK_RENDER_SIZE);
+// 	m_pRenderer->PushMatrix();
+// 		m_pRenderer->SetProjectionMode(PM_PERSPECTIVE, viewport);
+// 		pCamera->Look();
+// 		m_pRenderer->GetScreenCoordinatesFromWorldPosition(centerPos, &winx, &winy);
+// 	m_pRenderer->PopMatrix();
+// 
+// 	bool renderChunkInfo = true;
+// 	if (renderChunkInfo)
+// 	{
+// 		char lLine1[64];
+// 		sprintf(lLine1, "%i, %i, %i", m_gridX, m_gridY, m_gridZ);
+// 		char lLine2[64];
+// 		sprintf(lLine2, "Neighbours: %i", m_numNeighbours);
+// 		char lLine3[64];
+// 		sprintf(lLine3, "Empty: %s", m_emptyChunk ? "true" : "false");
+// 		char lLine4[64];
+// 		sprintf(lLine4, "Surrounded: %s", m_surroundedChunk ? "true" : "false");
+// 		char lLine5[64];
+// 		sprintf(lLine5, "Rebuilds: %i", m_numRebuilds);
+// 		
+// 		m_pRenderer->PushMatrix();
+// 			m_pRenderer->SetRenderMode(RM_SOLID);
+// 			m_pRenderer->SetProjectionMode(PM_2D, viewport);
+// 			m_pRenderer->SetLookAtCamera(vec3(0.0f, 0.0f, 250.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+// 			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine1);
+// 			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 20.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine2);
+// 			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 40.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine3);
+// 			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 60.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine4);
+// 			m_pRenderer->RenderFreeTypeText(font, (float)winx, (float)winy - 80.0f, 1.0f, Colour(1.0f, 1.0f, 1.0f), 1.0f, "%s", lLine5);
+// 		m_pRenderer->PopMatrix();
+// 	}
+// }
 
 // < Operator (Used for chunk sorting, closest to camera)
 bool Chunk::operator<(const Chunk &w) const

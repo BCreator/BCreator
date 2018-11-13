@@ -157,23 +157,23 @@ unsigned int ChunkManager::GetChunkMaterialID()
 {
 	return m_chunkMaterialID;
 }
-
-int ChunkManager::GetNumChunksLoaded()
-{
-	return m_numChunksLoaded;
-}
-
-int ChunkManager::GetNumChunksRender()
-{
-	return m_numChunksRender;
-}
-
-// Loader radius
-void ChunkManager::SetLoaderRadius(float radius)
-{
-	m_loaderRadius = radius;
-}
-
+// 
+// int ChunkManager::GetNumChunksLoaded()
+// {
+// 	return m_numChunksLoaded;
+// }
+// 
+// int ChunkManager::GetNumChunksRender()
+// {
+// 	return m_numChunksRender;
+// }
+// 
+// // Loader radius
+// void ChunkManager::SetLoaderRadius(float radius)
+// {
+// 	m_loaderRadius = radius;
+// }
+// 
 float ChunkManager::GetLoaderRadius()
 {
 	return m_loaderRadius;
@@ -184,12 +184,12 @@ void ChunkManager::SetStepLockEnabled(bool enabled)
 {
 	m_stepLockEnabled = enabled;
 }
-
-void ChunkManager::StepNextUpdate()
-{
-	m_updateStepLock = false;
-}
-
+// 
+// void ChunkManager::StepNextUpdate()
+// {
+// 	m_updateStepLock = false;
+// }
+// 
 // Chunk Creation
 void ChunkManager::CreateNewChunk(int x, int y, int z)
 {
@@ -447,38 +447,38 @@ Chunk* ChunkManager::GetChunk(int aX, int aY, int aZ)
 
 	return NULL;
 }
-
-bool ChunkManager::FindClosestFloor(vec3 position, vec3* floorPosition)
-{
-	int blockX, blockY, blockZ;
-	vec3 blockPos;
-
-	bool collides = false;
-	int iterations = 1;
-	while (collides == false && iterations < 100)
-	{
-		vec3 testPos = position - (vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f) * (float)iterations);
-
-		Chunk* pChunk = NULL;
-		bool active = GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, &blockPos, &blockX, &blockY, &blockZ, &pChunk);
-
-		if (pChunk != NULL && pChunk->IsSetup() && pChunk->NeedsRebuild() == false && active == true)
-		{
-			collides = true;
-
-			*floorPosition = blockPos + vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f);
-			(*floorPosition).x = position.x;
-			(*floorPosition).z = position.z;
-
-			return true;
-		}
-
-		iterations++;
-	}
-
-	return collides;
-}
-
+// 
+// bool ChunkManager::FindClosestFloor(vec3 position, vec3* floorPosition)
+// {
+// 	int blockX, blockY, blockZ;
+// 	vec3 blockPos;
+// 
+// 	bool collides = false;
+// 	int iterations = 1;
+// 	while (collides == false && iterations < 100)
+// 	{
+// 		vec3 testPos = position - (vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f) * (float)iterations);
+// 
+// 		Chunk* pChunk = NULL;
+// 		bool active = GetBlockActiveFrom3DPosition(testPos.x, testPos.y, testPos.z, &blockPos, &blockX, &blockY, &blockZ, &pChunk);
+// 
+// 		if (pChunk != NULL && pChunk->IsSetup() && pChunk->NeedsRebuild() == false && active == true)
+// 		{
+// 			collides = true;
+// 
+// 			*floorPosition = blockPos + vec3(0.0f, Chunk::BLOCK_RENDER_SIZE, 0.0f);
+// 			(*floorPosition).x = position.x;
+// 			(*floorPosition).z = position.z;
+// 
+// 			return true;
+// 		}
+// 
+// 		iterations++;
+// 	}
+// 
+// 	return collides;
+// }
+// 
 // Getting the active block state given a position and chunk information
 bool ChunkManager::GetBlockActiveFrom3DPosition(float x, float y, float z, vec3 *blockPos, int* blockX, int* blockY, int* blockZ, Chunk** pChunk)
 {
@@ -1015,48 +1015,48 @@ QubicleBinary* ChunkManager::ImportQubicleBinary(const char* filename, vec3 posi
 //  		}
 //  	}
 // }
-
-// Water
-void ChunkManager::SetWaterHeight(float height)
-{
-	m_waterHeight = height;
-}
-
-float ChunkManager::GetWaterHeight()
-{
-	return m_waterHeight;
-}
-
-bool ChunkManager::IsUnderWater(vec3 position)
-{
-	if (m_pVoxSettings->m_waterRendering == false)
-	{
-		return false;
-	}
-
-// 	if (VoxGame::GetInstance()->GetGameMode() == GameMode_FrontEnd)
+// 
+// // Water
+// void ChunkManager::SetWaterHeight(float height)
+// {
+// 	m_waterHeight = height;
+// }
+// 
+// float ChunkManager::GetWaterHeight()
+// {
+// 	return m_waterHeight;
+// }
+// 
+// bool ChunkManager::IsUnderWater(vec3 position)
+// {
+// 	if (m_pVoxSettings->m_waterRendering == false)
 // 	{
 // 		return false;
 // 	}
-
-	if(position.y <= m_waterHeight)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-// Rendering modes
-void ChunkManager::SetWireframeRender(bool wireframe)
-{
-	m_wireframeRender = wireframe;
-}
-
-void ChunkManager::SetFaceMerging(bool faceMerge)
-{
-	m_faceMerging = faceMerge;
-}
+// 
+// // 	if (VoxGame::GetInstance()->GetGameMode() == GameMode_FrontEnd)
+// // 	{
+// // 		return false;
+// // 	}
+// 
+// 	if(position.y <= m_waterHeight)
+// 	{
+// 		return true;
+// 	}
+// 
+// 	return false;
+// }
+// 
+// // Rendering modes
+// void ChunkManager::SetWireframeRender(bool wireframe)
+// {
+// 	m_wireframeRender = wireframe;
+// }
+// 
+// void ChunkManager::SetFaceMerging(bool faceMerge)
+// {
+// 	m_faceMerging = faceMerge;
+// }
 
 bool ChunkManager::GetFaceMerging()
 {
@@ -1122,7 +1122,7 @@ void ChunkManager::UpdatingChunksThread()
 
 			if (pChunk != NULL)
 			{
-				pChunk->Update(0.01f);
+//				pChunk->Update(0.01f);
 
 				int gridX = pChunk->GetGridX();
 				int gridY = pChunk->GetGridY();
@@ -1421,59 +1421,59 @@ void ChunkManager::Render(bool shadowRender, int GMode, unsigned int ViewPort, c
 
 	m_pRenderer->EndMeshRender();
 }
-
-void ChunkManager::RenderWater()
-{
-	m_pRenderer->EnableTransparency(BF_SRC_ALPHA, BF_ONE_MINUS_SRC_ALPHA);
-	m_pRenderer->EnableMaterial(m_chunkMaterialID);
-
-	float waterDistance = 500.0f;
-
-	m_pRenderer->SetCullMode(CM_NOCULL);
-
-	m_pRenderer->SetRenderMode(RM_SOLID);
-	m_pRenderer->EnableImmediateMode(IM_QUADS);
-		m_pRenderer->ImmediateVertex(-(float)waterDistance, m_waterHeight, -(float)waterDistance);
-		m_pRenderer->ImmediateVertex(-(float)waterDistance, m_waterHeight, (float)waterDistance);
-		m_pRenderer->ImmediateVertex((float)waterDistance, m_waterHeight, (float)waterDistance);
-		m_pRenderer->ImmediateVertex((float)waterDistance, m_waterHeight, -(float)waterDistance);
-	m_pRenderer->DisableImmediateMode();
-
-	m_pRenderer->SetCullMode(CM_BACK);
-
-	m_pRenderer->DisableTransparency();
-}
-
-void ChunkManager::RenderDebug()
-{
-	m_pRenderer->SetRenderMode(RM_SOLID);
-
-	m_ChunkMapMutexLock.lock();
-	typedef map<ChunkCoordKeys, Chunk*>::iterator it_type;
-	for (it_type iterator = m_chunksMap.begin(); iterator != m_chunksMap.end(); iterator++)
-	{
-		Chunk* pChunk = iterator->second;
-
-		if (pChunk != NULL && pChunk->IsCreated())
-		{
-			pChunk->RenderDebug();
-		}
-	}
-	m_ChunkMapMutexLock.unlock();
-}
-
-void ChunkManager::Render2D(Camera* pCamera, unsigned int viewport, unsigned int font)
-{
-	m_ChunkMapMutexLock.lock();
-	typedef map<ChunkCoordKeys, Chunk*>::iterator it_type;
-	for (it_type iterator = m_chunksMap.begin(); iterator != m_chunksMap.end(); iterator++)
-	{
-		Chunk* pChunk = iterator->second;
-
-		if (pChunk != NULL && pChunk->IsCreated())
-		{
-			pChunk->Render2D(pCamera, viewport, font);
-		}
-	}
-	m_ChunkMapMutexLock.unlock();
-}
+// 
+// void ChunkManager::RenderWater()
+// {
+// 	m_pRenderer->EnableTransparency(BF_SRC_ALPHA, BF_ONE_MINUS_SRC_ALPHA);
+// 	m_pRenderer->EnableMaterial(m_chunkMaterialID);
+// 
+// 	float waterDistance = 500.0f;
+// 
+// 	m_pRenderer->SetCullMode(CM_NOCULL);
+// 
+// 	m_pRenderer->SetRenderMode(RM_SOLID);
+// 	m_pRenderer->EnableImmediateMode(IM_QUADS);
+// 		m_pRenderer->ImmediateVertex(-(float)waterDistance, m_waterHeight, -(float)waterDistance);
+// 		m_pRenderer->ImmediateVertex(-(float)waterDistance, m_waterHeight, (float)waterDistance);
+// 		m_pRenderer->ImmediateVertex((float)waterDistance, m_waterHeight, (float)waterDistance);
+// 		m_pRenderer->ImmediateVertex((float)waterDistance, m_waterHeight, -(float)waterDistance);
+// 	m_pRenderer->DisableImmediateMode();
+// 
+// 	m_pRenderer->SetCullMode(CM_BACK);
+// 
+// 	m_pRenderer->DisableTransparency();
+// }
+// 
+// void ChunkManager::RenderDebug()
+// {
+// 	m_pRenderer->SetRenderMode(RM_SOLID);
+// 
+// 	m_ChunkMapMutexLock.lock();
+// 	typedef map<ChunkCoordKeys, Chunk*>::iterator it_type;
+// 	for (it_type iterator = m_chunksMap.begin(); iterator != m_chunksMap.end(); iterator++)
+// 	{
+// 		Chunk* pChunk = iterator->second;
+// 
+// 		if (pChunk != NULL && pChunk->IsCreated())
+// 		{
+// 			pChunk->RenderDebug();
+// 		}
+// 	}
+// 	m_ChunkMapMutexLock.unlock();
+// }
+// 
+// void ChunkManager::Render2D(Camera* pCamera, unsigned int viewport, unsigned int font)
+// {
+// 	m_ChunkMapMutexLock.lock();
+// 	typedef map<ChunkCoordKeys, Chunk*>::iterator it_type;
+// 	for (it_type iterator = m_chunksMap.begin(); iterator != m_chunksMap.end(); iterator++)
+// 	{
+// 		Chunk* pChunk = iterator->second;
+// 
+// 		if (pChunk != NULL && pChunk->IsCreated())
+// 		{
+// 			pChunk->Render2D(pCamera, viewport, font);
+// 		}
+// 	}
+// 	m_ChunkMapMutexLock.unlock();
+// }

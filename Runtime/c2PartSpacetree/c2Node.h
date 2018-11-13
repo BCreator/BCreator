@@ -16,6 +16,8 @@
 #ifndef C2_SPACETREE_C2NODE_H_
 #define C2_SPACETREE_C2NODE_H_
 
+#include<glm/mat4x4.hpp>
+
 #include"../../../c2Foundation/c2Part.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +26,8 @@ class C2API c2Node final : public c2Part {
 private:
 	explicit c2Node();
 	virtual ~c2Node() override;
+
+	glm::mat4 _Transform;
 };
 
 class c2Camera : public c2Part {

@@ -107,12 +107,8 @@ int main_VoxelLab() {
 // 
 // };
 
-class PartQubicle {
-
-};
-
 class c2VoxelBelt {
-	void BeginShaderRender()
+	void beginShaderRender()
 	{
 		glShader* pShader = NULL;
 		m_pRenderer->BeginGLSLShader(m_defaultShader);
@@ -130,7 +126,7 @@ class c2VoxelBelt {
 		glFogf(GL_FOG_END, lfogEnd);
 		glEnable(GL_FOG);
 	}
-	void EndShaderRender()
+	void endShaderRender()
 	{
 		glDisable(GL_FOG);
 		m_pRenderer->EndGLSLShader(m_defaultShader);
@@ -180,7 +176,8 @@ public:
 		m_pChunkManager = new ChunkManager(m_pRenderer, m_pVoxSettings, m_pQubicleBinaryManager);
 		m_pChunkManager->SetStepLockEnabled(m_pVoxSettings->m_stepUpdating);
 		m_pBiomeManager = new BiomeManager(m_pRenderer);
-		m_pPlayer = new Player(m_pRenderer, m_pChunkManager, m_pQubicleBinaryManager, nullptr, nullptr);
+//		m_pPlayer = new Player(m_pRenderer, m_pChunkManager, m_pQubicleBinaryManager, nullptr, nullptr);
+		m_pPlayer = new Player;
 		m_pChunkManager->SetPlayer(m_pPlayer);
 		m_pChunkManager->SetBiomeManager(m_pBiomeManager);
 		m_pBiomeManager->AddSafeZone(vec3(21.0f, 8.5f, 20.0f), 25.f, 30.0f, 25.0f);
@@ -195,6 +192,7 @@ public:
 	}
 
 	void render() {
+#if 0
 		m_pRenderer->BeginScene(true, true, true);
 		m_pRenderer->PushMatrix();
 		{
@@ -204,18 +202,75 @@ public:
 			m_pRenderer->EnableDepthTest(DT_LESS);
 			m_pGameCamera->Look();
 			m_pRenderer->PushMatrix();
-			m_pRenderer->EnableLight(m_defaultLight, 0);
+//			m_pRenderer->EnableLight(m_defaultLight, 0);
 			m_pRenderer->PopMatrix();
 			m_pRenderer->SetClearColour(0.0f, 0.0f, 0.0f, 1.0f);
 			m_pRenderer->ClearScene(true, true, true);
-			BeginShaderRender();
+#else
+		/*BeginScene*/
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		m_pRenderer->ResetRenderedStats();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		m_pRenderer->m_model.LoadIdentity();
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+		glPushMatrix();
+		m_pRenderer->m_modelStack.push_back(m_pRenderer->m_model);
+		{
+			//SetProjectionMode
+			Viewport* pVeiwport = m_pRenderer->m_viewports[m_defaultViewport];
+			glViewport(pVeiwport->Left, pVeiwport->Bottom, pVeiwport->Width, pVeiwport->Height);
+			m_pRenderer->m_activeViewport = m_defaultViewport;
+			m_pRenderer->m_projection = &(pVeiwport->Perspective);
+				//SetViewProjection
+			glMatrixMode(GL_PROJECTION);
+	// 			glm::mat4 m;
+	// 			glLoadMatrixf(m);
+				Matrix4x4 mp, mv;
+				static float tm[16];
+				(m_pRenderer->m_view*(*m_pRenderer->m_projection)).GetMatrix(tm);
+				glLoadMatrixf(tm);
+			glMatrixMode(GL_MODELVIEW);
+
+			//EnableVectorNormalize
+			glEnable(GL_NORMALIZE);
+			//SetCullMode
+			m_pRenderer->m_cullMode = CM_BACK;
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+			//EnableDepthTest Renderer.cpp:LN815
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			//Camera::Look()
+			vec3 view = m_pGameCamera->m_position + m_pGameCamera->m_facing;
+			gluLookAt(m_pGameCamera->m_position.x, m_pGameCamera->m_position.y, m_pGameCamera->m_position.z,
+					view.x, view.y, view.z, m_pGameCamera->m_up.x, m_pGameCamera->m_up.y, m_pGameCamera->m_up.z);
+			glPushMatrix();
+			m_pRenderer->m_modelStack.push_back(m_pRenderer->m_model);
+//				m_pRenderer->EnableLight(m_defaultLight, 0);
+			glPopMatrix();
+			m_pRenderer->m_model = m_pRenderer->m_modelStack.back();
+			m_pRenderer->m_modelStack.pop_back();
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+#endif
+			beginShaderRender();
 			{
 				m_pChunkManager->Render(false, m_gameMode, m_defaultViewport, m_pGameCamera->GetPosition());
 			}
-			EndShaderRender();
+			endShaderRender();
 		}
+#if 0
 		m_pRenderer->PopMatrix();
 		m_pRenderer->EndScene();
+#else
+		glPopMatrix();
+		m_pRenderer->m_model = m_pRenderer->m_modelStack.back();
+		m_pRenderer->m_modelStack.pop_back();
+#endif
 	}
 };
 
