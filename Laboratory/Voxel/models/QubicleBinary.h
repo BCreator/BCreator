@@ -17,8 +17,17 @@
 
 #pragma once
 
-#include "MS3DModel.h"
-#include "MS3DAnimator.h"
+#if 0
+ #include "MS3DModel.h"
+ #include "MS3DAnimator.h"
+#else
+#include"../Renderer/Renderer.h"
+#include"../Maths/3dmaths.h"
+#include<glm/vec3.hpp>
+using namespace glm;
+#include<vector>
+using namespace std;
+#endif
 
 class VoxelCharacter;
 
@@ -68,7 +77,7 @@ public:
 
 	bool m_removed;
 
-	OpenGLTriangleMesh* m_pMesh;
+//	OpenGLTriangleMesh* m_pMesh;
 
 	void GetColour(int x, int y, int z, float* r, float* g, float* b, float* a)
 	{
@@ -109,7 +118,6 @@ public:
 
 typedef vector<QubicleMatrix*> QubicleMatrixList;
 
-
 class QubicleBinary
 {
 public:
@@ -141,11 +149,11 @@ public:
 	bool GetSingleMeshColour(float* r, float* g, float* b, float* a);
 	bool GetActive(int matrixIndex, int x, int y, int z);
 
-	void SetMeshAlpha(float alpha);
-	void SetMeshSingleColour(float r, float g, float b);
+//	void SetMeshAlpha(float alpha);
+//	void SetMeshSingleColour(float r, float g, float b);
 
-	void CreateMesh(bool lDoFaceMerging);
-	void RebuildMesh(bool lDoFaceMerging);
+//	void CreateMesh(bool lDoFaceMerging);
+//	void RebuildMesh(bool lDoFaceMerging);
 	void UpdateMergedSide(int *merged, int matrixIndex, int blockx, int blocky, int blockz, int width, int height, vec3 *p1, vec3 *p2, vec3 *p3, vec3 *p4, int startX, int startY, int maxX, int maxY, bool positive, bool zFace, bool xFace, bool yFace);
 
 	int GetNumMatrices();
@@ -155,7 +163,7 @@ public:
 	float GetMatrixScale(int index);
 	vec3 GetMatrixOffset(int index);
 
-	void SetupMatrixBones(MS3DAnimator* pSkeleton);
+//	void SetupMatrixBones(MS3DAnimator* pSkeleton);
 	
 	void SetScaleAndOffsetForMatrix(const char* matrixName, float scale, float xOffset, float yOffset, float zOffset);
 	float GetScale(const char* matrixName);
@@ -176,12 +184,12 @@ public:
 	void Update(float dt);
 
 	// Rendering
-	void Render(bool renderOutline, bool reflection, bool silhouette, Colour OutlineColour);
-	void RenderWithAnimator(MS3DAnimator** pSkeleton, VoxelCharacter* pVoxelCharacter, bool renderOutline, bool reflection, bool silhouette, Colour OutlineColour, bool subSelectionNamePicking);
-	void RenderSingleMatrix(MS3DAnimator** pSkeleton, VoxelCharacter* pVoxelCharacter, string matrixName, bool renderOutline, bool silhouette, Colour OutlineColour);
-	void RenderFace(MS3DAnimator* pSkeleton, VoxelCharacter* pVoxelCharacter, bool transparency, bool useScale = true, bool useTranslate = true);
-	void RenderPaperdoll(MS3DAnimator* pSkeleton_Left, MS3DAnimator* pSkeleton_Right, VoxelCharacter* pVoxelCharacter);
-	void RenderPortrait(MS3DAnimator* pSkeleton, VoxelCharacter* pVoxelCharacter, string matrixName);
+//	void Render(bool renderOutline, bool reflection, bool silhouette, Colour OutlineColour);
+//	void RenderWithAnimator(MS3DAnimator** pSkeleton, VoxelCharacter* pVoxelCharacter, bool renderOutline, bool reflection, bool silhouette, Colour OutlineColour, bool subSelectionNamePicking);
+//	void RenderSingleMatrix(MS3DAnimator** pSkeleton, VoxelCharacter* pVoxelCharacter, string matrixName, bool renderOutline, bool silhouette, Colour OutlineColour);
+//	void RenderFace(MS3DAnimator* pSkeleton, VoxelCharacter* pVoxelCharacter, bool transparency, bool useScale = true, bool useTranslate = true);
+//	void RenderPaperdoll(MS3DAnimator* pSkeleton_Left, MS3DAnimator* pSkeleton_Right, VoxelCharacter* pVoxelCharacter);
+//	void RenderPortrait(MS3DAnimator* pSkeleton, VoxelCharacter* pVoxelCharacter, string matrixName);
 
 protected:
 	/* Protected methods */
