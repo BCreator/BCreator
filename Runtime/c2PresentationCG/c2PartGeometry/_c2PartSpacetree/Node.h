@@ -13,21 +13,22 @@
  * 本类不允许被继承
 */
 
-#ifndef C2_SPACETREE_NODE_H_
-#define C2_SPACETREE_NODE_H_
+#ifndef C2_SPACETREE_C2NODE_H_
+#define C2_SPACETREE_C2NODE_H_
 
-#include"../../../Foundation/Part.h"
+#include"../../../c2Foundation/c2Part.h"
 
-namespace c2 {
 ////////////////////////////////////////////////////////////////////////////////
-
-class C2API Node final : public Part {
-	C2DefineClass(Node)
+class C2API c2Node final : public c2Part {
+	C2DefineClass(c2Node)
 private:
-	explicit Node();
-	virtual ~Node() override;
+	explicit c2Node();
+	virtual ~c2Node() override;
+};
+
+class c2Camera : public c2Part {
+	c2Node*	_pNode;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-}//namespace c2
-#endif// C2_SPACETREE_NODE_H_
+#endif// C2_SPACETREE_C2NODE_H_

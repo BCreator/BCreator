@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Laboratory\fbxlab.cpp" />
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\tempmain.cpp" />
@@ -563,10 +562,10 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>E:\netdsk\mega\BCreator\Laboratory\Voxel\libnoise;D:\lab\Vox\source\freetype\include;E:\netdsk\mega\BCreator\Laboratory\Voxel;E:\netdsk\mega\BCreator\Laboratory\Voxel\glew\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLEW;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\Laboratory\Voxel\freetype\libs\2015\freetype261d.lib;..\Laboratory\Voxel\libnoise\libs\2015\noise_d.lib;libfbxsdk-md.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./Debug/Runtime.lib;glfw3.lib;..\Laboratory\Voxel\freetype\libs\2015\freetype261d.lib;..\Laboratory\Voxel\libnoise\libs\2015\noise_d.lib;libfbxsdk-md.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

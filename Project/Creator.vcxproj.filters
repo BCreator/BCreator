@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GPanelAssets">
+      <UniqueIdentifier>{e9de812c-0361-45b6-9c50-0d0384edab69}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h">
+      <Filter>GPanelAssets</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Creator\GPanelAssets\CMakeLists.txt">
+      <Filter>GPanelAssets</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Creator\main.cpp" />
+  </ItemGroup>
+</Project>

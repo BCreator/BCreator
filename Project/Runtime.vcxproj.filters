@@ -2,975 +2,973 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="..\Runtime\ThirdParty\imgui\docs\README.md">
-      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
+      <Filter>ThirdParty\imgui\docs</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_packing_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_trigonometric.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_trigonometric_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_vector_relational.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_vector_relational_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_half.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat2x2.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat2x3.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat2x4.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat3x2.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat3x3.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat3x4.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat4x2.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat4x3.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat4x4.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_mat4x4_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_quat.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_quat_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_vec1.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_vec2.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_vec3.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_vec4.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\type_vec4_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_common.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_common_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_exponential.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_exponential_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_geometric.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_geometric_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_integer.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_integer_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_matrix.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_matrix_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\detail\func_packing.inl">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\integer.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\matrix_access.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\matrix_inverse.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\matrix_transform.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\noise.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\packing.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\quaternion.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\quaternion_simd.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\random.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\reciprocal.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\round.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\type_precision.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\type_ptr.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\ulp.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\bitfield.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\color_space.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\constants.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtc\epsilon.inl">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\fast_exponential.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\fast_square_root.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\fast_trigonometry.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\float_notmalize.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\functions.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\gradient_paint.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\handed_coordinate_space.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\hash.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\integer.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\intersect.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\io.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\log_base.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_cross_product.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_decompose.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_factorisation.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_interpolation.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_major_storage.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_operation.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_query.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\matrix_transform_2d.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\mixed_product.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\norm.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\normal.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\normalize_dot.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\number_precision.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\optimum_pow.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\orthonormalize.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\perpendicular.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\polar_coordinates.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\projection.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\quaternion.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\raw_data.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\rotate_normalized_axis.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\rotate_vector.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\scalar_relational.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\spline.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\std_based_type.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\string_cast.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\texture.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\transform.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\transform2.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\type_aligned.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\type_trait.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\vector_angle.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\vector_query.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\wrap.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\associated_min_max.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\bit.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\closest_point.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\color_encoding.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\color_space.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\color_space_YCoCg.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\common.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\compatibility.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\component_wise.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\dual_quaternion.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\easing.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\euler_angles.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\extend.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\extended_min_max.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
     <None Include="..\Runtime\ThirdParty\glm\gtx\exterior_product.inl">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
-      <Filter>Runtime\_c2Command</Filter>
+      <Filter>_c2Command</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp">
-      <Filter>Runtime\_c2Application</Filter>
+      <Filter>_c2Application</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp">
-      <Filter>Runtime\_c2Application</Filter>
+      <Filter>_c2Application</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui.cpp">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_demo.cpp">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_draw.cpp">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_widgets.cpp">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_glfw.cpp">
-      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+      <Filter>ThirdParty\imgui\examples</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+      <Filter>ThirdParty\imgui\examples</Filter>
     </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\glm\detail\glm.cpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\gl3w.c">
+      <Filter>ThirdParty\imgui\libs\gl3w\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Creator">
-      <UniqueIdentifier>{6cbf54f4-3e01-4cd7-b6aa-2029e23ac61a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime">
-      <UniqueIdentifier>{9464ae04-ab26-44ca-9561-2abeeb8e790b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\_c2Debugger">
-      <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG">
-      <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartGeometry">
-      <UniqueIdentifier>{a6edeb6b-846b-419e-829e-061774987dd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree">
-      <UniqueIdentifier>{93449683-f696-4dc3-b487-303d937c7fcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\_c2Command">
-      <UniqueIdentifier>{0d81982c-9e10-4ac4-a5a0-249814c1f1c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\_c2Filestream">
-      <UniqueIdentifier>{38d7a9dd-9405-4dc6-bc12-4e61492fd103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartAudio">
-      <UniqueIdentifier>{369671e2-2545-4d9c-b36d-6564a2b70395}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartController">
-      <UniqueIdentifier>{f836451e-504d-4618-ab32-6a94be555d6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartInfoCollector">
-      <UniqueIdentifier>{aaa70403-78bb-423a-b080-e5f97339a71b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\c2PartVisual">
-      <UniqueIdentifier>{d31138b6-0a9b-4954-a1fd-7ed840c586ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2PresentationCG\Render">
-      <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Examples">
-      <UniqueIdentifier>{ea5745db-6d61-4203-9505-0996f96e6b9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\_c2Application">
+    <Filter Include="_c2Application">
       <UniqueIdentifier>{f568f275-b9c9-4eb9-aa29-92a6997c8a56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty">
-      <UniqueIdentifier>{8319f043-88fc-4556-bc09-e0f6440e591d}</UniqueIdentifier>
+    <Filter Include="_c2Command">
+      <UniqueIdentifier>{0d81982c-9e10-4ac4-a5a0-249814c1f1c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\imgui">
-      <UniqueIdentifier>{351e7136-0760-4a80-9dc6-f19a123052f6}</UniqueIdentifier>
+    <Filter Include="_c2Debugger">
+      <UniqueIdentifier>{5a24d493-4c50-4fca-aee5-bdcd253f4e9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\imgui\examples">
-      <UniqueIdentifier>{dae0113d-9124-4ffa-b121-ba3485244d34}</UniqueIdentifier>
+    <Filter Include="_c2Filestream">
+      <UniqueIdentifier>{38d7a9dd-9405-4dc6-bc12-4e61492fd103}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\imgui\docs">
-      <UniqueIdentifier>{d3d4f608-1e33-459f-8bf8-6a8a91d724e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Runtime\c2Foundation">
+    <Filter Include="c2Foundation">
       <UniqueIdentifier>{17697c95-205f-42b9-b1c5-0056337584b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\glm">
+    <Filter Include="c2PresentationCG">
+      <UniqueIdentifier>{f79a9e81-f516-48b2-ad53-f1dd9c301494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartGeometry">
+      <UniqueIdentifier>{a6edeb6b-846b-419e-829e-061774987dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartGeometry\_c2PartSpacetree">
+      <UniqueIdentifier>{93449683-f696-4dc3-b487-303d937c7fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartAudio">
+      <UniqueIdentifier>{369671e2-2545-4d9c-b36d-6564a2b70395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartController">
+      <UniqueIdentifier>{f836451e-504d-4618-ab32-6a94be555d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartInfoCollector">
+      <UniqueIdentifier>{aaa70403-78bb-423a-b080-e5f97339a71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\c2PartVisual">
+      <UniqueIdentifier>{d31138b6-0a9b-4954-a1fd-7ed840c586ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PresentationCG\Render">
+      <UniqueIdentifier>{5f2e03eb-dbb0-4460-bc88-860e82cc553a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{8319f043-88fc-4556-bc09-e0f6440e591d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui">
+      <UniqueIdentifier>{351e7136-0760-4a80-9dc6-f19a123052f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui\examples">
+      <UniqueIdentifier>{dae0113d-9124-4ffa-b121-ba3485244d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui\docs">
+      <UniqueIdentifier>{d3d4f608-1e33-459f-8bf8-6a8a91d724e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\glm">
       <UniqueIdentifier>{b5223e0d-82b8-4390-9fa0-7c9c401a0a5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\glm\gtc">
+    <Filter Include="ThirdParty\glm\gtc">
       <UniqueIdentifier>{9b3e6028-fce9-49cd-8dc8-d6aef29797a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\glm\detail">
+    <Filter Include="ThirdParty\glm\detail">
       <UniqueIdentifier>{07138bad-4d4d-4268-b159-35206226d33e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime\ThirdParty\glm\gtx">
+    <Filter Include="ThirdParty\glm\gtx">
       <UniqueIdentifier>{8fc04c90-a92f-4d62-80ad-5e19d440e652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui\libs">
+      <UniqueIdentifier>{b2827515-3fc1-4830-bd82-30731dbc1e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui\libs\gl3w">
+      <UniqueIdentifier>{d72cbea0-7329-4bd2-baa6-946851944632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui\libs\gl3w\GL">
+      <UniqueIdentifier>{04e69cfa-6e37-421e-9da8-9c24a35fc53b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Runtime\_c2Debugger\Console.h">
-      <Filter>Runtime\_c2Debugger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2Debugger.h">
-      <Filter>Runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2Filestream.h">
-      <Filter>Runtime</Filter>
+      <Filter>_c2Debugger</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Filestream\VFS.h">
-      <Filter>Runtime\_c2Filestream</Filter>
+      <Filter>_c2Filestream</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\AudDevice.h">
-      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+      <Filter>c2PresentationCG\c2PartAudio</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartBGM.h">
-      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+      <Filter>c2PresentationCG\c2PartAudio</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartAudio\c2PartSFX.h">
-      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+      <Filter>c2PresentationCG\c2PartAudio</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartController\c2PartAnimation.h">
-      <Filter>Runtime\c2PresentationCG\c2PartController</Filter>
+      <Filter>c2PresentationCG\c2PartController</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\c2PartNavigation.h">
-      <Filter>Runtime\c2PresentationCG\c2PartInfoCollector</Filter>
+      <Filter>c2PresentationCG\c2PartInfoCollector</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartVisual\c2PartParticle.h">
-      <Filter>Runtime\c2PresentationCG\c2PartVisual</Filter>
+      <Filter>c2PresentationCG\c2PartVisual</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\RenderPath.h">
-      <Filter>Runtime\c2PresentationCG\Render</Filter>
+      <Filter>c2PresentationCG\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\Render\Material.h">
-      <Filter>Runtime\c2PresentationCG\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2Application.h">
-      <Filter>Runtime</Filter>
+      <Filter>c2PresentationCG\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h">
-      <Filter>Runtime\_c2Application</Filter>
+      <Filter>_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\Node.h">
-      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
+      <Filter>c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\gleq.h">
-      <Filter>Runtime\_c2Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2DefEvent.h">
-      <Filter>Runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\c2PreDefined.h">
-      <Filter>Runtime</Filter>
+      <Filter>_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">
-      <Filter>Runtime\_c2Application</Filter>
+      <Filter>_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_truetype.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imconfig.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imgui.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imgui_internal.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_rectpack.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_textedit.h">
-      <Filter>Runtime\ThirdParty\imgui</Filter>
+      <Filter>ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_opengl3.h">
-      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+      <Filter>ThirdParty\imgui\examples</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_glfw.h">
-      <Filter>Runtime\ThirdParty\imgui\examples</Filter>
+      <Filter>ThirdParty\imgui\examples</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\vector_relational.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\common.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\exponential.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\ext.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\fwd.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\geometric.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\glm.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\integer.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat2x2.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat2x3.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat2x4.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat3x2.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat3x3.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat3x4.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat4x2.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat4x3.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\mat4x4.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\matrix.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\packing.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\trigonometric.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\vec2.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\vec3.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\vec4.hpp">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\qualifier.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\setup.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_float.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_half.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat2x2.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat2x3.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat2x4.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat3x2.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat3x3.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat3x4.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat4x2.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat4x3.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_mat4x4.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_quat.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_vec1.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_vec2.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_vec3.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\type_vec4.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_features.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_fixes.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_noise.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_swizzle.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_swizzle_func.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\_vectorize.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\compute_common.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\detail\compute_vector_relational.hpp">
-      <Filter>Runtime\ThirdParty\glm\detail</Filter>
+      <Filter>ThirdParty\glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\integer.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\matrix_access.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\matrix_integer.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\matrix_inverse.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\matrix_transform.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\noise.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\packing.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\quaternion.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\random.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\reciprocal.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\round.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\type_aligned.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\type_precision.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\type_ptr.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\ulp.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\vec1.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\bitfield.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\color_space.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\constants.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtc\epsilon.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtc</Filter>
+      <Filter>ThirdParty\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\fast_exponential.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\fast_square_root.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\fast_trigonometry.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\functions.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\gradient_paint.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\handed_coordinate_space.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\hash.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\integer.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\intersect.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\io.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\log_base.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_cross_product.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_decompose.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_factorisation.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_interpolation.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_major_storage.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_operation.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_query.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\matrix_transform_2d.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\mixed_product.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\norm.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\normal.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\normalize_dot.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\number_precision.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\optimum_pow.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\orthonormalize.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\perpendicular.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\polar_coordinates.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\projection.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\quaternion.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\range.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\raw_data.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\rotate_normalized_axis.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\rotate_vector.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\scalar_multiplication.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\scalar_relational.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\spline.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\std_based_type.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\string_cast.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\texture.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\transform.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\transform2.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\type_aligned.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\type_trait.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\vec_swizzle.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\vector_angle.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\vector_query.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\wrap.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\associated_min_max.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\bit.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\closest_point.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\color_encoding.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\color_space.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\color_space_YCoCg.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\common.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\compatibility.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\component_wise.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\dual_quaternion.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\easing.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\euler_angles.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\extend.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\extended_min_max.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glm\gtx\exterior_product.hpp">
-      <Filter>Runtime\ThirdParty\glm\gtx</Filter>
+      <Filter>ThirdParty\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2Application.h" />
+    <ClInclude Include="..\Runtime\c2Debugger.h" />
+    <ClInclude Include="..\Runtime\c2DefEvent.h" />
+    <ClInclude Include="..\Runtime\c2Filestream.h" />
+    <ClInclude Include="..\Runtime\c2PreDefined.h" />
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\glcorearb.h">
+      <Filter>ThirdParty\imgui\libs\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\gl3w.h">
+      <Filter>ThirdParty\imgui\libs\gl3w\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
+      <Filter>c2PresentationCG\c2PartGeometry\_c2PartSpacetree</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Debugger\CMakeLists.txt">
-      <Filter>Runtime\_c2Debugger</Filter>
+      <Filter>_c2Debugger</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Activity\CMakeLists.txt">
-      <Filter>Runtime\_c2Application</Filter>
-    </Text>
-    <Text Include="..\Runtime\CMakeLists.txt">
-      <Filter>Runtime</Filter>
+      <Filter>_c2Application</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Command\CMakeLists.txt">
-      <Filter>Runtime\_c2Command</Filter>
+      <Filter>_c2Command</Filter>
     </Text>
     <Text Include="..\Runtime\_c2Filestream\CMakeLists.txt">
-      <Filter>Runtime\_c2Filestream</Filter>
+      <Filter>_c2Filestream</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\c2PartAudio\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\c2PartAudio</Filter>
+      <Filter>c2PresentationCG\c2PartAudio</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\c2PartController\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\c2PartController</Filter>
+      <Filter>c2PresentationCG\c2PartController</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\c2PartInfoCollector\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\c2PartInfoCollector</Filter>
+      <Filter>c2PresentationCG\c2PartInfoCollector</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\c2PartVisual\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\c2PartVisual</Filter>
+      <Filter>c2PresentationCG\c2PartVisual</Filter>
     </Text>
     <Text Include="..\Runtime\c2PresentationCG\Render\CMakeLists.txt">
-      <Filter>Runtime\c2PresentationCG\Render</Filter>
+      <Filter>c2PresentationCG\Render</Filter>
     </Text>
     <Text Include="..\Runtime\ThirdParty\imgui\docs\TODO.txt">
-      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
+      <Filter>ThirdParty\imgui\docs</Filter>
     </Text>
     <Text Include="..\Runtime\ThirdParty\imgui\docs\CHANGELOG.txt">
-      <Filter>Runtime\ThirdParty\imgui\docs</Filter>
+      <Filter>ThirdParty\imgui\docs</Filter>
     </Text>
     <Text Include="..\Runtime\ThirdParty\glm\CMakeLists.txt">
-      <Filter>Runtime\ThirdParty\glm</Filter>
+      <Filter>ThirdParty\glm</Filter>
     </Text>
+    <Text Include="..\Runtime\CMakeLists.txt" />
   </ItemGroup>
 </Project>

@@ -4,10 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Laboratory", "Laboratory.vcxproj", "{3F3DE0C2-ED65-488D-B801-DB185C916CFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1E5F4E7-0631-4783-BEB4-EFF6606726F6} = {E1E5F4E7-0631-4783-BEB4-EFF6606726F6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Examples", "Examples.vcxproj", "{C0357EFD-89DB-4220-8C1C-0828530612E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1E5F4E7-0631-4783-BEB4-EFF6606726F6} = {E1E5F4E7-0631-4783-BEB4-EFF6606726F6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Creator", "Creator.vcxproj", "{3CC6BB31-8B83-40FD-B419-3925EAF4AC17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1E5F4E7-0631-4783-BEB4-EFF6606726F6} = {E1E5F4E7-0631-4783-BEB4-EFF6606726F6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Runtime", "Runtime.vcxproj", "{E1E5F4E7-0631-4783-BEB4-EFF6606726F6}"
 EndProject

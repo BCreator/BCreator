@@ -207,7 +207,6 @@
     <ClCompile Include="..\Laboratory\Voxel\utils\Interpolator.cpp">
       <Filter>Voxel\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Laboratory\fbxlab.cpp" />
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\tempmain.cpp" />

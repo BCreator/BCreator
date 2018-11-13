@@ -28,14 +28,6 @@ public:
 		_b_showsameline = 0;
 	}
 	virtual Status update() {
-		ImGui::Begin("C2 Director");
-		ImGui::Text("NLP");
-		if (ImGui::Button("open"))
-			_b_showsameline++;
-		if (_b_showsameline >= 3)
-			ImGui::Text("more than 3 times.");
-		ImGui::SameLine();
-		ImGui::End();
 		return BehaviorTree::update();
 	}
 };
@@ -87,7 +79,6 @@ int main_VoxelLab() {
 
 	return 0;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #include<windows.h>

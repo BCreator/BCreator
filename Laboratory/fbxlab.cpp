@@ -1,4 +1,3 @@
-
 #include <fbxsdk.h>
 
 /* Tab character ("\t") counter */

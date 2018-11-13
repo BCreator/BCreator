@@ -26,11 +26,13 @@
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\gl3w.c" />
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="..\Runtime\ThirdParty\glm\detail\func_common.inl" />
     <None Include="..\Runtime\ThirdParty\glm\detail\func_common_simd.inl" />
     <None Include="..\Runtime\ThirdParty\glm\detail\func_exponential.inl" />
@@ -301,6 +303,8 @@
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Runtime\ThirdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\gl3w.h" />
+    <ClInclude Include="..\Runtime\ThirdParty\imgui\libs\gl3w\GL\glcorearb.h" />
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h" />
     <ClInclude Include="..\Runtime\_c2Application\gleq.h" />
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h" />
@@ -332,7 +336,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>

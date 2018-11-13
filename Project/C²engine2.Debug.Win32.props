@@ -3,12 +3,14 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\Program Files (x86)\Autodesk\FBX\FBX SDK\2019.0\include;D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>../Runtime/ThirdParty;../Runtime/ThirdParty/imgui/libs/gl3w;D:\Program Files (x86)\Autodesk\FBX\FBX SDK\2019.0\include;D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>D:\Program Files (x86)\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015store\x86\debug;D:\library\glfw-3.2.1\houstond\src\Debug;D:\library\boost_1_68_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
