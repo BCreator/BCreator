@@ -26,10 +26,26 @@ enum GameMode
 	GameMode_FrontEnd,
 	GameMode_Game,
 };
+enum BlockType
+{
+	BlockType_Default = 0,
+	BlockType_Underground_Indestructable,
+	BlockType_Stone,
+	BlockType_Dirt,
+	BlockType_Grass,
+	BlockType_Rock,
+	BlockType_Snow,
+	BlockType_Wood,
+	BlockType_Sand,
+	BlockType_Cactus,
+	BlockType_Leaf,
+	BlockType_CustomColour,
+	BlockType_NumTypes,
+};
 
-#include "BlocksEnum.h"
-#include "../Renderer/Renderer.h"
-#include "../Renderer/camera.h"
+//#include "BlocksEnum.h"
+//#include "../Renderer/Renderer.h"
+//#include "../Renderer/camera.h"
 
 #include <vector>
 using namespace std;
@@ -43,6 +59,7 @@ class SceneryManager;
 class VoxSettings;
 class Item;
 class BiomeManager;
+class Renderer;
 
 typedef vector<Item*> ItemList;
 

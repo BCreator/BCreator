@@ -9,8 +9,8 @@
 // Copyright (c) 2005-2016, Steven Ball
 // ******************************************************************************
 
+#include "ChunkManager.h"
 #include "BiomeManager.h"
-//#include "ChunkManager.h"
 
 #include "noise/noise.h"
 #include "noiseutils.h"
