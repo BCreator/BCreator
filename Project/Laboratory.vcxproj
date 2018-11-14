@@ -38,15 +38,8 @@
     <ClCompile Include="..\Laboratory\Voxel\Maths\Line3D.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\Maths\matrix4x4.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\Maths\Plane3D.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\BoundingBox.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\MS3DAnimator.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\MS3DModel.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\objmodel.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinary.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinaryManager.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelCharacter.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelObject.cpp" />
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelWeapon.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\Player\Player.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\Renderer\camera.cpp" />
     <ClCompile Include="..\Laboratory\Voxel\Renderer\colour.cpp" />
@@ -65,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Laboratory\Voxel\blocks\BiomeManager.h" />
-    <ClInclude Include="..\Laboratory\Voxel\blocks\BlocksEnum.h" />
     <ClInclude Include="..\Laboratory\Voxel\blocks\Chunk.h" />
     <ClInclude Include="..\Laboratory\Voxel\blocks\ChunkManager.h" />
     <ClInclude Include="..\Laboratory\Voxel\freetype\freetypefont.h" />
@@ -346,16 +338,8 @@
     <ClInclude Include="..\Laboratory\Voxel\Maths\3dGeometry.h" />
     <ClInclude Include="..\Laboratory\Voxel\Maths\3dmaths.h" />
     <ClInclude Include="..\Laboratory\Voxel\Maths\BoundingRegion.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\BoundingBox.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\modelloader.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\MS3DAnimator.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\MS3DModel.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\OBJModel.h" />
     <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinary.h" />
     <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinaryManager.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelCharacter.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelObject.h" />
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelWeapon.h" />
     <ClInclude Include="..\Laboratory\Voxel\Player\Player.h" />
     <ClInclude Include="..\Laboratory\Voxel\Renderer\camera.h" />
     <ClInclude Include="..\Laboratory\Voxel\Renderer\colour.h" />
@@ -384,7 +368,6 @@
     <Text Include="..\Laboratory\Voxel\ini\CMakeLists.txt" />
     <Text Include="..\Laboratory\Voxel\libnoise\CMakeLists.txt" />
     <Text Include="..\Laboratory\Voxel\Maths\CMakeLists.txt" />
-    <Text Include="..\Laboratory\Voxel\models\CMakeLists.txt" />
     <Text Include="..\Laboratory\Voxel\Renderer\CMakeLists.txt" />
     <Text Include="..\Laboratory\Voxel\tinythread\CMakeLists.txt" />
   </ItemGroup>

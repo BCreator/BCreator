@@ -61,9 +61,6 @@
     <Filter Include="Voxel\ini">
       <UniqueIdentifier>{20b91fee-5ec9-49c9-99b9-ce7477569574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Voxel\models">
-      <UniqueIdentifier>{e3c7da8b-fa1f-40a2-bdb3-dd949be7c06a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Voxel\freetype">
       <UniqueIdentifier>{8e5e21b4-be7f-4d54-a27e-38cac61e8f28}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     </Filter>
     <Filter Include="Voxel\utils">
       <UniqueIdentifier>{a5663086-7522-4c50-8b69-4a995b0e6518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Voxel\models">
+      <UniqueIdentifier>{7bedcb93-6dad-43f4-9d82-660436ed2d50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,33 +171,6 @@
     <ClCompile Include="..\Laboratory\Voxel\ini\INIReader.cpp">
       <Filter>Voxel\ini</Filter>
     </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\BoundingBox.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\MS3DAnimator.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\MS3DModel.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\objmodel.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinary.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinaryManager.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelCharacter.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelObject.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Laboratory\Voxel\models\VoxelWeapon.cpp">
-      <Filter>Voxel\models</Filter>
-    </ClCompile>
     <ClCompile Include="..\Laboratory\Voxel\freetype\freetypefont.cpp">
       <Filter>Voxel\freetype</Filter>
     </ClCompile>
@@ -210,15 +183,18 @@
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\main_lab.cpp" />
+    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinaryManager.cpp">
+      <Filter>Voxel\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\Voxel\models\QubicleBinary.cpp">
+      <Filter>Voxel\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Laboratory\Voxel\VoxSettings.h">
       <Filter>Voxel</Filter>
     </ClInclude>
     <ClInclude Include="..\Laboratory\Voxel\blocks\BiomeManager.h">
-      <Filter>Voxel\blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\blocks\BlocksEnum.h">
       <Filter>Voxel\blocks</Filter>
     </ClInclude>
     <ClInclude Include="..\Laboratory\Voxel\blocks\Chunk.h">
@@ -863,36 +839,6 @@
     <ClInclude Include="..\Laboratory\Voxel\ini\INIReader.h">
       <Filter>Voxel\ini</Filter>
     </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\BoundingBox.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\modelloader.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\MS3DAnimator.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\MS3DModel.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\OBJModel.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinary.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinaryManager.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelCharacter.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelObject.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Laboratory\Voxel\models\VoxelWeapon.h">
-      <Filter>Voxel\models</Filter>
-    </ClInclude>
     <ClInclude Include="..\Laboratory\Voxel\freetype\freetypefont.h">
       <Filter>Voxel\freetype</Filter>
     </ClInclude>
@@ -1151,6 +1097,12 @@
     <ClInclude Include="..\Laboratory\Voxel\utils\Random.h">
       <Filter>Voxel\utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinaryManager.h">
+      <Filter>Voxel\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Laboratory\Voxel\models\QubicleBinary.h">
+      <Filter>Voxel\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Laboratory\Voxel\blocks\CMakeLists.txt">
@@ -1173,9 +1125,6 @@
     </Text>
     <Text Include="..\Laboratory\Voxel\ini\CMakeLists.txt">
       <Filter>Voxel\ini</Filter>
-    </Text>
-    <Text Include="..\Laboratory\Voxel\models\CMakeLists.txt">
-      <Filter>Voxel\models</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
