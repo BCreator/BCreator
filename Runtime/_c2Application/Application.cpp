@@ -72,15 +72,6 @@ OS BIND里IO里已经有了通过几个wanted布尔值，来自行判断是否IMGUI消耗掉INPU消息，要
 给应用程序。imgui.cpp头文档里的FAQ第一条有相关说明。*/
 #include "../ThirdParty/imgui/examples/imgui_impl_glfw.h"
 #include "../ThirdParty/imgui/examples/imgui_impl_opengl3.h"
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include <GL/glew.h>    // Initialize with glewInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-#include <glad/glad.h>  // Initialize with gladLoadGL()
-#else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif
 
 /******************************************************************************/
 #define GLEQ_IMPLEMENTATION
@@ -184,34 +175,49 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 	if (!glfwInit())
 		return;
 	gleqInit();
+	/*------------------------------------------------------------------------*/
+	// Decide GL+GLSL versions
+#if defined(GLFW_INCLUDE_NONE)
+	const char* glsl_version = "#version 300 es";
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+	glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+ 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#elif defined(__APPLE__)
+	// GL 3.2 + GLSL 150
+	const char* glsl_version = "#version 150";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.3+ only
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+	// Initialize OpenGL loader
+#else
+	// GL 3.0 + GLSL 130
+	const char* glsl_version = "#version 130";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	// Initialize OpenGL loader
+#endif
+
 	/* Create a windowed mode window and its OpenGL context */
 	GLFWwindow *window = glfwCreateWindow(nWndWidth, nWndHeight, sWndCaption, NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return;
 	}
+
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(SwapInterval);
-	gleqTrackWindow(window);
-	/*------------------------------------------------------------------------*/
-	// Decide GL+GLSL versions
-#if __APPLE__
-	// GL 3.2 + GLSL 150
-	const char* glsl_version = "#version 150";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+
+#ifdef GLFW_INCLUDE_NONE
+	if (!gladLoadGLES2Loader((GLADloadproc)glfwGetProcAddress)) {
+		BOOST_LOG_TRIVIAL(fatal) << "Failed to initialize OpenGL loader!";
+		return;
+	}
 #else
-	// GL 3.0 + GLSL 130
-	const char* glsl_version = "#version 130";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-#endif
-	// Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
 	bool err = gl3wInit() != 0;
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
@@ -219,10 +225,17 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
 	bool err = gladLoadGL() != 0;
 #endif
-	if (err) {
+	if (err)
+	{
 		BOOST_LOG_TRIVIAL(fatal) << "Failed to initialize OpenGL loader!";
 		return;
 	}
+#endif
+
+//	少个eglChooseConfig在eglInitialize后面，eglCreateWindowSurface之前
+// 	eglCreateContext 和 eglCreateWindowSurface顺序相反
+
+	gleqTrackWindow(window);
 	// Setup Dear ImGui binding
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -236,11 +249,6 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
 //	glfwMakeContextCurrent(window);
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	int display_w, display_h;
-	glfwGetFramebufferSize(window, &display_w, &display_h);
-	glViewport(0, 0, display_w, display_h);
-	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 	/*------------------------------------------------------------------------*/
 	/*抛出初始化完成事件，上层应用如果有需要可订阅*/
 	c2SysEvt::initialized sysevt_initialized(g_SysETChunkOffset);
@@ -325,7 +333,6 @@ C2API void c2AppRun(bool isBlocked, int SwapInterval,
 		/*--------------------------------------------------------------------*/
 		// Rendering
 		ImGui::Render();
-		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		/*--------------------------------------------------------------------*/
 		/* Swap front and back buffers */

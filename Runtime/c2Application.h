@@ -66,3 +66,29 @@ C2API c2APart c2CreatePart(const char *sClass, const char *sName = nullptr);
 C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C);
 #define C2RegistPartClass(classname)	\
 	::_c2RegistPartClass(#classname, classname::_create);
+
+////////////////////////////////////////////////////////////////////////////////
+#if (defined(__APPLE__) && TARGET_OS_IOS) 
+#	include<glad/glad.h>
+//#	include<GLES3/gl3.h>  // Use GL ES 3
+//#	define GLFW_INCLUDE_ES3
+#	define GLFW_INCLUDE_NONE
+#elif (defined(__ANDROID__)) || (defined(__EMSCRIPTEN__))
+#	include<glad/glad.h>
+//#	include<GLES3/gl3.h>  // Use GL ES 3
+//#	define GLFW_INCLUDE_ES3
+#	define GLFW_INCLUDE_NONE
+
+#else
+
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+#include <GL/gl3w.h>
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+#include <GL/glew.h>
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+#include <glad/glad.h>
+#else
+#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#endif
+
+#endif

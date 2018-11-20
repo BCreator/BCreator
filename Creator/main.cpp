@@ -1,18 +1,22 @@
 #include<iostream>
-#include <stdio.h>
+#include<stdio.h>
 
 #include<boost/log/trivial.hpp>
 
-#include "../Runtime/ThirdParty/imgui/imgui.h"
-
-#include"../Runtime/c2Foundation/c2Part.h"
-#include"../Runtime/c2PreDefined.h"
-#include"../Runtime/c2DefEvent.h"
-#include"../Runtime/c2Application.h"
+#include<ThirdParty/imgui/imgui.h>
+#include<c2Foundation/c2Part.h>
+#include<c2PreDefined.h>
+#include<c2DefEvent.h>
+#include<c2Application.h>
 
 #include"./GPanelAssets/GPanelAssets.h"
-////////////////////////////////////////////////////////////////////////////////
 
+/**************************************************************************/
+#define STB_VOXEL_RENDER_IMPLEMENTATION
+#define STBVOX_CONFIG_MODE	0
+#include<stb/stb_voxel_render.h>
+
+////////////////////////////////////////////////////////////////////////////////
 class btAct4test : public BrainTree::Node {
 	Status update() override {
 		BOOST_LOG_TRIVIAL(info) << "  -> printed by BrainTree::Node.";
@@ -39,6 +43,8 @@ public:
 		if(_b_showsameline >=3 )
 			ImGui::Text("more than 3 times.");
 		ImGui::SameLine();
+		bool tb;
+		ShowExampleAppCustomNodeGraph(&tb);
 		ImGui::End();
 		return BehaviorTree::update();
 	}
@@ -54,7 +60,7 @@ class onSysInitialized : public c2IAction {
  };
  
 ////////////////////////////////////////////////////////////////////////////////
-int main_Creator() {
+int main() {
  //	bool b = C2RegistPartClass(GPanelAssets);
  //	if (!b)
  //		return 0;
@@ -69,6 +75,41 @@ int main_Creator() {
 	c2asActSubEvt(ouff, syset_chunkoffet +c2SysET::updatefixframe,
 		sizeof(c2SysEvt::updatefixframe));
 
+	/**************************************************************************/
+#ifdef STB_VOXEL_RENDER_H_
+	stbvox_mesh_maker vmm;
+	stbvox_init_mesh_maker(&vmm);//主线程有个全局的g_mesh_maker
+	stbvox_init_mesh_maker(&tvmm);//carveview one maker per worker thread.
+
+	char *svshader = stbvox_get_vertex_shader();
+	char *sfshader = stbvox_get_fragment_shader();
+	stbvox_uniform_info shaderuniforminfo;
+	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_texscale);
+	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_texgen);
+	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_color_table);
+	
+	//worker thread build chunk
+	stbvox_set_input_stride(&vmm, 34 * 18, 18);
+	stbvox_input_description *pmap= stbvox_get_input_description(&shaderuniforminfo);
+	pmap->filldata;
+	stbvox_reset_buffers(&vmm);
+	stbvox_set_buffer(&vmm, 0, 0, ? , ? );
+	stbvox_set_buffer(&vmm, 0, 1, ? , ? );
+	for (z = 256 - 16; z >= SKIP_TERRAIN; z -= 16) {
+		stbvox_set_input_range(&vmm, 0, 0, ? , 32, 32, ? );
+		stbvox_set_default_mesh(&vmm, 0);
+		stbvox_make_mesh(&vmm);
+	}
+	stbvox_set_mesh_coordinates(&vmm, chunk_x * 16, chunk_y * 16, 0);
+	float transform[3][3];
+	stbvox_get_transform(&vmm, transform);
+	stbvox_set_input_range(&vmm, 0, 0, 0, 32, 32, 255);
+	float bounds[2][3];
+	stbvox_get_bounds(&vmm, bounds);
+	int num_quads = stbvox_get_quad_count(&vmm, 0);
+#endif//STB_VOXEL_RENDER_H_
+
+	/**************************************************************************/
 	c2AppRun(true, 1, 1280, 720, "C2engine.Creator");
  
  	return 0;

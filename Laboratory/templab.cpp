@@ -101,7 +101,7 @@ static void test_signalbind() {
 
 ////////////////////////////////////////////////////////////////////////////////
 #include<boost/log/trivial.hpp>
-#include"../Runtime/_c2Application/tsMemQueue.h"
+#include<_c2Application/tsMemQueue.h>
 #pragma pack(push, 1)
 struct aa {
 	size_t	_sizeSize;
