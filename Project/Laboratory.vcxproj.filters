@@ -5,6 +5,6 @@
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\main_lab.cpp" />
     <ClCompile Include="..\Laboratory\voxel_lab.cpp" />
-    <ClCompile Include="..\Runtime\ThirdParty\glad\src\glad.c" />
+    <ClCompile Include="D:\library\glfw-3.2.1\deps\getopt.c" />
   </ItemGroup>
 </Project>

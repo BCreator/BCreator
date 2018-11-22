@@ -16,7 +16,7 @@ struct c2IAction : public BrainTree::BehaviorTree {
 	const c2IEvent*	_pEvt;
 	virtual Status update() {
 		BOOST_ASSERT(_pEvt );
-		std::cout << "EvType: " << _pEvt->_esTypeAddChunkOffset << " -> "
+		std::cout << "EvType: " << _pEvt->getTypeAddChunkOffset() << " -> "
 			<< typeid(*this).name() << "::update: success..." << std::endl;
 		return Status::Success;
 	}
@@ -24,8 +24,8 @@ struct c2IAction : public BrainTree::BehaviorTree {
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Driving framework of the whole application*/
-C2API void c2AppRun(bool isBlocked, int SwapInterval,
-					int nWndWidth, int nWndHeight, const char *sWndCaption);
+C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
+						const char *sWndCaption, bool isBlocked = true);
 
 /******************************************************************************/
 /*Consumer subscribe event And Producer publish event.*/
@@ -33,30 +33,6 @@ C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t 
 C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
 C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
 								const Uint64 esFixFrameStamp);
-
-/******************************************************************************/
-/*System events of C2 Application
- 注意通过系统事件进行用户自定义操作是假回调，我们的事件体系是基于事件队列，实质用户只有
- 异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，刻意不给用户太多选择。*/
-C2EvtTypeChunkBegin(c2SysET)
-initialized = 0,
-updatefixframe,
-updateframe,
-AMMOUT,
-C2EvtTypeChunkEnd
-
-#pragma pack(push, 1)
-C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
-C2DefOneEvtEnd
-
-C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
-mutable Uint32 _esElapsed;
-C2DefOneEvtEnd
-
-C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
-mutable Uint32 _esElapsed;
-C2DefOneEvtEnd
-#pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
 /*Part & Factory*/
@@ -70,16 +46,21 @@ C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C);
 ////////////////////////////////////////////////////////////////////////////////
 #if (defined(__APPLE__) && TARGET_OS_IOS) 
 #	include<glad/glad.h>
-//#	include<GLES3/gl3.h>  // Use GL ES 3
-//#	define GLFW_INCLUDE_ES3
 #	define GLFW_INCLUDE_NONE
-#elif (defined(__ANDROID__)) || (defined(__EMSCRIPTEN__))
+#	define C2_USE_OPENGLES
+#elif (defined(__ANDROID__)) || (defined(__EMSCRIPTEN__)) 
 #	include<glad/glad.h>
-//#	include<GLES3/gl3.h>  // Use GL ES 3
-//#	define GLFW_INCLUDE_ES3
 #	define GLFW_INCLUDE_NONE
+#	define C2_USE_OPENGLES
 
 #else
+
+#if !defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)     \
+ && !defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)     \
+ && !defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)     \
+ && !defined(IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
+#define IMGUI_IMPL_OPENGL_LOADER_GL3W
+#endif
 
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
 #include <GL/gl3w.h>

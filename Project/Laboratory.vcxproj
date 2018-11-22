@@ -23,7 +23,7 @@
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\voxel_lab.cpp" />
-    <ClCompile Include="..\Runtime\ThirdParty\glad\src\glad.c" />
+    <ClCompile Include="D:\library\glfw-3.2.1\deps\getopt.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -83,8 +83,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\lab\glm;E:\netdsk\mega\BCreator\Runtime\ThirdParty\glad;../Runtime/ThirdParty/imgui\examples\libs\gl3w;../Runtime/ThirdParty;D:\library\glfw-3.2.1\include;../Runtime;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;__EMSCRIPTEN__;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../Runtime/ThirdParty/glad;../Runtime/ThirdParty/imgui/examples/libs/gl3w;../Runtime/ThirdParty;D:\library\glfw-3.2.1\include;../Runtime;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__EMSCRIPTEN__;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>./Debug/Runtime.lib;D:\library\glfw-3.2.1\houstond\src\Debug\glfw3.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libGLESv2.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libEGL.lib;libfbxsdk-md.lib;opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>

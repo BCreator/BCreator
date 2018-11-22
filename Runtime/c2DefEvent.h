@@ -11,10 +11,15 @@
 /*c2IEvent没有多态，所以基于多态的特性的virtual操作就不能有（例如保存size，size放在了act里）*/
 #pragma pack(push, 1)
 struct c2IEvent {
-	Uint32	_esTypeAddChunkOffset;
-	mutable	Uint64	_esFixFrameStamp;	//Logic Frame Stamp.TODO：使用64位数是为了够大，但仍旧跑爆怎么处理？
+	friend void c2PublishEvt(const c2IEvent &Event, size_t EventSize,
+								const Uint64 esFixFrameStamp);
+	inline Uint32 getTypeAddChunkOffset() const {
+		return _nTypeAddChunkOffset;
+	}
 protected://不能直接实例化使用，只是个类型
-	c2IEvent() : _esTypeAddChunkOffset(0), _esFixFrameStamp(0) {
+	Uint32	_nTypeAddChunkOffset;
+	mutable	Uint64	_nFixFrameStamp;	//Logic Frame Stamp.TODO：使用64位数是为了够大，但仍旧跑爆怎么处理？
+	c2IEvent() : _nTypeAddChunkOffset(0), _nFixFrameStamp(0) {
 	}
 };
 
@@ -33,25 +38,102 @@ C2API Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
 namespace evt_namespace {\
 struct evttype_name : public c2IEvent {\
 	evttype_name(Uint32 ETChunkOffset) : c2IEvent() {\
-		_esTypeAddChunkOffset = static_cast<Uint32>(evttype_namespace::evttype_name) + ETChunkOffset;\
+		_nTypeAddChunkOffset = static_cast<Uint32>(evttype_namespace::evttype_name) + ETChunkOffset;\
 	}
 #define C2DefOneEvtEnd	\
 };\
 }//namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-/*event types chunk 1 for test*/
-C2EvtTypeChunkBegin(C2ET1)
-	Unknown = 0,
-	EventTest,
-	EVENTTYPE_AMMOUT,
+/*System events of C2 Application
+ 注意通过系统事件进行用户自定义操作是假回调，我们的事件体系是基于事件队列，实质用户只有
+ 异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，刻意不给用户太多选择。*/
+C2EvtTypeChunkBegin(c2SysET)
+initialized = 0,
+updatefixframe,	/*用消息方式会不会太奢侈？*/
+updateframe,	/*用消息方式会不会太奢侈？*/
+terminate,
+
+mouse_button,
+cursor_moved,
+cursor_enter,
+scrolled,
+key,
+char_input,
+charmods_input,
+
+/*TODO*/
+window_maximized,
+window_unmaximized,
+window_moved,
+window_resized,
+window_closed,
+window_refresh,
+window_focused,
+window_defocused,
+window_iconified,
+window_uniconified,
+windowframebuffer_resized,
+
+AMMOUT,
 C2EvtTypeChunkEnd
 
+/******************************************************************************/
 #pragma pack(push, 1)
-C2DefOneEvtBegin(C2ET1, C2EVT1, EventTest)
-Uint32	_esTest;
-char	_s[128];
+C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
 C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
+mutable double _dElapsed;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
+mutable double _dElapsed;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, terminate)
+C2DefOneEvtEnd
+
+/******************************************************************************/
+C2DefOneEvtBegin(c2SysET, c2SysEvt, mouse_button)
+//Uint8	_nButton : 4;
+//Uint8	_nAction : 1;
+//Uint8	_nModifier : 3;
+Uint8	_nButton;
+Uint8	_nAction;
+Uint8	_nModifier;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_moved)
+double	_x;
+double	_y;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_enter)
+Uint8	_bEnter;//false is left;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, scrolled)
+double	_x;
+double	_y;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, key)
+Uint16	_nKey;
+Uint16	_nScancode;
+Uint8	_nAction;
+Uint8	_nModifier;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, char_input)
+Uint32	_nCodePoint;
+C2DefOneEvtEnd
+
+C2DefOneEvtBegin(c2SysET, c2SysEvt, charmods_input)
+Uint32	_nCodePoint;
+Uint8	_nModifier;
+C2DefOneEvtEnd
+
 #pragma pack(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
