@@ -4,7 +4,13 @@
 #include<boost/log/trivial.hpp>
 
 /*TODO: Use the math library based on OpenCL in the future*/
-#include<glm/glm.hpp>
+//#define GLM_FORCE_MESSAGES
+//#define GLM_FORCE_SIMD_
+//#define GLM_FORCE_PRECISION_HIGHP_FLOAT
+#define GLM_FORCE_INLINE
+//#define GLM_FORCE_CTOR_INIT//GLM的mat默认是不强制identity的，要用这个宏，太容易造成错误了！manual里居然没有提。
+#include<glm/mat4x4.hpp>
+#include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
 #include<ThirdParty/imgui/imgui.h>
@@ -21,7 +27,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 static int g_nWindWidth = 1680, g_nWindHeight = 1050;
-static GLuint vao_block, vao_lamp;
+static GLuint VBO, vao_block, vao_lamp;
 /*view control*/
 static Camera camera;
 static float lastX = 0;
@@ -32,22 +38,16 @@ glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 static Shader lightingShader;
 static Shader lampShader;
 
-#define PI 3.14159f
-
 ////////////////////////////////////////////////////////////////////////////////
 class onUpdateFixFrame : public c2IAction {
 public:
 	virtual Status update() {
 		const c2SysEvt::updatefixframe& evt = *(static_cast<const c2SysEvt::updatefixframe*>(_pEvt));
 		/*--------------------------------------------------------------------*/
-		ImGui::Begin("C2 Director");
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-			1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
-		/*--------------------------------------------------------------------*/
-		/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
-		glViewport(0, 0, g_nWindWidth, g_nWindHeight);//FIXME:放到framebuffer resize的地方
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 		ImGui::Begin("C2 Director");
+ 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+ 			1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+ 		ImGui::End();
 		/*--------------------------------------------------------------------*/
 		lightingShader.use();
 		/*Camera keyboard control*/
@@ -59,6 +59,15 @@ public:
 			camera.ProcessKeyboard(LEFT, evt._dElapsed);
 		if (glfwGetKey(evt._pWnd, GLFW_KEY_D) == GLFW_PRESS)
 			camera.ProcessKeyboard(RIGHT, evt._dElapsed);
+		// view/projection transformations
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),
+			(float)g_nWindWidth / (float)g_nWindHeight, 0.1f, 100.0f);
+		glm::mat4 view = camera.GetViewMatrix();
+		/*--------------------------------------------------------------------*/
+		/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
+		glViewport(0, 0, g_nWindWidth, g_nWindHeight);//FIXME:放到framebuffer resize的地方
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		/*--------------------------------------------------------------------*/
 		// be sure to activate shader when setting uniforms/drawing objects
 		lightingShader.use();
@@ -66,18 +75,11 @@ public:
 		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		lightingShader.setVec3("lightPos", lightPos);
 		lightingShader.setVec3("viewPos", camera.Position);
-
-		// view/projection transformations
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),
-			(float)g_nWindWidth / (float)g_nWindHeight, 0.1f, 100.0f);
-		glm::mat4 view = camera.GetViewMatrix();
+		// world transformation
+		glm::mat4 model(1.0f);//最好显性identiy！
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
-
-		// world transformation
-		glm::mat4 model;
 		lightingShader.setMat4("model", model);
-		// render the cube
 		glBindVertexArray(vao_block);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		/*--------------------------------------------------------------------*/
@@ -85,8 +87,7 @@ public:
 		lampShader.use();
 		lampShader.setMat4("projection", projection);
 		lampShader.setMat4("view", view);
-		// world transformation
-		model = glm::mat4(1);
+		model = glm::mat4(1.0f);//最好显性identiy！
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
 		lampShader.setMat4("model", model);
@@ -103,16 +104,14 @@ class onSysInitialized : public c2IAction {
 		const c2SysEvt::initialized& evt = *(static_cast<const c2SysEvt::initialized*>(_pEvt));
 		glfwSetInputMode(evt._pWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.15f, 0.15f, 0.10f, 1.00f);
-		/*------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------*/
 #ifdef C2_USE_OPENGLES
-		lightingShader.create("es3_block.vs", "es3_block.fs");
-		lampShader.create("es3_lamp.vs", "es3_lamp.fs");
+		lightingShader.create("es3block.vs", "es3block.fs");
+		lampShader.create("es3lamp.vs", "es3lamp.fs");
 #else
-		lightingShader.create("block.vs", "block.fs");
-		lampShader.create("lamp.vs", "lamp.fs");
+		lightingShader.create("330block.vs", "330block.fs");
+		lampShader.create("330lamp.vs", "330lamp.fs");
 #endif//C2_USE_OPENGLES
-
 		float vertices[] = {
 			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -156,26 +155,22 @@ class onSysInitialized : public c2IAction {
 			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 		};
-		GLuint vbo;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		/*--------------------------------------------------------------------*/
-		// first, configure the cube's VAO (and VBO)
+		//block
 		glGenVertexArrays(1, &vao_block);
 		glBindVertexArray(vao_block);
-		// position attribute
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		// normal attribute
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 		/*--------------------------------------------------------------------*/
-		// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+		//lamp
 		glGenVertexArrays(1, &vao_lamp);
 		glBindVertexArray(vao_lamp);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		// note that we update the lamp's position attribute's stride to reflect the updated buffer data
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		/*--------------------------------------------------------------------*/
