@@ -22,10 +22,10 @@ protected://不能直接实例化使用，只是个类型
 	c2IEvent() : _nTypeAddChunkOffset(0), _nFixFrameStamp(0) {
 	}
 };
+#pragma pack(pop)
 
 /******************************************************************************/
 C2API Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
-#pragma pack(pop)
 #define C2EvtTypeChunkBegin(evttype_namespace)	\
 						namespace evttype_namespace {\
 						enum {//c2EvtType
@@ -79,15 +79,19 @@ AMMOUT,
 C2EvtTypeChunkEnd
 
 /******************************************************************************/
+struct GLFWwindow;
 #pragma pack(push, 1)
 C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
+GLFWwindow*	_pWnd;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
+GLFWwindow*	_pWnd;
 mutable double _dElapsed;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
+GLFWwindow*	_pWnd;
 mutable double _dElapsed;
 C2DefOneEvtEnd
 
@@ -96,42 +100,49 @@ C2DefOneEvtEnd
 
 /******************************************************************************/
 C2DefOneEvtBegin(c2SysET, c2SysEvt, mouse_button)
-//Uint8	_nButton : 4;
-//Uint8	_nAction : 1;
-//Uint8	_nModifier : 3;
-Uint8	_nButton;
-Uint8	_nAction;
-Uint8	_nModifier;
+GLFWwindow*	_pWnd;
+//Uint8		_nButton : 4;
+//Uint8		_nAction : 1;
+//Uint8		_nModifier : 3;
+Uint8		_nButton;
+Uint8		_nAction;
+Uint8		_nModifier;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_moved)
-double	_x;
-double	_y;
+GLFWwindow*	_pWnd;
+double		_x;
+double		_y;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_enter)
-Uint8	_bEnter;//false is left;
+GLFWwindow*	_pWnd;
+Uint8		_bEnter;//false is left;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, scrolled)
-double	_x;
-double	_y;
+GLFWwindow*	_pWnd;
+double		_x;
+double		_y;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, key)
-Uint16	_nKey;
-Uint16	_nScancode;
-Uint8	_nAction;
-Uint8	_nModifier;
+GLFWwindow*	_pWnd;
+Uint16		_nKey;
+Uint16		_nScancode;
+Uint8		_nAction;
+Uint8		_nModifier;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, char_input)
-Uint32	_nCodePoint;
+GLFWwindow*	_pWnd;
+Uint32		_nCodePoint;
 C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, charmods_input)
-Uint32	_nCodePoint;
-Uint8	_nModifier;
+GLFWwindow*	_pWnd;
+Uint32		_nCodePoint;
+Uint8		_nModifier;
 C2DefOneEvtEnd
 
 #pragma pack(pop)

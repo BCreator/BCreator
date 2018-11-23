@@ -28,8 +28,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{3CC6BB31-8B83-40FD-B419-3925EAF4AC17}</ProjectGuid>
-    <RootNamespace>Examples</RootNamespace>
+    <ProjectGuid>{E0A00632-EDB4-4D78-B50B-BF838B707ACA}</ProjectGuid>
+    <RootNamespace>TestVoxelSpace</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -102,11 +102,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../Runtime/ThirdParty/imgui/examples/libs/gl3w;../Runtime/ThirdParty/glad;../Runtime/ThirdParty;../Runtime;D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../Runtime/ThirdParty/imgui/examples/libs/gl3w;../Runtime/ThirdParty/glad;../Runtime;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libfbxsdk-md.lib;./Debug/Runtime.lib;glfw3.lib;opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./Debug/Runtime.lib;D:\library\glfw-3.2.1\houstond\src\Debug\glfw3.lib;opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\library\boost_1_68_0\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">
@@ -115,11 +116,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../Runtime/ThirdParty/glad;../Runtime/ThirdParty;../Runtime;D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__EMSCRIPTEN__;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\library\boost_1_68_0;../Runtime/ThirdParty/glad;../Runtime</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libfbxsdk-md.lib;./es3Debug/Runtime.lib;glfw3.lib;opengl32.lib;winmm.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libGLESv2.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libEGL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./es3Debug/Runtime.lib;D:\library\glfw-3.2.1\houstond\src\Debug\glfw3.lib;opengl32.lib;winmm.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libGLESv2.lib;D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\libEGL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\library\boost_1_68_0\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,16 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\Creator\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Creator\GPanelAssets\GPanelAssets.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Creator\GPanelAssets\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Creator\main.cpp" />
+    <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelTerrain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

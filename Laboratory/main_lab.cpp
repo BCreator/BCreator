@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include<../deps/getopt.h>
+//#include<../deps/getopt.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main_FBX(int argc, char** argv);
@@ -23,28 +23,28 @@ static void usage(void)
 }
 
 int main(int argc, char** argv) {
-	int ch, count;
-	while ((ch = getopt(argc, argv, "hfn:")) != -1)
-	{
-		switch (ch)
-		{
-		case 'h':
-			usage();
-			exit(0);
-
-		case 'f':
-			usage();
-			break;
-
-		case 'n':
-			count = (int)strtol(optarg, nullptr, 10);
-			break;
-
-		default:
-			usage();
-			exit(1);
-		}
-	}
+//	int ch, count;
+// 	while ((ch = getopt(argc, argv, "hfn:")) != -1)
+// 	{
+// 		switch (ch)
+// 		{
+// 		case 'h':
+// 			usage();
+// 			exit(0);
+// 
+// 		case 'f':
+// 			usage();
+// 			break;
+// 
+// 		case 'n':
+// 			count = (int)strtol(optarg, nullptr, 10);
+// 			break;
+// 
+// 		default:
+// 			usage();
+// 			exit(1);
+// 		}
+// 	}
 	//return main_FBX(argc, argv);
 	//return main_templab();
 	//return main_PhysX();

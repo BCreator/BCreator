@@ -430,9 +430,6 @@
     <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_opengl3.cpp">
       <Filter>ThirdParty\imgui\examples</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\libs\gl3w\GL\gl3w.c">
-      <Filter>ThirdParty\imgui\examples\libs\gl3w\GL</Filter>
-    </ClCompile>
     <ClCompile Include="..\Runtime\ThirdParty\glad\src\glad.c">
       <Filter>ThirdParty\glad\src</Filter>
     </ClCompile>
@@ -441,6 +438,9 @@
     </ClCompile>
     <ClCompile Include="..\Runtime\_c2Application\glfwSetInputCallback.cpp">
       <Filter>_c2Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\libs\gl3w\GL\gl3w.c">
+      <Filter>ThirdParty\imgui\examples\libs\gl3w\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -536,6 +536,9 @@
     </Filter>
     <Filter Include="ThirdParty\stb">
       <UniqueIdentifier>{1c3793e9-27ce-4dff-9b15-a88bba11632c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="c2PartVoxelSpace">
+      <UniqueIdentifier>{bf722249-c359-460a-b63f-2c8421b14c5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1422,6 +1425,15 @@
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\stb\stb_voxel_render.h">
       <Filter>ThirdParty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartController\c2PartCamera.h">
+      <Filter>c2PartController</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Render\Shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\Render\shader_m.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
