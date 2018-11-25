@@ -8,7 +8,7 @@
 //#define C2_CHECK_MEM
 
 ////////////////////////////////////////////////////////////////////////////////
-/*Action体系*/
+/*Action体系 FIXME: EVENT改为传值的方式*/
 #include"./_c2Application/BrainTree.h"
 struct c2IAction : public BrainTree::BehaviorTree {
 	//TODO：返回值的意义需要更为明确。以及未来同OneRounte的关系。

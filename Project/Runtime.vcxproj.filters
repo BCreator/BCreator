@@ -442,6 +442,12 @@
     <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\libs\gl3w\GL\gl3w.c">
       <Filter>ThirdParty\imgui\examples\libs\gl3w\GL</Filter>
     </ClCompile>
+    <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelTerrain.cpp">
+      <Filter>c2PartVoxelSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelOctree.cpp">
+      <Filter>c2PartVoxelSpace</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="_c2Application">
@@ -549,9 +555,6 @@
       <Filter>_c2Filestream</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\tsMemQueue.h">
-      <Filter>_c2Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\_c2Application\gleq.h">
       <Filter>_c2Application</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\_c2Application\BrainTree.h">

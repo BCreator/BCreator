@@ -27,7 +27,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Laboratory\main_lab.cpp" />
+    <ClCompile Include="..\Laboratory\gl_lab.cpp" />
+    <ClCompile Include="..\Laboratory\macroexpand_lab.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessSuppressLineNumbers>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessKeepComments>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessSuppressLineNumbers>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessKeepComments>
+    </ClCompile>
+    <ClCompile Include="..\Laboratory\main_lab.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessToFile>
+      <PreprocessKeepComments Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">false</PreprocessSuppressLineNumbers>
+    </ClCompile>
     <ClCompile Include="..\Laboratory\physxlab.cpp" />
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\voxel_lab.cpp" />

@@ -5,5 +5,7 @@
     <ClCompile Include="..\Laboratory\templab.cpp" />
     <ClCompile Include="..\Laboratory\main_lab.cpp" />
     <ClCompile Include="..\Laboratory\voxel_lab.cpp" />
+    <ClCompile Include="..\Laboratory\macroexpand_lab.cpp" />
+    <ClCompile Include="..\Laboratory\gl_lab.cpp" />
   </ItemGroup>
 </Project>

@@ -26,9 +26,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelTerrain.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{E0A00632-EDB4-4D78-B50B-BF838B707ACA}</ProjectGuid>

@@ -6,7 +6,9 @@ enum Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 // Default camera values
@@ -36,7 +38,14 @@ public:
     float Zoom;
 
     // Constructor with vectors
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+    Camera(
+		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), 
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), 
+		float yaw = YAW, float pitch = PITCH) : 
+			Front(glm::vec3(0.0f, 0.0f, -1.0f)), 
+			MovementSpeed(SPEED), 
+			MouseSensitivity(SENSITIVITY), 
+			Zoom(ZOOM)
     {
         Position = position;
         WorldUp = up;
@@ -70,9 +79,13 @@ public:
             Position -= Front * velocity;
         if (direction == LEFT)
             Position -= Right * velocity;
-        if (direction == RIGHT)
-            Position += Right * velocity;
-    }
+		if (direction == RIGHT)
+			Position += Right * velocity;
+		if (direction == UP)
+			Position += Up * velocity;
+		if (direction == DOWN)
+			Position -= Up * velocity;
+	}
 
     // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)

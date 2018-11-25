@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include<stb/stb_image.h>
+
 //#include<../deps/getopt.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,8 +12,8 @@ int main_FBX(int argc, char** argv);
 int main_templab();
 int main_PhysX();
 int main_Creator();
-int main_Voxel();
-int main_opengl_lab();
+int main_voxel();
+int main_gl();
 
 ////////////////////////////////////////////////////////////////////////////////
 static void usage(void)
@@ -45,10 +48,11 @@ int main(int argc, char** argv) {
 // 			exit(1);
 // 		}
 // 	}
-	//return main_FBX(argc, argv);
-	//return main_templab();
-	//return main_PhysX();
-	//return main_Creator();
-	//return main_opengl_lab();
-	return main_Voxel();
+// 	return main_FBX(argc, argv);
+// 	return main_templab();
+// 	return main_PhysX();
+// 	return main_Creator();
+// 	return main_opengl_lab();
+//	return main_gl();
+	return main_voxel();
 }
