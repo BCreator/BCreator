@@ -75,7 +75,7 @@ window_iconified,
 window_uniconified,
 windowframebuffer_resized,
 
-AMMOUT,
+AMOUNT,
 C2EvtTypeChunkEnd
 
 /******************************************************************************/

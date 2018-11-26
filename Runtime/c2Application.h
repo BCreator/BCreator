@@ -1,7 +1,6 @@
 #pragma once
 
-#include<boost/signals2/signal.hpp>
-#include"./ThirdParty/imgui/imgui.h"
+#include"c2PreDefined.h"
 
 //FIXME: 以下宏暂时定义注释于此，以后会用更现代化的方式来做这方面的事。把这个宏放在这里
 //只是为了便于后面以此宏为线索清除和修改相关的代码。
@@ -10,16 +9,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 /*Action体系 FIXME: EVENT改为传值的方式*/
 #include"./_c2Application/BrainTree.h"
+class c2IEvent;
 struct c2IAction : public BrainTree::BehaviorTree {
 	//TODO：返回值的意义需要更为明确。以及未来同OneRounte的关系。
 	c2IAction() : _pEvt(nullptr) {}
 	const c2IEvent*	_pEvt;
-	virtual Status update() {
-		BOOST_ASSERT(_pEvt );
-		std::cout << "EvType: " << _pEvt->getTypeAddChunkOffset() << " -> "
-			<< typeid(*this).name() << "::update: success..." << std::endl;
-		return Status::Success;
-	}
+	virtual Status update();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +45,7 @@ C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C);
 #	define C2_USE_OPENGLES
 #elif (defined(__ANDROID__)) || (defined(__EMSCRIPTEN__)) 
 #	include<glad/glad.h>
-#	define GLFW_INCLUDE_NONE
+#	define GLFW_INCLUDE_NONE	//FIXME: git rid
 #	define C2_USE_OPENGLES
 
 #else

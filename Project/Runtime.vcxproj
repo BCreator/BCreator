@@ -27,8 +27,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Runtime\c2PartVisual\c2PartLight.cpp" />
     <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelOctree.cpp" />
     <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelTerrain.cpp" />
+    <ClCompile Include="..\Runtime\Render\Render.cpp" />
     <ClCompile Include="..\Runtime\ThirdParty\glad\src\glad.c" />
     <ClCompile Include="..\Runtime\ThirdParty\glm\detail\glm.cpp" />
     <ClCompile Include="..\Runtime\ThirdParty\imgui\examples\imgui_impl_glfw.cpp" />
@@ -194,12 +196,13 @@
     <ClInclude Include="..\Runtime\c2PartController\c2PartCamera.h" />
     <ClInclude Include="..\Runtime\c2PartInfoCollector\c2PartNavigation.h" />
     <ClInclude Include="..\Runtime\c2PartSpacetree\c2Node.h" />
+    <ClInclude Include="..\Runtime\c2PartVisual\c2PartLight.h" />
     <ClInclude Include="..\Runtime\c2PartVisual\c2PartParticle.h" />
+    <ClInclude Include="..\Runtime\c2PartVoxelSpace\VoxelOctree.h" />
     <ClInclude Include="..\Runtime\c2PreDefined.h" />
     <ClInclude Include="..\Runtime\Render\Material.h" />
-    <ClInclude Include="..\Runtime\Render\RenderPath.h" />
+    <ClInclude Include="..\Runtime\Render\Render.h" />
     <ClInclude Include="..\Runtime\Render\Shader.h" />
-    <ClInclude Include="..\Runtime\Render\shader_m.h" />
     <ClInclude Include="..\Runtime\ThirdParty\EGL\egl.h" />
     <ClInclude Include="..\Runtime\ThirdParty\EGL\eglext.h" />
     <ClInclude Include="..\Runtime\ThirdParty\EGL\eglplatform.h" />

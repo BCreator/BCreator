@@ -9,6 +9,7 @@
 #include"../c2Application.h"
 #include"./tsMemQueue.h"
 #include<GLFW/glfw3.h>
+#include<imgui/imgui.h>
 #include"../ThirdParty/imgui/examples/imgui_impl_glfw.h"
 #include"../ThirdParty/imgui/examples/imgui_impl_opengl3.h"
 
@@ -69,7 +70,7 @@ C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 						const char *sWndCaption, bool isBlocked) {
 	std::atexit(glfwTerminate);
 	/*增加系统事件chunk，必须确保system event type chunk是第一个append的*/
-	g_nSysETChunkOffset = c2AppendEvtTypesChunk(c2SysET::AMMOUT + 1);
+	g_nSysETChunkOffset = c2AppendEvtTypesChunk(c2SysET::AMOUNT + 1);
 	/*------------------------------------------------------------------------*/
 	/*glfw begin*/
 	glfwSetErrorCallback(glfwErrorCallback);
@@ -179,10 +180,10 @@ C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 		}
 		g_ActUnsubEvtList.clear();
 		/*分发消息*/
-		static char g_pTempEventBuffer4UpdateFixFrame[C2EVTMSG_MAXSIZE];
+		static char temp_evtbuf[C2EVTMSG_MAXSIZE];
 		while (!g_EventQueue.isEmpty()) {
-			g_EventQueue.pop(g_pTempEventBuffer4UpdateFixFrame, C2EVTMSG_MAXSIZE);
-			c2IEvent &evt = *((c2IEvent*)g_pTempEventBuffer4UpdateFixFrame);
+			g_EventQueue.pop(temp_evtbuf, C2EVTMSG_MAXSIZE);
+			c2IEvent &evt = *((c2IEvent*)temp_evtbuf);
 			for (c2IAction *tp_act : g_Evt2ActsetVector[evt.getTypeAddChunkOffset()]) {
 				//for each (auto tp_act in sig) {
 				BOOST_ASSERT(tp_act);
@@ -248,4 +249,15 @@ C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C) {
 		return false;
 	return c2Part::_CreationDict.insert(	//如果已存在同样类名注册，则返回false。
 		c2Part::CreationDict::value_type(sClass, C)).second;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+Action
+*/
+c2IAction::Status c2IAction::update() {
+	BOOST_ASSERT(_pEvt);
+	std::cout << "EvType: " << _pEvt->getTypeAddChunkOffset() << " -> "
+		<< typeid(*this).name() << "::update: success..." << std::endl;
+	return Status::Success;
 }

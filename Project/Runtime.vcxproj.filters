@@ -448,6 +448,12 @@
     <ClCompile Include="..\Runtime\c2PartVoxelSpace\VoxelOctree.cpp">
       <Filter>c2PartVoxelSpace</Filter>
     </ClCompile>
+    <ClCompile Include="..\Runtime\Render\Render.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Runtime\c2PartVisual\c2PartLight.cpp">
+      <Filter>c2PartVisual</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="_c2Application">
@@ -620,9 +626,6 @@
       <Filter>c2PartInfoCollector</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\Render\Material.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Runtime\Render\RenderPath.h">
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="..\Runtime\ThirdParty\glad\glad\glad.h">
@@ -1435,8 +1438,14 @@
     <ClInclude Include="..\Runtime\Render\Shader.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\Runtime\Render\shader_m.h">
+    <ClInclude Include="..\Runtime\Render\Render.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartVoxelSpace\VoxelOctree.h">
+      <Filter>c2PartVoxelSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Runtime\c2PartVisual\c2PartLight.h">
+      <Filter>c2PartVisual</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
