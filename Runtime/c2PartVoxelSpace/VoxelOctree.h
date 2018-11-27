@@ -3,64 +3,108 @@
 //#define TEST_VOXELBUILD
 
 /*
-TODO: 
-- plotting scale.
-- look up table LUT.
-- draw: face slice.
-- draw: invisible
+- TODO: plotting scale.
+- TODO: look up table LUT.
+- TODO: draw: face slice.
+- TODO: draw: invisible
+- XXX: 需要用二叉树加速么？
+- TODO: 坍塌（合并）加速。
+- FIXME: ?big-endian & little endian
 */
 
 //1////////////////////////////////////////////////////////////////////////////
 /*Right-handed System*/
-const Uint8 C2_VOXPOS_None = 0x0;
-const Uint8 C2_VOXPOS_Down1 = 0x01;//000
-const Uint8 C2_VOXPOS_Down2 = 0x02;//100
-const Uint8 C2_VOXPOS_Down3 = 0x04;//001
-const Uint8 C2_VOXPOS_Down4 = 0x08;//101
-const Uint8 C2_VOXPOS_Up1 = 0x10;//010
-const Uint8 C2_VOXPOS_Up2 = 0x20;//110
-const Uint8 C2_VOXPOS_Up3 = 0x40;//011
-const Uint8 C2_VOXPOS_Up4 = 0x80;//111
+//const Uint8 C2_VOXSLOT_BitNone = 0x0;
+const Uint8 C2_VOXSLOT_BitDown1 = 0x01;	// 0 0 0
+const Uint8 C2_VOXSLOT_BitDown2 = 0x02;	//+1 0 0
+const Uint8 C2_VOXSLOT_BitDown3 = 0x04;	// 0 0+1
+const Uint8 C2_VOXSLOT_BitDown4 = 0x08;	//+1 0+1
+const Uint8 C2_VOXSLOT_BitUp1 = 0x10;	// 0+1 0
+const Uint8 C2_VOXSLOT_BitUp2 = 0x20;	//+1+1 0
+const Uint8 C2_VOXSLOT_BitUp3 = 0x40;	// 0+1+1
+const Uint8 C2_VOXSLOT_BitUp4 = 0x80;	//+1+1+1
+
+/*again: the order of children and slot mask is very strict!*/
+const int C2_VOXSLOT[8] = {
+	C2_VOXSLOT_BitDown1,
+	C2_VOXSLOT_BitDown2,
+	C2_VOXSLOT_BitDown3,
+	C2_VOXSLOT_BitDown4,
+	C2_VOXSLOT_BitUp1,
+	C2_VOXSLOT_BitUp2,
+	C2_VOXSLOT_BitUp3,
+	C2_VOXSLOT_BitUp4
+};
 
 enum {//Voxel geometry type related to geometry optimization
-	C2_VOXGEOM_none,
-	C2_VOXGEOM_node,//Just a logical concept, not a concrete voxel
+	C2_VOXGEOM_none= 0,
+	C2_VOXGEOM_container,//Just a logical container concept, not a concrete voxel
 	C2_VOXGEOM_solid,
 	C2_VOXGEOM_transp,//specific density(alpha) depend on the material properties
 	C2_VOXGEOM_typeammount
 };
 
 //1////////////////////////////////////////////////////////////////////////////
-//XXX: 需要用二叉树加速么？
-//TODO: 坍塌（合并）加速。
+struct c2VNode;
+const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
+						const int xMax, const int yMax, const int zMax);
+void c2freeVoxelOctree(const c2VNode* pRoot);
+const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
+					const char* sFilePath);
+void c2freeVoxelLUT(const c2VNode* pLUT);
+
+
+//1////////////////////////////////////////////////////////////////////////////
 struct c2VNode {
-	Uint8	_nGeomType : 4;
-	Uint8	_NextSiblingPos : 4;
-	Uint8	_ChMask;
-	void*	_Children;
-	size_t	_ChSize;
-
-	/*4-----------------------------------------------------------------------*/
-#ifdef TEST_VOXELBUILD
-	int getChildrenAmount();
-#endif
-	/*if nChGeomType is not C2_VOXGEOM_node, MaterialID must not be 0*/
-	void* addChild(const Uint8 nChGeomType, const Uint8 PosBit, const Uint8 MaterialID= 0);
-	void encodeChildren(Uint8 GTypeUP1,		Uint8 GTypeUP2,
-						Uint8 GTypeUP3,		Uint8 GTypeUP4,
-						Uint8 GTypeDOWN1,	Uint8 GTypeDOWN2,
-						Uint8 GTypeDOWN3,	Uint8 GTypeDOWN4);
-	void reset() {
-		_nGeomType = C2_VOXGEOM_none;
-		_NextSiblingPos = C2_VOXPOS_None;
-		_ChMask = 0x00;
-		if (_Children) {
-			free(_Children);
-			_Children = nullptr;
-		}
-		_ChSize = 0;
+	void draw(const Render &Rr) const;//FIXME：以后改成cull of collector
+	~c2VNode() {
+		reset();
 	}
+	using VNList = std::list<c2VNode>;//?why can't put in cpp with just a "class VNList" in h.
+	c2VNode* getChild(const int nSlot) const;
+	/*GType is Geometry type of the slot(could be none when empty slot).
+	if not a leaf, material id will be ignored.*/
+	void encodeChildren(
+		const Uint8 GTypeDown1, const Uint8 GTypeDown2,
+		const Uint8 GTypeDown3, const Uint8 GTypeDown4,
+		const Uint8 GTypeUp1, const Uint8 GTypeUp2,
+		const Uint8 GTypeUp3, const Uint8 GTypeUp4,
+		/*set material id only when leaf node. No.0 is default to debug*/
+		const Uint8 MaterialIDDown1 = 0, const Uint8 MaterialIDDown2 = 0,
+		const Uint8 MaterialIDDown3 = 0, const Uint8 MaterialIDDown4 = 0,
+		const Uint8 MaterialIDUp1 = 0, const Uint8 MaterialIDUp2 = 0,
+		const Uint8 MaterialIDUp3 = 0, const Uint8 MaterialIDUp4 = 0
+	);
 
 	/*4-----------------------------------------------------------------------*/
-	void draw(const Render &Rr);//FIXME：以后改成cull of collector
+	c2VNode(const Uint8 nGeomType= C2_VOXGEOM_none) {
+		reset();
+		_nGType = nGeomType;
+	}
+	void reset() {
+ 		if (_nGType == C2_VOXGEOM_container && cont._pChildren) {
+ 			delete cont._pChildren;
+ 		}
+ 		memset(this, 0, sizeof(c2VNode));
+ 	}
+	/*2************************************************************************/
+/*data member*/
+// 	Uint8	_nGType : 4; //Geometry type
+// 	Uint8	_nLength2Root:4;
+	Uint8	_nGType; //XXX: use bit filed. Geometry type
+	union {
+		struct {
+			Uint8	_ChMask;//Children slots mask
+			VNList*	_pChildren;//impact children list indicated by mask
+		}cont;//container
+		struct {
+			Uint8	_MaterialID;//The material of No.0 is default to debug
+		}leaf;
+	};
+	friend const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
+								const int xMax, const int yMax, const int zMax);
+	friend void c2freeVoxelOctree(const c2VNode* pRoot);
+	friend const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
+								const char* sFilePath);
+	friend void c2freeVoxelLUT(const c2VNode* pLUT);
 };
