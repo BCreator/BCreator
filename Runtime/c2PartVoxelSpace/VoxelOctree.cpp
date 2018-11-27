@@ -1,4 +1,4 @@
-//#include<memory.h>
+#include<math.h>
 #include<malloc.h>
 
 #include<boost/assert.hpp>
@@ -13,70 +13,204 @@
 
 #include<GLFW/glfw3.h>
 
+#include<stb/stb_image.h>
+
 #include"VoxelOctree.h"
 
-//FACE SLICE
+//1/////////////////////////////////////////////////////////////////////////////
+/*
+- 地球直径大约为10的10次方mm，约和2的33-34次方公里。所以用32位表示已经很大了。
+- 虽然LUT是原始数据，但仍旧要考虑空间和处理效率问题。
+- TODO：如何让地形是球体以后考虑。
+- 按EVE等宇宙游戏，不会有真的连续的宇宙空间，基本是特别空域、星球近地空间等作为可经典物理可
+感知的空间。故宇宙总坐标体系我们先不要考虑太多。先视地球级数量级（做球体世界，按视地球为
+表面积还事体积是两种思路，但数量级总可视为一个级别。
+- 比例尺概念。
+*/
+/*XXX: Use bit filed. Use Repl.it to test*/
+struct Voxel {
+	Uint8	_nGeomType : 4;
+	Uint8	_NextSiblingPos : 4;
+	Uint8	_MaterialID;//The pallet id of color or material
+};
+const Uint16 C2_LUT_SIZE = 256;
+using VoxelLUT = Voxel[C2_LUT_SIZE * C2_LUT_SIZE * C2_LUT_SIZE];
+
+/*LUT normal data order, x->y->z
+TODO: center linear order like morton order? read and build from one center pointer in multi thread.*/
+void c2BuildVoxelOctree(c2VNode& Root, const VoxelLUT &LUT) {
+	int tamountoflevel = C2_LUT_SIZE * C2_LUT_SIZE * C2_LUT_SIZE;
+	c2VNode tnode;
+	Voxel* tn;
+
+	tnode.reset();
+	int xmax = C2_LUT_SIZE, ymax = C2_LUT_SIZE, zmax = C2_LUT_SIZE;
+	static int i[8];
+	auto lambda_getpos = [zmax, ymax](int x, int y, int z) ->int {
+		return (z * zmax + y) * ymax + x;
+	};
+	for (int iz = 0; iz < zmax; iz += 2) {
+		for (int iy = 0; iy < ymax; iy += 2) {
+			for (int ix = 0; ix < xmax; ix += 2) {
+				i[0] = lambda_getpos(ix,		iy,		iz);//000
+				i[1] = lambda_getpos(ix + 1,	iy,		iz);//100
+				i[2] = lambda_getpos(ix,		iy,		iz + 1);//001
+				i[3] = lambda_getpos(ix + 1,	iy,		iz + 1);//101
+				i[4] = lambda_getpos(ix,		iy + 1,	iz);//010
+				i[5] = lambda_getpos(ix + 1,	iy + 1,	iz);//110
+				i[6] = lambda_getpos(ix,		iy + 1,	iz + 1);//011
+				i[7] = lambda_getpos(ix + 1,	iy + 1,	iz + 1);//111
+				for (int j : i) {
+// 					BOOST_ASSERT(C2_VOXGEOM_node != LUT[j]._nGeomType && C2_VOXGEOM_typeammount > LUT[j]._nGeomType);
+// 					if (C2_VOXGEOM_none == LUT[j]._nGeomType)
+// 						continue;
+// //					tnode.addChild(LUT[j]._nGeomType, C2_VOXPOS_None, LUT[j]._MaterialID);
+				}
+			}//z
+		}//y
+	}//x
+}
+
+void tc2BuildVoxelOctreeFromImageLut(c2VNode& VoxeOctreeRoot, const char* sFilePath) {
+	if (!sFilePath)
+		return;
+	/*4-----------------------------------------------------------------------*/
+	//Construct from the leaf level, the bottom 1st level
+	int xmax, zmax, channel, ymax;
+	Uint8* data = stbi_load(sFilePath, &xmax, &zmax, &channel, 1);//Just read one channel
+	xmax = xmax > C2_LUT_SIZE ? C2_LUT_SIZE : xmax;
+	zmax = zmax > C2_LUT_SIZE ? C2_LUT_SIZE : zmax;
+	if (xmax % 2)		--xmax;//discard one pixel if needed
+	if (zmax % 2)		--zmax;
+	static int x[4], z[4], y[4];
+	for (int ix = 0; ix < xmax; ix += 2)	for (int iz = 0; iz < zmax; iz += 2) {
+		x[0] = x[2] = ix;
+		x[1] = x[3] = ix + 1;
+		z[0] = z[1] = iz;
+		z[2] = z[3] = iz + 1;
+		ymax = data[ix * xmax + iz];
+		ymax = ymax > C2_LUT_SIZE ? C2_LUT_SIZE : ymax;
+		if (ymax % 2)		--ymax;
+		for (int iy = 0; iy < ymax; iy += 2) {
+		}
+	}
+	/*4-----------------------------------------------------------------------*/
+	/*collapse to be a path length value*/
+
+
+	stbi_image_free(data);
+}
 
 //1/////////////////////////////////////////////////////////////////////////////
-const c2VNode* tc2BuildVoxelOctree() {
-
+/*FIXME: big-endian & little endian*/
+void* c2VNode::addChild(const Uint8 nChGeomType, const Uint8 PosBit, const Uint8 MaterialID) {
+	BOOST_ASSERT(C2_VOXGEOM_none != nChGeomType);
+	//	auto lambda_addchild = [this, &size](const Uint8 nChGeomType, const Uint8 PosBit) {
+	auto _lambda_addchild = [&](const size_t NewChSize)->void* {//return pointer to the new child 
+		this->_ChMask |= PosBit;
+		this->_Children = realloc(this->_Children, _ChSize + NewChSize);//XXX: use a memory pool to avoid fragmentation
+		void* pnewchild = static_cast<Uint8*>(this->_Children) + _ChSize;//get the pointer to the new node after add(realloc)
+		memcpy(pnewchild, &nChGeomType, sizeof(nChGeomType));
+		_ChSize += NewChSize;
+		return pnewchild;
+	};
+	if (C2_VOXGEOM_node == nChGeomType) {
+		c2VNode* tn = static_cast<c2VNode*>(_lambda_addchild(sizeof(c2VNode)));
+		tn->reset();
+		return tn;
+	}
+#ifdef TEST_VOXELBUILD	//可以不需要，Mask被清零过。
+	else if (C2_VOXGEOM_none == nChGeomType) {
+		this->_ChMask &= (~PosBit);
+	}
+#endif
+	else if (C2_VOXGEOM_solid <= nChGeomType <= C2_VOXGEOM_typeammount) {
+		BOOST_ASSERT(0 != MaterialID);
+		Voxel* tv = static_cast<Voxel*>(_lambda_addchild(sizeof(Voxel)));
+		tv->_nGeomType = nChGeomType;
+		tv->_MaterialID = MaterialID;
+		return tv;
+	}
+	else {
+		BOOST_ASSERT(0);
+	}
 	return nullptr;
 }
 
-//1/////////////////////////////////////////////////////////////////////////////
-static void _fixme2clousure(Uint8 &Mask, void** pChildren, size_t &nSize,//XXX: alternate reference2pointer rather than pointer2pointer
-	const int nGeomType, const Uint8 CompareBit) {
-	static Voxel* tv = nullptr;
-	static c2VNode* tn = nullptr;
-	if (C2_VOXGEOM_node == nGeomType) {
-		Mask |= CompareBit;
-		*pChildren = realloc(pChildren, nSize + sizeof(c2VNode));//XXX: use a memory pool to avoid fragmentation
-		tn = reinterpret_cast<c2VNode*>(reinterpret_cast<Uint8>(*pChildren) + nSize);//get the pointer to the new node after add(realloc)
-		/*TODO: iterate into children*/
-		
-	}
-#ifdef TEST_VOXELBUILD	//可以不需要，Mask被清零过。
-	else if (C2_VOXGEOM_none == nGeomType) {
-		Mask &= (~CompareBit);
-	}
-#endif
-	else if (C2_VOXGEOM_solid <= nGeomType) {
-		*pChildren = realloc(pChildren, nSize + sizeof(Voxel));//XXX: use a memory pool to avoid fragmentation
-		tv = reinterpret_cast<Voxel*>(reinterpret_cast<Uint8>(*pChildren) + nSize);//get the pointer to the new leaf after add(realloc)
-		tv->_nGeomType = nGeomType;
-	}
-}
-/*TODO: big-endian & little endian*/
-void c2VNode::encodeChildren(	int UP1,	int UP2,	int UP3,	int UP4,
-								int DOWN1,	int DOWN2,	int DOWN3,	int DOWN4) {
-	size_t size = 0;
+void c2VNode::encodeChildren(	Uint8 GTypeUP1,		Uint8 GTypeUP2,	
+								Uint8 GTypeUP3,		Uint8 GTypeUP4,
+								Uint8 GTypeDOWN1,	Uint8 GTypeDOWN2,
+								Uint8 GTypeDOWN3,	Uint8 GTypeDOWN4) {
+	_ChSize = 0;
 	_ChMask = 0x00;
-	_fixme2clousure(_ChMask, &_Children, size, UP1, C2_VOXPOS_UP1);
-	_fixme2clousure(_ChMask, &_Children, size, UP2, C2_VOXPOS_UP2);
-	_fixme2clousure(_ChMask, &_Children, size, UP3, C2_VOXPOS_UP3);
-	_fixme2clousure(_ChMask, &_Children, size, UP4, C2_VOXPOS_UP4);
-	_fixme2clousure(_ChMask, &_Children, size, DOWN1, C2_VOXPOS_DOWN1);
-	_fixme2clousure(_ChMask, &_Children, size, DOWN2, C2_VOXPOS_DOWN2);
-	_fixme2clousure(_ChMask, &_Children, size, DOWN3, C2_VOXPOS_DOWN3);
-	_fixme2clousure(_ChMask, &_Children, size, DOWN4, C2_VOXPOS_DOWN4);
-}
+	/*std::function is too detailed. XXX: reduce the parameters' of lambda through [&]*/
 
-void c2VNode::decodeChildren() {
-	/*根据MASK来解读children里的数据，是一个tuple样的东西*/
+	addChild(GTypeUP1, C2_VOXPOS_Up1);
+	addChild(GTypeUP2, C2_VOXPOS_Up2);
+	addChild(GTypeUP3, C2_VOXPOS_Up3);
+	addChild(GTypeUP4, C2_VOXPOS_Up4);
+	addChild(GTypeDOWN1, C2_VOXPOS_Down1);
+	addChild(GTypeDOWN2, C2_VOXPOS_Down2);
+	addChild(GTypeDOWN3, C2_VOXPOS_Down3);
+	addChild(GTypeDOWN4, C2_VOXPOS_Down4);
 }
-
 
 /*2****************************************************************************/
+int xmax, zmax, channel, ymax;
+static Uint8* g_pImageData = nullptr;
+
+static bool g_bDirtyFirst = true;
 static void DrawVoxel(const Render &Rr, const glm::mat4 &MatModel);
 void c2VNode::draw(const Render &Rr) {
-#ifdef TEST_VOXELBUILD
-	BOOST_ASSERT(_ChMask);	//如果没有一个children的话，本Node就不应该存在。
-	BOOST_ASSERT(getChildrenAmount());
-#endif
+	DrawVoxel(Rr, glm::mat4(1.0f));
 
-	glm::mat4 tmat(1.0f);
-	DrawVoxel(Rr, tmat);
 
+
+// #ifdef TEST_VOXELBUILD
+// 	BOOST_ASSERT(_ChMask);	//如果没有一个children的话，本Node就不应该存在。
+// 	BOOST_ASSERT(getChildrenAmount());
+// #endif
+// 	if (g_bDirtyFirst) {
+// 		encodeChildren(
+// 			C2_VOXGEOM_solid, C2_VOXGEOM_solid, C2_VOXGEOM_solid, C2_VOXGEOM_solid,
+// 			C2_VOXGEOM_solid, C2_VOXGEOM_solid, C2_VOXGEOM_solid, C2_VOXGEOM_solid
+// 		);
+// 		g_bDirtyFirst = false;
+// 	}
+// 
+// 	/*the decoding order base on encoding process strictly*/
+// 	void* tchpointer = _Children;
+// 	static Uint8 tchgeom_type= C2_VOXGEOM_none;
+// 	if (_ChMask & C2_VOXPOS_UP1) {
+// 		memcpy(&tchgeom_type, tchpointer, sizeof(tchgeom_type));
+// //		tchgeom_type >>= 4;//TODO: when using bit filed. FIXME: : big-endian & little endian
+// 		BOOST_ASSERT(0 > tchgeom_type < C2_VOXGEOM_typeammount);
+// 		if (C2_VOXGEOM_node == tchgeom_type) {
+// 			static_cast<c2VNode*>(tchpointer)->draw(Rr);
+// 			tchpointer = static_cast<Uint8*>(tchpointer) + sizeof(c2VNode);
+// 		}
+// 		else {
+// //			static_cast<Voxel*>(tchpointer)->draw(Rr);
+// 			glm::mat4 tmat(1.0f);
+// 			DrawVoxel(Rr, tmat);
+// 			tchpointer = static_cast<Uint8*>(tchpointer) + sizeof(Voxel);
+// 		}
+
+// 	}
+// 	if (_ChMask & C2_VOXPOS_UP2)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_UP3)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_UP4)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_DOWN1)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_DOWN2)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_DOWN3)
+// 		++count;
+// 	if (_ChMask & C2_VOXPOS_DOWN4)
+// 		++count;
 
 // 	/*4-----------------------------------------------------------------------*/
 // 	for (auto ch : _pChildren) {
@@ -112,13 +246,12 @@ int	c2VNode::getChildrenAmount() {
 //1/////////////////////////////////////////////////////////////////////////////
 static GLuint VBO = 0, vao_block = 0;
 static Shader lightingShader;
-static glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);//FIXME
+static glm::vec3 lightPos = glm::vec3(12.0f, 10.0f, 20.0f);//FIXME
 static void _BuildVAOVoxel() {
 #ifdef C2_USE_OPENGLES
 	lightingShader.create("es3block.vs", "es3block.fs");
 #else
 	lightingShader.create("330block.vs", "330block.fs");
-	lampShader.create("330lamp.vs", "330lamp.fs");
 #endif//C2_USE_OPENGLES
 	VBO = c2GetBoxVBOFloat();
 	/*4----------------------------------------------------------------------*/
@@ -145,7 +278,6 @@ static void DrawVoxel(const Render &Rr, const glm::mat4 &MatModel) {
 	/*4----------------------------------------------------------------------*/
 	lightingShader.use();
 	lightingShader.setVec3("lightPos", lightPos);
-	lightingShader.setMat4("model", MatModel);
 
 	lightingShader.setVec3("viewPos", Rr._PosView);
 	lightingShader.setMat4("projection", Rr._MatProjection);
@@ -154,8 +286,29 @@ static void DrawVoxel(const Render &Rr, const glm::mat4 &MatModel) {
 	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
+#if 0//tmp test
+	if (!g_pImageData) {
+		g_pImageData = stbi_load("d:/qjf2017.png", &xmax, &zmax, &channel, 1);//Just read one channel
+		xmax = xmax > C2_LUT_SIZE ? C2_LUT_SIZE : xmax;
+		zmax = zmax > C2_LUT_SIZE ? C2_LUT_SIZE : zmax;
+	}
+	glBindVertexArray(vao_block);
+	for (int ix = 0; ix < xmax; ix += 1)	for (int iz = 0; iz < zmax; iz += 1) {
+		ymax = ((Uint8*)g_pImageData)[ix * xmax + iz];
+		ymax = ymax > C2_LUT_SIZE ? C2_LUT_SIZE : ymax;
+		for (int iy = 0; iy < ymax; iy += 1) {
+			lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+	}
+	return;
+#endif
+	lightingShader.setMat4("model", MatModel);
 	glBindVertexArray(vao_block);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+// 	glEnable(GL_PROGRAM_POINT_SIZE);
+// 	glPointSize(50);
+// 	glDrawArrays(GL_POINTS, 0, 36);
 }
 
 static unsigned int default_palette[256] = {

@@ -31,7 +31,7 @@ static void _BuildVAOLight() {
 #endif
 	glEnableVertexAttribArray(0);
 }
-static glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);//FIXME
+static glm::vec3 lightPos = glm::vec3(12.0f, 10.0f, 20.0f);//FIXME
 void c2PartLight::draw(const Render &Rr) {
 	if (_bNonGizmos)
 		return;
