@@ -19,7 +19,7 @@
 
 //1/////////////////////////////////////////////////////////////////////////////
 /*
-- 地球直径大约为10的10次方mm，约和2的33-34次方公里。所以用32位表示已经很大了。
+- 地球直径大约为10的10次方mm，约和2的33-34次方公里。所以用32位表示已经很大了.3个256是24次方。
 - 虽然LUT是原始数据，但仍旧要考虑空间和处理效率问题。
 - TODO：如何让地形是球体以后考虑。
 - 按EVE等宇宙游戏，不会有真的连续的宇宙空间，基本是特别空域、星球近地空间等作为可经典物理可
@@ -43,74 +43,84 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 	}
 	/*4-----------------------------------------------------------------------*/
 	/*define build one level lambda*/
-	std::function<void(c2VNode[], const c2VNode[], const int, const int, const int)> lambda_buildonelevel;
-	lambda_buildonelevel = [&lambda_buildonelevel](c2VNode UpCollectLUT[], const c2VNode _LutInput[],
-								const int _xMax, const int _yMax, const int _zMax) {
-// 		auto lambda_fillchildren = [](
-// 			c2VNode& NDown1, c2VNode& NDown2,
-// 			c2VNode& NDown3, c2VNode& NDown4,
-// 			c2VNode& NUp1, c2VNode& NUp2,
-// 			c2VNode& NUp3, c2VNode& NUp4
-// 			) {
-// 
-// 		};
-		static int ilut1, ilut2, ilut3, ilut4, ilut5, ilut6, ilut7, ilut8, upi;
+	std::function<const c2VNode*(const c2VNode[], const int, const int, const int)> lambda_buildonelevel;
+	lambda_buildonelevel = [&lambda_buildonelevel](const c2VNode _LutInput[],
+								const int _xMax, const int _yMax, const int _zMax)->c2VNode*{
+		c2VNode* tpup_collectlut = new c2VNode[_xMax*_yMax*_zMax / 8];
+		static int ilut[8], upi, i, count;
 		for (int iy = 0; iy < _yMax; iy += 2) {
 			for (int iz = 0; iz < _zMax; iz += 2) {
 				for (int ix = 0; ix < _xMax; ix += 2) {//traverse from x->z->y(height)
-					ilut1 = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz);
-					ilut2 = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz);
-					ilut3 = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz + 1);
-					ilut4 = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz + 1);
-					ilut5 = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz);
-					ilut6 = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz);
-					ilut7 = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz + 1);
-					ilut8 = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz + 1);
+					ilut[0] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz);
+					ilut[1] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz);
+					ilut[2] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz + 1);
+					ilut[3] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz + 1);
+					ilut[4] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz);
+					ilut[5] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz);
+					ilut[6] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz + 1);
+					ilut[7] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz + 1);
 					upi = _getLUTPosition(_xMax/2, _yMax/2, _zMax/2, ix/2, iy/2, iz/2);
-// 					UpCollectLUT[upi]._nGType = C2_VOXGEOM_container;
-// 					UpCollectLUT[upi].cont._pChildren = new c2VNode::VNList;
-// 					if (_LutInput[ilut1]._nGType != C2_VOXGEOM_none) {
-// 						UpCollectLUT[upi].cont._ChMask |= C2_VOXSLOT[0];
-// 						UpCollectLUT[upi].cont._pChildren->push_back();
-// 					}
+
+					count = 0;
+					static c2VNode tchildren[8];
+					for (i = 0; i < 8; ++i) {
+						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {
+							tpup_collectlut[upi].cont._ChMask |= C2_VOXSLOT[i];
+							tchildren[count] = _LutInput[ilut[i]];//copy from lut
+							++count;
+						}
+					}
+					if (!count)	continue;
+					tpup_collectlut[upi]._nGType = C2_VOXGEOM_container;
+					/*copy children from temp array*/
+					tpup_collectlut[upi].cont._Children = new c2VNode[count];
+					std::copy(tchildren, tchildren + count, tpup_collectlut[upi].cont._Children);
+					if (_xMax == 2) {
+						BOOST_ASSERT(_xMax==_yMax==_zMax);//my obsessive compulsive disorder
+						return tpup_collectlut;
+					}
+					else lambda_buildonelevel(tpup_collectlut, _xMax/2, _yMax/2, _zMax/2);
 
 
-
-					UpCollectLUT[upi].encodeChildren(
-						_LutInput[ilut1]._nGType, _LutInput[ilut2]._nGType,
-						_LutInput[ilut3]._nGType, _LutInput[ilut4]._nGType,
-						_LutInput[ilut5]._nGType, _LutInput[ilut6]._nGType,
-						_LutInput[ilut7]._nGType, _LutInput[ilut8]._nGType,
-						/*if not a leaf, material id will be ignored.*/
-						_LutInput[ilut1].leaf._MaterialID, _LutInput[ilut2].leaf._MaterialID,
-						_LutInput[ilut3].leaf._MaterialID, _LutInput[ilut4].leaf._MaterialID,
-						_LutInput[ilut5].leaf._MaterialID, _LutInput[ilut6].leaf._MaterialID,
-						_LutInput[ilut7].leaf._MaterialID, _LutInput[ilut8].leaf._MaterialID
-					);
+//					UpCollectLUT[upi].encodeChildren(
+// 						_LutInput[ilut1]._nGType, _LutInput[ilut2]._nGType,
+// 						_LutInput[ilut3]._nGType, _LutInput[ilut4]._nGType,
+// 						_LutInput[ilut5]._nGType, _LutInput[ilut6]._nGType,
+// 						_LutInput[ilut7]._nGType, _LutInput[ilut8]._nGType,
+// 						/*if not a leaf, material id will be ignored.*/
+// 						_LutInput[ilut1].leaf._MaterialID, _LutInput[ilut2].leaf._MaterialID,
+// 						_LutInput[ilut3].leaf._MaterialID, _LutInput[ilut4].leaf._MaterialID,
+// 						_LutInput[ilut5].leaf._MaterialID, _LutInput[ilut6].leaf._MaterialID,
+// 						_LutInput[ilut7].leaf._MaterialID, _LutInput[ilut8].leaf._MaterialID
+// 					);
 				}//x
 			}//y
 		}//z
 	};/*define build one level lambda*/
 	/*4-----------------------------------------------------------------------*/
-	int xmax = xMax, ymax = yMax, zmax = zMax;
 	/*Begin to recursive building.*/
-	const c2VNode* tp_nodelut = LeavesLUT;
-	while ( xmax > 1) {
-		BOOST_ASSERT((0 == (xmax % 2)) && (0 == (ymax % 2)) && (0 == (zmax % 2)));
-		c2VNode* tpup_collectlut = new c2VNode[xmax*ymax*zmax/8];
-		lambda_buildonelevel(tpup_collectlut, tp_nodelut, xmax, ymax, zmax);
-		tp_nodelut = tpup_collectlut;
-		xmax /= 2;
-		ymax /= 2;
-		zmax /= 2;
-	}
-	BOOST_ASSERT(xmax == ymax == zmax == 1);
+
+	return lambda_buildonelevel(LeavesLUT, xMax, yMax, zMax);
+
+// 	int xmax = xMax, ymax = yMax, zmax = zMax;
+// 	c2VNode* tp_nodelut = new c2VNode[xmax*ymax*zmax];
+// 	std::copy(LeavesLUT, LeavesLUT + xmax* ymax*zmax, tp_nodelut);//We dare to copy since just leaves LUT not pointer
+// 	while ( xmax > 1) {
+// 		BOOST_ASSERT((0 == (xmax % 2)) && (0 == (ymax % 2)) && (0 == (zmax % 2)));
+// 		c2VNode* tpup_collectlut = new c2VNode[xmax*ymax*zmax/8];
+// 		lambda_buildonelevel(tpup_collectlut, tp_nodelut, xmax, ymax, zmax);
+// 		delete[] tp_nodelut;
+// 		tp_nodelut = tpup_collectlut;
+// 		xmax /= 2;
+// 		ymax /= 2;
+// 		zmax /= 2;
+// 	}
+// 	BOOST_ASSERT(xmax == ymax == zmax == 1);
 
 	/*4-----------------------------------------------------------------------*/
 	/*1)collapse all C2_VOXGEOM_none nodes.	2)and collapse long multi-layers
 	container branch to be a path length value*/
-
-	return tp_nodelut;
+//	return tp_nodelut;
 }
 
 void c2freeVoxelOctree(const c2VNode* pRoot) {
@@ -149,85 +159,85 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 	stbi_image_free(data);
 	return lut;
 }
-
-//1/////////////////////////////////////////////////////////////////////////////
-/*again: the order of children and slot mask is very strict!*/
-c2VNode* c2VNode::getChild(const int nSlot) const {
-	if (nSlot < 0 || nSlot >= 8)
-		return nullptr;
-	if (!(cont._ChMask & C2_VOXSLOT[nSlot])) {
-		return nullptr;
-	}
-	VNList::iterator &chi = cont._pChildren->begin();
-	for (int i = 0; i < nSlot; ++i) {
-		if (cont._ChMask & C2_VOXSLOT[i]) {
-			++chi;
-		}
-	}
-	return &(*chi);
-}
-
-/*这个版本是自己创建了子。但是我们是从叶子往上构建起，子在父前面就存在了，所以不合适。
-从叶子往上构建的方式，适合每一层都有一个LUT，父里的子链表就只保存个子的LUT ID。*/
-/*again: the order of children and slot mask is very strict!*/
-void c2VNode::encodeChildren(
-	const Uint8 GTypeDown1,	const Uint8 GTypeDown2,
-	const Uint8 GTypeDown3,	const Uint8 GTypeDown4,
-	const Uint8 GTypeUp1,	const Uint8 GTypeUp2,
-	const Uint8 GTypeUp3,	const Uint8 GTypeUp4,
-	/*set material id only when leaf node*/
-	const Uint8 MaterialIDDown1, const Uint8 MaterialIDDown2,
-	const Uint8 MaterialIDDown3, const Uint8 MaterialIDDown4,
-	const Uint8 MaterialIDUp1, const Uint8 MaterialIDUp2,
-	const Uint8 MaterialIDUp3, const Uint8 MaterialIDUp4
-) {
-	/*std::function is too detailed. XXX: reduce the parameters' of lambda through [&]*/
-	auto lambda_addchild= [this](const Uint8 bitSlot,
-							const Uint8 nChGeomType, const Uint8 MaterialID)->c2VNode* {
-		BOOST_ASSERT(C2_VOXGEOM_container == _nGType);
-		if (nChGeomType < C2_VOXGEOM_container ||
-			nChGeomType >= C2_VOXGEOM_typeammount) {//empty slot. should collapse.
-			cont._ChMask &= (~bitSlot);
-			return nullptr;
-		}
-		c2VNode* pnewchild = nullptr;
-		/*get the child slot. and reset it & ensure it's Geometry Type.*/
-		if (cont._ChMask & bitSlot) {//if exist already, just refill the data
-			BOOST_ASSERT(cont._pChildren);//assert that pChildren exist already.
-			pnewchild = getChild(bitSlot);
-			BOOST_ASSERT(pnewchild);//assert the slot is exist already.
-			pnewchild->reset();
-		}
-		else {
-			if (!cont._pChildren) {//the first child
-				cont._pChildren = new VNList;
-				BOOST_ASSERT(!cont._ChMask);//assert that children mask is empty
-			}
-			cont._ChMask |= bitSlot;
-			cont._pChildren->push_back(nChGeomType);
-			pnewchild = &(cont._pChildren->back());
-			BOOST_ASSERT(pnewchild);
-		}
-		/*fill the child material into the slot if leaf. next sibling does NOT be set */
-		pnewchild->_nGType = nChGeomType;
-		if (pnewchild->_nGType != C2_VOXGEOM_container) {
-			pnewchild->leaf._MaterialID = MaterialID;
-		}
-		BOOST_ASSERT(nChGeomType==pnewchild->_nGType);//not need. just my obsessive compulsive disorder
-		return pnewchild;
-	};//define lambda_addchild
-	reset();
-	_nGType = C2_VOXGEOM_container;
-	/*again: the order is very strict!*/
-	lambda_addchild(C2_VOXSLOT_BitDown1, GTypeDown1, MaterialIDDown1);
-	lambda_addchild(C2_VOXSLOT_BitDown2, GTypeDown2, MaterialIDDown2);
-	lambda_addchild(C2_VOXSLOT_BitDown3, GTypeDown3, MaterialIDDown3);
-	lambda_addchild(C2_VOXSLOT_BitDown4, GTypeDown4, MaterialIDDown4);
-	lambda_addchild(C2_VOXSLOT_BitUp1, GTypeUp1, MaterialIDUp1);
-	lambda_addchild(C2_VOXSLOT_BitUp2, GTypeUp2, MaterialIDUp2);
-	lambda_addchild(C2_VOXSLOT_BitUp3, GTypeUp3, MaterialIDUp3);
-	lambda_addchild(C2_VOXSLOT_BitUp4, GTypeUp4, MaterialIDUp4);
-}
+// 
+// //1/////////////////////////////////////////////////////////////////////////////
+// /*again: the order of children and slot mask is very strict!*/
+// c2VNode* c2VNode::getChild(const int nSlot) const {
+// 	if (nSlot < 0 || nSlot >= 8)
+// 		return nullptr;
+// 	if (!(cont._ChMask & C2_VOXSLOT[nSlot])) {
+// 		return nullptr;
+// 	}
+// 	VNList::iterator &chi = cont._pChildren->begin();
+// 	for (int i = 0; i < nSlot; ++i) {
+// 		if (cont._ChMask & C2_VOXSLOT[i]) {
+// 			++chi;
+// 		}
+// 	}
+// 	return &(*chi);
+// }
+// 
+// /*这个版本是自己创建了子。但是我们是从叶子往上构建起，子在父前面就存在了，所以不合适。
+// 从叶子往上构建的方式，适合每一层都有一个LUT，父里的子链表就只保存个子的LUT ID。*/
+// /*again: the order of children and slot mask is very strict!*/
+// void c2VNode::encodeChildren(
+// 	const Uint8 GTypeDown1,	const Uint8 GTypeDown2,
+// 	const Uint8 GTypeDown3,	const Uint8 GTypeDown4,
+// 	const Uint8 GTypeUp1,	const Uint8 GTypeUp2,
+// 	const Uint8 GTypeUp3,	const Uint8 GTypeUp4,
+// 	/*set material id only when leaf node*/
+// 	const Uint8 MaterialIDDown1, const Uint8 MaterialIDDown2,
+// 	const Uint8 MaterialIDDown3, const Uint8 MaterialIDDown4,
+// 	const Uint8 MaterialIDUp1, const Uint8 MaterialIDUp2,
+// 	const Uint8 MaterialIDUp3, const Uint8 MaterialIDUp4
+// ) {
+// 	/*std::function is too detailed. XXX: reduce the parameters' of lambda through [&]*/
+// 	auto lambda_addchild= [this](const Uint8 bitSlot,
+// 							const Uint8 nChGeomType, const Uint8 MaterialID)->c2VNode* {
+// 		BOOST_ASSERT(C2_VOXGEOM_container == _nGType);
+// 		if (nChGeomType < C2_VOXGEOM_container ||
+// 			nChGeomType >= C2_VOXGEOM_typeammount) {//empty slot. should collapse.
+// 			cont._ChMask &= (~bitSlot);
+// 			return nullptr;
+// 		}
+// 		c2VNode* pnewchild = nullptr;
+// 		/*get the child slot. and reset it & ensure it's Geometry Type.*/
+// 		if (cont._ChMask & bitSlot) {//if exist already, just refill the data
+// 			BOOST_ASSERT(cont._pChildren);//assert that pChildren exist already.
+// 			pnewchild = getChild(bitSlot);
+// 			BOOST_ASSERT(pnewchild);//assert the slot is exist already.
+// 			pnewchild->reset();
+// 		}
+// 		else {
+// 			if (!cont._pChildren) {//the first child
+// 				cont._pChildren = new VNList;
+// 				BOOST_ASSERT(!cont._ChMask);//assert that children mask is empty
+// 			}
+// 			cont._ChMask |= bitSlot;
+// 			cont._pChildren->push_back(nChGeomType);
+// 			pnewchild = &(cont._pChildren->back());
+// 			BOOST_ASSERT(pnewchild);
+// 		}
+// 		/*fill the child material into the slot if leaf. next sibling does NOT be set */
+// 		pnewchild->_nGType = nChGeomType;
+// 		if (pnewchild->_nGType != C2_VOXGEOM_container) {
+// 			pnewchild->leaf._MaterialID = MaterialID;
+// 		}
+// 		BOOST_ASSERT(nChGeomType==pnewchild->_nGType);//not need. just my obsessive compulsive disorder
+// 		return pnewchild;
+// 	};//define lambda_addchild
+// 	reset();
+// 	_nGType = C2_VOXGEOM_container;
+// 	/*again: the order is very strict!*/
+// 	lambda_addchild(C2_VOXSLOT_BitDown1, GTypeDown1, MaterialIDDown1);
+// 	lambda_addchild(C2_VOXSLOT_BitDown2, GTypeDown2, MaterialIDDown2);
+// 	lambda_addchild(C2_VOXSLOT_BitDown3, GTypeDown3, MaterialIDDown3);
+// 	lambda_addchild(C2_VOXSLOT_BitDown4, GTypeDown4, MaterialIDDown4);
+// 	lambda_addchild(C2_VOXSLOT_BitUp1, GTypeUp1, MaterialIDUp1);
+// 	lambda_addchild(C2_VOXSLOT_BitUp2, GTypeUp2, MaterialIDUp2);
+// 	lambda_addchild(C2_VOXSLOT_BitUp3, GTypeUp3, MaterialIDUp3);
+// 	lambda_addchild(C2_VOXSLOT_BitUp4, GTypeUp4, MaterialIDUp4);
+// }
 
 //1/////////////////////////////////////////////////////////////////////////////
 static bool g_bDirtyFirst = true;
@@ -260,35 +270,6 @@ static void _BuildVAOVoxel() {
 	glEnableVertexAttribArray(1);
 }
 /*2****************************************************************************/
-// std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
-// lambda_draw = [&](const c2VNode& Node, const glm::mat4& MatModel) {
-/*i think that the capture vars in enclose scope to real lambda need more stack operation.*/
-void lambda_draw(const c2VNode& Node, const glm::mat4& MatModel) {
-	if (Node._nGType == C2_VOXGEOM_container) {
-		/*FIXME: after we do the process of collapsing, we can assert it!*/
-		//BOOST_ASSERT(Node.cont._pChildren);
-		if (!Node.cont._pChildren) {
-			return;
-		}
-		c2VNode::VNList::iterator &chi = Node.cont._pChildren->begin();
-		for (int i = 0; i < 8; ++i) {
-//			MatModel = translate(MatModel, );
-			if (Node.cont._ChMask&C2_VOXSLOT[i]) {
-				lambda_draw(*chi, MatModel);
-				++chi;
-			}
-		}
-	}
-	else {
-		lightingShader.setMat4("model", MatModel);
-		glBindVertexArray(vao_block);
-		//	glDrawArrays(GL_TRIANGLES, 0, 36);
-		//	glEnable(GL_PROGRAM_POINT_SIZE);
-		 //	glPointSize(50);
-		//	glDrawArrays(GL_POINTS, 0, 36);
-		glDrawArrays(GL_LINES, 0, 36);
-	}
-}
 void c2VNode::draw(const Render &Rr) const {
 	if (0 == vao_block)
 		_BuildVAOVoxel();
@@ -303,7 +284,35 @@ void c2VNode::draw(const Render &Rr) const {
 
 	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	/*4----------------------------------------------------------------------*/
 	glm::mat4 mat(1.0f);
+	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
+	lambda_draw = [&lambda_draw](const c2VNode& Node, const glm::mat4& MatModel) {
+		if (Node._nGType == C2_VOXGEOM_container) {
+			/*FIXME: after we do the process of collapsing, we can assert it!*/
+			//BOOST_ASSERT(Node.cont._pChildren);
+			if (!Node.cont._Children) {
+				return;
+			}
+			int count = 0;
+			for (int i = 0; i < 8; ++i) {
+				//			MatModel = translate(MatModel, );
+				if (Node.cont._ChMask&C2_VOXSLOT[i]) {
+					lambda_draw(Node.cont._Children[count], MatModel);
+					++count;
+				}
+			}
+		}
+		else {
+			lightingShader.setMat4("model", MatModel);
+			glBindVertexArray(vao_block);
+			//	glDrawArrays(GL_TRIANGLES, 0, 36);
+			//	glEnable(GL_PROGRAM_POINT_SIZE);
+			 //	glPointSize(50);
+			//	glDrawArrays(GL_POINTS, 0, 36);
+			glDrawArrays(GL_LINES, 0, 36);
+		}
+	};
 	lambda_draw(*this, mat);
 
 #if 0//tmp test
