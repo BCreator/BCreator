@@ -17,6 +17,38 @@
 
 #include"VoxelOctree.h"
 
+#define DEBUG_VOXELOCTREE
+
+const Uint16 C2_LUTLEAVES_SIZE = 8;
+
+#ifdef DEBUG_VOXELOCTREE
+
+void print_octree(const int nSlot, const c2VNode &Node, std::string &sPrefix) {
+	printf("%s+ [%d]%x t=%d h=%d", sPrefix.c_str(), nSlot, &Node, Node._nGType, Node._nHeight);
+	if (Node._nGType == C2_VOXGEOM_container) {
+		printf(" chmask= %x\r\n", (unsigned int)Node.cont._ChMask);
+		std::string tsprefix = sPrefix + "|\t ";
+		printf("%s|\r\n", tsprefix.c_str());
+		int count = 0;
+		for (int i = 0; i < 8; ++i) {
+			if ( Node.cont._ChMask & C2_VOXSLOT[i] ) {
+				print_octree(i, Node.cont._Children[count], tsprefix);
+				++count;
+			}
+			else {
+				printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
+			}
+		}
+		if (Node._nHeight == 2)			printf("%s|\r\n", tsprefix.c_str());
+		else if (Node._nHeight == 1)	printf("%s\r\n", tsprefix.c_str());
+	}
+	else {
+		printf("\r\n");
+	}
+}
+
+#endif
+
 //1/////////////////////////////////////////////////////////////////////////////
 /*
 - 地球直径大约为10的10次方mm，约和2的33-34次方公里。所以用32位表示已经很大了.3个256是24次方。
@@ -27,15 +59,10 @@
 表面积还事体积是两种思路，但数量级总可视为一个级别。
 - 比例尺概念。
 */
-/*XXX: Use bit filed. Use Repl.it to test*/
-const Uint16 C2_LUTLEAVES_SIZE = 8;
-//using NodeLUT = c2VNode[C2_LUTLEAVES_SIZE * C2_LUTLEAVES_SIZE * C2_LUTLEAVES_SIZE];
-static int _getLUTPosition(int xMax, int yMax, int zMax, int x, int y, int z) {
+static inline int _getLUTPosition(int xMax, int yMax, int zMax, int x, int y, int z) {
 	return y * zMax*xMax + z * xMax + x;//traverse from x->z->y(height)
 };
-
-/*LUT normal data order, x->y->z
-TODO: center linear order like morton order? read and build from one center pointer in multi thread.*/
+/*TODO: center linear order like morton order? read and build from one center pointer in multi thread.*/
 const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 						const int xMax, const int yMax, const int zMax) {
 	if (!LeavesLUT) {
@@ -43,9 +70,12 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 	}
 	/*4-----------------------------------------------------------------------*/
 	/*define a lambda to collect one level into up-level of octree lut*/
-	std::function<const c2VNode*(const c2VNode[], const int, const int, const int)> lbd_collect1level2uplut;
-	lbd_collect1level2uplut = [&lbd_collect1level2uplut](const c2VNode _LutInput[],
-								const int _xMax, const int _yMax, const int _zMax)->const c2VNode*{
+	std::function<const c2VNode*(
+		const int, const c2VNode[],
+		const int, const int, const int)> lbd_collect1level2uplut;
+	lbd_collect1level2uplut = [&lbd_collect1level2uplut](
+		const int nHeight, const c2VNode _LutInput[],
+		const int _xMax, const int _yMax, const int _zMax)->const c2VNode*{
 		c2VNode* tpup_collectlut = new c2VNode[_xMax*_yMax*_zMax / 8];
 		static int ilut[8], upi, i, count;
 		for (int iy = 0; iy < _yMax; iy += 2) {
@@ -66,6 +96,7 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {//非空，那么上层LUT就收集
 							tpup_collectlut[upi].cont._ChMask |= C2_VOXSLOT[i];
 							tchildren[count] = _LutInput[ilut[i]];//copy from lut
+							tchildren[count]._nHeight = nHeight;//patch the height that not exist in lut
 							++count;
 						}
 					}
@@ -79,15 +110,29 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 				}//x
 			}//y
 		}//z
-		if (_xMax == 2) {
+		delete[] _LutInput;//delete the array, after it has been used up.
+		_LutInput = nullptr;//good habit
+		if (_xMax == 2) {//reach the root
 			BOOST_ASSERT(_xMax == _yMax && _xMax == _zMax);//my obsessive compulsive disorder
-			return &(tpup_collectlut[0]);
+			c2VNode *proot = new c2VNode(tpup_collectlut[0]);
+			delete[] tpup_collectlut;
+			proot->_nHeight = nHeight + 1;//patch the height that not exist in lut
+#ifdef DEBUG_VOXELOCTREE
+			std::string sprefix = "";
+			print_octree(-1, *proot, sprefix);
+#endif//DEBUG_VOXELOCTREE
+			return proot;
 		}
 		else {//continue to recursive building
-			return lbd_collect1level2uplut(tpup_collectlut, _xMax / 2, _yMax / 2, _zMax / 2);
+			return lbd_collect1level2uplut(nHeight+1, tpup_collectlut, _xMax / 2, _yMax / 2, _zMax / 2);
 		}
 	};/*define lbd_collect1level2uplut lambda*/
-	return lbd_collect1level2uplut(LeavesLUT, xMax, yMax, zMax);
+	c2VNode* lutinput = new c2VNode[xMax*yMax*zMax];
+	std::copy(LeavesLUT, LeavesLUT + xMax*yMax*zMax, lutinput);
+	if (xMax == 1) {
+		return lutinput;
+	}
+	return lbd_collect1level2uplut(0, lutinput, xMax, yMax, zMax);
 
 
 	/*4-----------------------------------------------------------------------*/
@@ -216,8 +261,13 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 static bool g_bDirtyFirst = true;
 static GLuint VBO = 0, vao_voxel = 0;
 static Shader lightingShader;
-static glm::vec3 lightPos = glm::vec3(12.0f, 10.0f, 20.0f);//FIXME
+glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
 static void _BuildVAOVoxel() {
+#ifdef DEBUG_VOXELOCTREE
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(50);
+#endif//DEBUG_VOXELOCTREE
+
 #ifdef C2_USE_OPENGLES
 	lightingShader.create("es3voxel.vs", "es3voxel.fs");
 #else
@@ -243,13 +293,15 @@ static void _BuildVAOVoxel() {
 	glEnableVertexAttribArray(1);
 }
 /*2****************************************************************************/
+static int g_nCounter = 0;
 void c2VNode::draw(const Render &Rr) const {
+	g_nCounter = 0;
 	if (0 == vao_voxel)
 		_BuildVAOVoxel();
 	BOOST_ASSERT(_nGType < C2_VOXGEOM_typeammount);
 	/*4----------------------------------------------------------------------*/
 	lightingShader.use();
-	lightingShader.setVec3("lightPos", lightPos);
+	lightingShader.setVec3("lightPos", g_LightPos);
 
 	lightingShader.setVec3("viewPos", Rr._PosView);
 	lightingShader.setMat4("projection", Rr._MatProjection);
@@ -258,9 +310,9 @@ void c2VNode::draw(const Render &Rr) const {
 	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 	/*4----------------------------------------------------------------------*/
-	glm::mat4 mat(1.0f);
 	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
 	lambda_draw = [&lambda_draw](const c2VNode& Node, const glm::mat4& MatModel) {
+		BOOST_ASSERT(Node._nGType != C2_VOXGEOM_none);//FIXME: wrong assert
 		if (Node._nGType == C2_VOXGEOM_container) {
 			/*FIXME: after we do the process of collapsing, we can assert it!*/
 			//BOOST_ASSERT(Node.cont._pChildren);
@@ -268,45 +320,41 @@ void c2VNode::draw(const Render &Rr) const {
 				return;
 			}
 			int count = 0;
-			for (int i = 0; i < 8; ++i) {
-				//			MatModel = translate(MatModel, );
-				if (Node.cont._ChMask&C2_VOXSLOT[i]) {
-					lambda_draw(Node.cont._Children[count], MatModel);
-					++count;
-				}
+#define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
+			if (Node.cont._ChMask & bitSlot) {\
+				mat = glm::translate(MatModel, 3.0f*Node._nHeight*glm::vec3(x, y, z));\
+				lambda_draw(Node.cont._Children[count], mat);\
+				++count;\
 			}
+			glm::mat4 mat(1.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
+			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
+			lightingShader.setVec3("objectColor",
+					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
 		}
 		else {
+//#ifdef DEBUG_VOXELOCTREE
+#if 0
+			g_nCounter++;//DEBUG
+			mat = glm::translate(MatModel, glm::vec3(0.0f, g_nCounter*1.0f, 0.0f));
+			lightingShader.setMat4("model", mat);
+#else
 			lightingShader.setMat4("model", MatModel);
+#endif//DEBUG_VOXELOCTREE
 			glBindVertexArray(vao_voxel);
-			//	glDrawArrays(GL_TRIANGLES, 0, 36);
-			//	glEnable(GL_PROGRAM_POINT_SIZE);
-			 //	glPointSize(50);
-			//	glDrawArrays(GL_POINTS, 0, 36);
-			glDrawArrays(GL_LINES, 0, 36);
+ 			glDrawArrays(GL_TRIANGLES, 0, 36);
+//			glDrawArrays(GL_LINES, 0, 36);
+//			glDrawArrays(GL_POINTS, 0, 36);
 		}
 	};
+	glm::mat4 mat(1.0f);
 	lambda_draw(*this, mat);
-
-#if 0//tmp test
-	int _xMax, _zMax, channel, ymax;
-	static Uint8* g_pImageData = nullptr;
-	if (!g_pImageData) {
-		g_pImageData = stbi_load("d:/qjf2017.png", &_xMax, &_zMax, &channel, 1);//Just read one channel
-		_xMax = _xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : _xMax;
-		_zMax = _zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : _zMax;
-	}
-	glBindVertexArray(vao_voxel);
-	for (int ix = 0; ix < _xMax; ix += 1)	for (int iz = 0; iz < _zMax; iz += 1) {
-		ymax = ((Uint8*)g_pImageData)[ix * _xMax + iz];
-		ymax = ymax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : ymax;
-		for (int iy = 0; iy < ymax; iy += 1) {
-			lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-	}
-	return;
-#endif
 }
 
 static unsigned int default_palette[256] = {

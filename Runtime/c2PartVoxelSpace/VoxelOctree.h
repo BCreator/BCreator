@@ -13,6 +13,8 @@
 */
 
 //1////////////////////////////////////////////////////////////////////////////
+//const Uint16 C2_LUTLEAVES_SIZE = 1;
+
 /*Right-handed System*/
 //const Uint8 C2_VOXSLOT_BitNone = 0x0;
 const Uint8 C2_VOXSLOT_BitDown1 = 0x01;	// 0 0 0
@@ -81,21 +83,36 @@ struct c2VNode {
 		reset();
 		_nGType = nGeomType;
 	}
+	void deapClearChildrenMemRecursively() {//TODO: not tested yet.
+		if (_nGType != C2_VOXGEOM_container && cont._Children) return;
+		int count = 0;
+		for (int i = 0; i < 8; ++i) {
+			if (cont._ChMask&C2_VOXSLOT[i]) {
+				cont._Children[count].deapClearChildrenMemRecursively();
+				++count;
+			}
+		}
+		delete[] cont._Children;
+		cont._Children = nullptr;
+		cont._ChMask = 0;
+	}
+	/*will not delete children memory*/
 	void reset() {
- 		if (_nGType == C2_VOXGEOM_container && cont._Children) {
- 			delete[] cont._Children;
- 		}
  		memset(this, 0, sizeof(c2VNode));
  	}
 	/*2************************************************************************/
 /*data member*/
+#if 0//XXX: use bit filed.
 // 	Uint8	_nGType : 4; //Geometry type
 // 	Uint8	_nLength2Root:4;
-	Uint8	_nGType; //XXX: use bit filed. Geometry type
+#else
+	Uint8	_nGType; //Geometry type
+ 	Uint8	_nHeight;//The height of a node is the number of edges on the longest path between that node and a leaf
+#endif
 	union {
 		struct {
-			Uint8		_ChMask;//Children slots mask
-			c2VNode*	_Children;//impact children list indicated by mask
+			Uint8		_ChMask;//Children slots mask indicates impact children list.
+			c2VNode*	_Children;//* NOTE * Must use "new" and "delete" operation of array!TODO: 64位机器又会变大。可能可以弄个内存池的方式，这里就只需要存ID了。
 		}cont;//container
 		struct {
 			Uint8	_MaterialID;//The material of No.0 is default to debug

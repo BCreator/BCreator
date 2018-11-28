@@ -31,7 +31,7 @@ static void _BuildVAOLight() {
 #endif
 	glEnableVertexAttribArray(0);
 }
-static glm::vec3 lightPos = glm::vec3(12.0f, 10.0f, 20.0f);//FIXME
+extern glm::vec3 g_LightPos;//FIXME
 void c2PartLight::draw(const Render &Rr) {
 	if (_bNonGizmos)
 		return;
@@ -42,7 +42,7 @@ void c2PartLight::draw(const Render &Rr) {
 	lampShader.setMat4("view", Rr._MatView);
 	glm::mat4 model(1.0f);//最好显性identiy！
 	model = glm::mat4(1.0f);//最好显性identiy！
-	model = glm::translate(model, lightPos);
+	model = glm::translate(model, g_LightPos);
 	model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
 	lampShader.setMat4("model", model);
 	glBindVertexArray(vao_lamp);
