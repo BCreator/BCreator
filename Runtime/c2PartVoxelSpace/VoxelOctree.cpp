@@ -42,10 +42,10 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 		return nullptr;
 	}
 	/*4-----------------------------------------------------------------------*/
-	/*define build one level lambda*/
-	std::function<const c2VNode*(const c2VNode[], const int, const int, const int)> lambda_buildonelevel;
-	lambda_buildonelevel = [&lambda_buildonelevel](const c2VNode _LutInput[],
-								const int _xMax, const int _yMax, const int _zMax)->c2VNode*{
+	/*define a lambda to collect one level into up-level of octree lut*/
+	std::function<const c2VNode*(const c2VNode[], const int, const int, const int)> lbd_collect1level2uplut;
+	lbd_collect1level2uplut = [&lbd_collect1level2uplut](const c2VNode _LutInput[],
+								const int _xMax, const int _yMax, const int _zMax)->const c2VNode*{
 		c2VNode* tpup_collectlut = new c2VNode[_xMax*_yMax*_zMax / 8];
 		static int ilut[8], upi, i, count;
 		for (int iy = 0; iy < _yMax; iy += 2) {
@@ -60,62 +60,35 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 					ilut[6] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz + 1);
 					ilut[7] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz + 1);
 					upi = _getLUTPosition(_xMax/2, _yMax/2, _zMax/2, ix/2, iy/2, iz/2);
-
 					count = 0;
 					static c2VNode tchildren[8];
 					for (i = 0; i < 8; ++i) {
-						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {
+						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {//非空，那么上层LUT就收集
 							tpup_collectlut[upi].cont._ChMask |= C2_VOXSLOT[i];
 							tchildren[count] = _LutInput[ilut[i]];//copy from lut
 							++count;
 						}
 					}
-					if (!count)	continue;
+					if (!count) { 
+						continue;
+					}
 					tpup_collectlut[upi]._nGType = C2_VOXGEOM_container;
 					/*copy children from temp array*/
 					tpup_collectlut[upi].cont._Children = new c2VNode[count];
 					std::copy(tchildren, tchildren + count, tpup_collectlut[upi].cont._Children);
-					if (_xMax == 2) {
-						BOOST_ASSERT(_xMax==_yMax==_zMax);//my obsessive compulsive disorder
-						return tpup_collectlut;
-					}
-					else lambda_buildonelevel(tpup_collectlut, _xMax/2, _yMax/2, _zMax/2);
-
-
-//					UpCollectLUT[upi].encodeChildren(
-// 						_LutInput[ilut1]._nGType, _LutInput[ilut2]._nGType,
-// 						_LutInput[ilut3]._nGType, _LutInput[ilut4]._nGType,
-// 						_LutInput[ilut5]._nGType, _LutInput[ilut6]._nGType,
-// 						_LutInput[ilut7]._nGType, _LutInput[ilut8]._nGType,
-// 						/*if not a leaf, material id will be ignored.*/
-// 						_LutInput[ilut1].leaf._MaterialID, _LutInput[ilut2].leaf._MaterialID,
-// 						_LutInput[ilut3].leaf._MaterialID, _LutInput[ilut4].leaf._MaterialID,
-// 						_LutInput[ilut5].leaf._MaterialID, _LutInput[ilut6].leaf._MaterialID,
-// 						_LutInput[ilut7].leaf._MaterialID, _LutInput[ilut8].leaf._MaterialID
-// 					);
 				}//x
 			}//y
 		}//z
-	};/*define build one level lambda*/
-	/*4-----------------------------------------------------------------------*/
-	/*Begin to recursive building.*/
+		if (_xMax == 2) {
+			BOOST_ASSERT(_xMax == _yMax && _xMax == _zMax);//my obsessive compulsive disorder
+			return &(tpup_collectlut[0]);
+		}
+		else {//continue to recursive building
+			return lbd_collect1level2uplut(tpup_collectlut, _xMax / 2, _yMax / 2, _zMax / 2);
+		}
+	};/*define lbd_collect1level2uplut lambda*/
+	return lbd_collect1level2uplut(LeavesLUT, xMax, yMax, zMax);
 
-	return lambda_buildonelevel(LeavesLUT, xMax, yMax, zMax);
-
-// 	int xmax = xMax, ymax = yMax, zmax = zMax;
-// 	c2VNode* tp_nodelut = new c2VNode[xmax*ymax*zmax];
-// 	std::copy(LeavesLUT, LeavesLUT + xmax* ymax*zmax, tp_nodelut);//We dare to copy since just leaves LUT not pointer
-// 	while ( xmax > 1) {
-// 		BOOST_ASSERT((0 == (xmax % 2)) && (0 == (ymax % 2)) && (0 == (zmax % 2)));
-// 		c2VNode* tpup_collectlut = new c2VNode[xmax*ymax*zmax/8];
-// 		lambda_buildonelevel(tpup_collectlut, tp_nodelut, xmax, ymax, zmax);
-// 		delete[] tp_nodelut;
-// 		tp_nodelut = tpup_collectlut;
-// 		xmax /= 2;
-// 		ymax /= 2;
-// 		zmax /= 2;
-// 	}
-// 	BOOST_ASSERT(xmax == ymax == zmax == 1);
 
 	/*4-----------------------------------------------------------------------*/
 	/*1)collapse all C2_VOXGEOM_none nodes.	2)and collapse long multi-layers
@@ -124,7 +97,7 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 }
 
 void c2freeVoxelOctree(const c2VNode* pRoot) {
-	if (pRoot)	delete[] pRoot;
+	if (pRoot)	delete pRoot;
 }
 void c2freeVoxelLUT(const c2VNode* pLUT) {
 	if (pLUT)	delete[] pLUT;
@@ -241,20 +214,20 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 
 //1/////////////////////////////////////////////////////////////////////////////
 static bool g_bDirtyFirst = true;
-static GLuint VBO = 0, vao_block = 0;
+static GLuint VBO = 0, vao_voxel = 0;
 static Shader lightingShader;
 static glm::vec3 lightPos = glm::vec3(12.0f, 10.0f, 20.0f);//FIXME
 static void _BuildVAOVoxel() {
 #ifdef C2_USE_OPENGLES
-	lightingShader.create("es3block.vs", "es3block.fs");
+	lightingShader.create("es3voxel.vs", "es3voxel.fs");
 #else
-	lightingShader.create("330block.vs", "330block.fs");
+	lightingShader.create("330voxel.vs", "330voxel.fs");
 #endif//C2_USE_OPENGLES
 	VBO = c2GetBoxVBOFloat();
 	/*4----------------------------------------------------------------------*/
-	//block
-	glGenVertexArrays(1, &vao_block);
-	glBindVertexArray(vao_block);
+	//voxel
+	glGenVertexArrays(1, &vao_voxel);
+	glBindVertexArray(vao_voxel);
 #ifdef USE_INTEGER
 	glVertexAttribIPointer(0, 3, GL_INT, 6 * sizeof(GLint), (void*)0);
 #else
@@ -271,7 +244,7 @@ static void _BuildVAOVoxel() {
 }
 /*2****************************************************************************/
 void c2VNode::draw(const Render &Rr) const {
-	if (0 == vao_block)
+	if (0 == vao_voxel)
 		_BuildVAOVoxel();
 	BOOST_ASSERT(_nGType < C2_VOXGEOM_typeammount);
 	/*4----------------------------------------------------------------------*/
@@ -305,7 +278,7 @@ void c2VNode::draw(const Render &Rr) const {
 		}
 		else {
 			lightingShader.setMat4("model", MatModel);
-			glBindVertexArray(vao_block);
+			glBindVertexArray(vao_voxel);
 			//	glDrawArrays(GL_TRIANGLES, 0, 36);
 			//	glEnable(GL_PROGRAM_POINT_SIZE);
 			 //	glPointSize(50);
@@ -323,7 +296,7 @@ void c2VNode::draw(const Render &Rr) const {
 		_xMax = _xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : _xMax;
 		_zMax = _zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : _zMax;
 	}
-	glBindVertexArray(vao_block);
+	glBindVertexArray(vao_voxel);
 	for (int ix = 0; ix < _xMax; ix += 1)	for (int iz = 0; iz < _zMax; iz += 1) {
 		ymax = ((Uint8*)g_pImageData)[ix * _xMax + iz];
 		ymax = ymax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : ymax;
