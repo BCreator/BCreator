@@ -19,35 +19,45 @@
 
 #define DEBUG_VOXELOCTREE
 
-const Uint16 C2_LUTLEAVES_SIZE = 8;
+const int C2_OCTREEDEPTH = 4;
+const int C2_LUTLEAVES_SIZE = pow(2, C2_OCTREEDEPTH);
 
-#ifdef DEBUG_VOXELOCTREE
-
-void print_octree(const int nSlot, const c2VNode &Node, std::string &sPrefix) {
-	printf("%s+ [%d]%x t=%d h=%d", sPrefix.c_str(), nSlot, &Node, Node._nGType, Node._nHeight);
+void print_octree(const int nDepthNumber, const int nSlot, const c2VNode &Node, const std::string &sPrefix) {
+	BOOST_ASSERT(Node._nGType > C2_VOXGEOM_none && Node._nGType < C2_VOXGEOM_typeammount);
+	printf("%s+ [%d]%x t=%d d=%d", sPrefix.c_str(), nSlot, &Node, Node._nGType, nDepthNumber);
 	if (Node._nGType == C2_VOXGEOM_container) {
 		printf(" chmask= %x\r\n", (unsigned int)Node.cont._ChMask);
 		std::string tsprefix = sPrefix + "|\t ";
 		printf("%s|\r\n", tsprefix.c_str());
-		int count = 0;
-		for (int i = 0; i < 8; ++i) {
+		for (int count = 0, i = 0; i < 8; ++i) {
 			if ( Node.cont._ChMask & C2_VOXSLOT[i] ) {
-				print_octree(i, Node.cont._Children[count], tsprefix);
+				int tchilddepth = nDepthNumber + 1;
+				print_octree(tchilddepth, i, Node.cont._Children[count], tsprefix);
 				++count;
 			}
 			else {
 				printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
 			}
 		}
-		if (Node._nHeight == 2)			printf("%s|\r\n", tsprefix.c_str());
-		else if (Node._nHeight == 1)	printf("%s\r\n", tsprefix.c_str());
+		if ((C2_OCTREEDEPTH - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
+		else if ((C2_OCTREEDEPTH -nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
 	}
 	else {
-		printf("\r\n");
+		printf(" P=%10o\r\n", Node.leaf._Path);
 	}
 }
-
-#endif
+/*[0] is units digit */
+static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount, const int OctNumber) {
+	int aggregate = 0;
+	for (int i = 0; i < DigitalAmount; ++i) {
+		static int digitalmask;
+		digitalmask = pow(010, i + 1);
+		DigitalArray[i] = OctNumber - OctNumber / digitalmask * digitalmask;
+		DigitalArray[i] -= aggregate;
+		aggregate += DigitalArray[i];
+		DigitalArray[i] /= (digitalmask / 010);
+	}
+}
 
 //1/////////////////////////////////////////////////////////////////////////////
 /*
@@ -70,12 +80,12 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 	}
 	/*4-----------------------------------------------------------------------*/
 	/*define a lambda to collect one level into up-level of octree lut*/
-	std::function<const c2VNode*(
-		const int, const c2VNode[],
+	std::function<c2VNode*(
+		const c2VNode[],
 		const int, const int, const int)> lbd_collect1level2uplut;
 	lbd_collect1level2uplut = [&lbd_collect1level2uplut](
-		const int nHeight, const c2VNode _LutInput[],
-		const int _xMax, const int _yMax, const int _zMax)->const c2VNode*{
+		const c2VNode _LutInput[],
+		const int _xMax, const int _yMax, const int _zMax)->c2VNode*{
 		c2VNode* tpup_collectlut = new c2VNode[_xMax*_yMax*_zMax / 8];
 		static int ilut[8], upi, i, count;
 		for (int iy = 0; iy < _yMax; iy += 2) {
@@ -93,11 +103,11 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 					count = 0;
 					static c2VNode tchildren[8];
 					for (i = 0; i < 8; ++i) {
-						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {//非空，那么上层LUT就收集
+						/*非空，那么上层LUT就收集，并填树结构所需要的数据*/
+						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {
 							tpup_collectlut[upi].cont._ChMask |= C2_VOXSLOT[i];
 							tchildren[count] = _LutInput[ilut[i]];//copy from lut
-							tchildren[count]._nHeight = nHeight;//patch the height that not exist in lut
-							++count;
+ 							++count;
 						}
 					}
 					if (!count) { 
@@ -116,15 +126,10 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 			BOOST_ASSERT(_xMax == _yMax && _xMax == _zMax);//my obsessive compulsive disorder
 			c2VNode *proot = new c2VNode(tpup_collectlut[0]);
 			delete[] tpup_collectlut;
-			proot->_nHeight = nHeight + 1;//patch the height that not exist in lut
-#ifdef DEBUG_VOXELOCTREE
-			std::string sprefix = "";
-			print_octree(-1, *proot, sprefix);
-#endif//DEBUG_VOXELOCTREE
 			return proot;
 		}
 		else {//continue to recursive building
-			return lbd_collect1level2uplut(nHeight+1, tpup_collectlut, _xMax / 2, _yMax / 2, _zMax / 2);
+			return lbd_collect1level2uplut(tpup_collectlut, _xMax / 2, _yMax / 2, _zMax / 2);
 		}
 	};/*define lbd_collect1level2uplut lambda*/
 	c2VNode* lutinput = new c2VNode[xMax*yMax*zMax];
@@ -132,13 +137,56 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 	if (xMax == 1) {
 		return lutinput;
 	}
-	return lbd_collect1level2uplut(0, lutinput, xMax, yMax, zMax);
+	c2VNode *proot= lbd_collect1level2uplut(lutinput, xMax, yMax, zMax);
+	if (!proot)	return nullptr;
+	/*4-----------------------------------------------------------------------*/
+	/*process leaves' path*/
+// 	std::function<void(c2VNode&, const Uint32, const std::string&, const int)> lbd_process_childrenpath;
+// 	lbd_process_childrenpath = [&lbd_process_childrenpath](c2VNode& Node, const Uint32 Path,
+// 		const std::string& sPrefix, const int nDepthNumber) {
+	std::function<void(c2VNode&, const Uint32, const int)> lbd_process_childrenpath;
+	lbd_process_childrenpath = [&lbd_process_childrenpath](c2VNode& Node,
+		const Uint32 Path, const int nDepthNumber) {
+			/*4-------------------------------------------------------------------*/
+		BOOST_ASSERT(Node._nGType > C2_VOXGEOM_none && Node._nGType < C2_VOXGEOM_typeammount);
+//		printf("%s+ %x type=%d depth=%d chpath=%5o", sPrefix.c_str(), &Node, Node._nGType, nDepthNumber, Path);
+		if (Node._nGType == C2_VOXGEOM_container) {
+//			printf(" chmsk= %x\r\n", (unsigned int)Node.cont._ChMask);
+//			std::string tsprefix = sPrefix + "|\t ";
+//			printf("%s|\r\n", tsprefix.c_str());
+			for (int count = 0, i = 0; i < 8; ++i) {
+				if (Node.cont._ChMask & C2_VOXSLOT[i]) {
+					int tchilddepth = nDepthNumber + 1;
+//					Uint32 tchildpath = _lbd_path_append(Path, i, nDepthNumber);
+					Uint32 tchildpath = Path + pow(010, nDepthNumber) * i;
+//					lbd_process_childrenpath(Node.cont._Children[count], tchildpath, tsprefix, tchilddepth);
+					lbd_process_childrenpath(Node.cont._Children[count], tchildpath, tchilddepth);
+					++count;
+				}
+// 				else {
+// 					printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
+// 				}
+			}
+// 			int h = log(C2_LUTLEAVES_SIZE) / log(2);
+// 			if ((h - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
+// 			else if ((h - nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
+		}
+		else {
+			Node.leaf._Path = Path;
+//			printf(" LPath=%6o\r\n", Node.leaf._Path);
+		}
+	};
+//	lbd_process_childrenpath(*proot, 0, std::string(""), 0);
+	lbd_process_childrenpath(*proot, 0, 0);
+#ifdef DEBUG_VOXELOCTREE
+	print_octree(0, 0, *proot, std::string(""));
+#endif//DEBUG_VOXELOCTREE
 
 
 	/*4-----------------------------------------------------------------------*/
 	/*1)collapse all C2_VOXGEOM_none nodes.	2)and collapse long multi-layers
 	container branch to be a path length value*/
-//	return tp_nodelut;
+	return proot;
 }
 
 void c2freeVoxelOctree(const c2VNode* pRoot) {
@@ -154,14 +202,14 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 		return nullptr;
 	/*4-----------------------------------------------------------------------*/
 	//Construct from the leaf level, the bottom 1st level
-	int channel, tymax;
+	int channel;
 	Uint8* data = stbi_load(sFilePath, &xMax, &zMax, &channel, 1);//Just read one channel
 	yMax = 256;
 	xMax = xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : xMax;
 	yMax = yMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : yMax;
 	zMax = zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : zMax;
 	c2VNode* lut = new c2VNode[xMax*yMax*xMax];
-	int i = 0, ilut = 0;
+	int i = 0, ilut = 0, tymax;
 	for (int iy = 0; iy < yMax; iy += 1) {//XXX: need improve. it is KISS(keep it simple and stupid) temporarily.
 		for (int iz = 0; iz < zMax; iz += 1) {
 			for (int ix = 0; ix < xMax; ix += 1) {//traverse from x->z->y(height)
@@ -177,6 +225,228 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 	stbi_image_free(data);
 	return lut;
 }
+
+//1/////////////////////////////////////////////////////////////////////////////
+static bool g_bDirtyFirst = true;
+static GLuint VBO = 0, vao_voxel = 0;
+static Shader lightingShader;
+glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
+static void _BuildVAOVoxel() {
+#ifdef DEBUG_VOXELOCTREE
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(50);
+#endif//DEBUG_VOXELOCTREE
+
+#ifdef C2_USE_OPENGLES
+	lightingShader.create("es3voxel.vs", "es3voxel.fs");
+#else
+	lightingShader.create("330voxel.vs", "330voxel.fs");
+#endif//C2_USE_OPENGLES
+	VBO = c2GetBoxVBOFloat();
+	/*4----------------------------------------------------------------------*/
+	//voxel
+	glGenVertexArrays(1, &vao_voxel);
+	glBindVertexArray(vao_voxel);
+#ifdef USE_INTEGER
+	glVertexAttribIPointer(0, 3, GL_INT, 6 * sizeof(GLint), (void*)0);
+#else
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+#endif
+	glEnableVertexAttribArray(0);
+	// normal attribute
+#ifdef USE_INTEGER
+	glVertexAttribIPointer(1, 3, GL_INT, 6 * sizeof(GLint), (void*)(3 * sizeof(GLint)));
+#else
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+#endif
+	glEnableVertexAttribArray(1);
+}
+/*2****************************************************************************/
+static int g_nCounter = 0;
+void c2VNode::draw(const Render &Rr) const {
+	/*4----------------------------------------------------------------------*/
+	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
+	lambda_draw = [&lambda_draw](const c2VNode& Node, const glm::mat4& MatModel) {
+		BOOST_ASSERT(Node._nGType != C2_VOXGEOM_none);//FIXME: wrong assert
+		if (Node._nGType == C2_VOXGEOM_container) {
+			/*FIXME: after we do the process of collapsing, we can assert it!*/
+			//BOOST_ASSERT(Node.cont._pChildren);
+			if (!Node.cont._Children) {
+				return;
+			}
+//			int count = 0;
+// #define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
+// 			if (Node.cont._ChMask & bitSlot) {\
+// 				mat = glm::translate(MatModel, 3.0f*glm::vec3(x, y, z));\
+// 				lambda_draw(Node.cont._Children[count], mat);\
+// 				++count;\
+// 			}
+// 			glm::mat4 mat(1.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
+// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
+// 			lightingShader.setVec3("objectColor",
+// 					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
+
+			for (int count = 0, i = 0; i < 8; ++i) {
+				if (Node.cont._ChMask & C2_VOXSLOT[i]) {
+					lambda_draw(Node.cont._Children[count], MatModel);
+					++count;
+				}
+			}
+		}
+		else {
+//#ifdef DEBUG_VOXELOCTREE
+#if 0
+			g_nCounter++;//DEBUG
+			mat = glm::translate(MatModel, glm::vec3(0.0f, g_nCounter*1.0f, 0.0f));
+			lightingShader.setMat4("model", mat);
+#else
+			glm::mat4 mat(MatModel);
+			static int pathpoint[C2_OCTREEDEPTH];
+			split_octnumber_digital(pathpoint, C2_OCTREEDEPTH, Node.leaf._Path);//XXX: use mask LUT seek to improve efficiency.
+			static float stride= 0.0f;
+			for (int depth = 0; depth < C2_OCTREEDEPTH; ++depth) {//[0] is units digit, so from root's child to leaf.
+				stride = pow(2, (C2_OCTREEDEPTH-1-depth));//XXX: use mask LUT seek to improve efficiency.
+#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
+				case casevalue:\
+					mat = glm::translate(mat, glm::vec3(stride*x, stride*y, stride*z));\
+					break;
+				switch (pathpoint[depth]) {
+					TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(1, 1.0f, 0.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(2, 0.0f, 0.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(3, 1.0f, 0.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(4, 0.0f, 1.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(5, 1.0f, 1.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(6, 0.0f, 1.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(7, 1.0f, 1.0f, 1.0f);
+				}
+			}
+			lightingShader.setMat4("model", mat);
+#endif//DEBUG_VOXELOCTREE
+ 			glDrawArrays(GL_TRIANGLES, 0, 36);
+//			glDrawArrays(GL_LINES, 0, 36);
+//			glDrawArrays(GL_POINTS, 0, 36);
+		}
+	};//lambda_draw
+	/*4----------------------------------------------------------------------*/
+	g_nCounter = 0;
+	if (0 == vao_voxel)
+		_BuildVAOVoxel();
+	BOOST_ASSERT(_nGType < C2_VOXGEOM_typeammount);
+	/*4----------------------------------------------------------------------*/
+	lightingShader.use();
+	lightingShader.setVec3("lightPos", g_LightPos);
+
+	lightingShader.setVec3("viewPos", Rr._PosView);
+	lightingShader.setMat4("projection", Rr._MatProjection);
+	lightingShader.setMat4("view", Rr._MatView);
+
+	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	glBindVertexArray(vao_voxel);
+	glm::mat4 mat(1.0f);
+	lambda_draw(*this, mat);
+
+#ifdef DEBUG_VOXELOCTREE
+	static int xMax, yMax, zMax, channel, ymax;
+	static Uint8* g_pImageData = nullptr;
+	if (!g_pImageData) {
+		g_pImageData = stbi_load("d:/qjf2017.png", &xMax, &zMax, &channel, 1);//Just read one channel
+		yMax = 256;
+		xMax = xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : xMax;
+		yMax = yMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : yMax;
+		zMax = zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : zMax;
+	}
+	int i = 0, tymax;
+	for (int iy = 0; iy < yMax; iy += 1) {//XXX: need improve. it is KISS(keep it simple and stupid) temporarily.
+		for (int iz = 0; iz < zMax; iz += 1) {
+			for (int ix = 0; ix < xMax; ix += 1) {//traverse from x->z->y(height)
+				i = iz * xMax + ix;
+				tymax = g_pImageData[i];//some position of lut will be empty. the c2VNode of this pos has been initialized with default value C2_VOXGEOM_none
+				if (iy <= tymax) {
+					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f)+glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
+					glDrawArrays(GL_TRIANGLES, 0, 36);
+				}
+			}
+		}
+	}
+#endif
+}
+
+static unsigned int default_palette[256] = {
+	0x00000000, 0xffffffff, 0xffccffff, 0xff99ffff, 0xff66ffff, 0xff33ffff, 0xff00ffff, 0xffffccff, 0xffccccff, 0xff99ccff, 0xff66ccff, 0xff33ccff, 0xff00ccff, 0xffff99ff, 0xffcc99ff, 0xff9999ff,
+	0xff6699ff, 0xff3399ff, 0xff0099ff, 0xffff66ff, 0xffcc66ff, 0xff9966ff, 0xff6666ff, 0xff3366ff, 0xff0066ff, 0xffff33ff, 0xffcc33ff, 0xff9933ff, 0xff6633ff, 0xff3333ff, 0xff0033ff, 0xffff00ff,
+	0xffcc00ff, 0xff9900ff, 0xff6600ff, 0xff3300ff, 0xff0000ff, 0xffffffcc, 0xffccffcc, 0xff99ffcc, 0xff66ffcc, 0xff33ffcc, 0xff00ffcc, 0xffffcccc, 0xffcccccc, 0xff99cccc, 0xff66cccc, 0xff33cccc,
+	0xff00cccc, 0xffff99cc, 0xffcc99cc, 0xff9999cc, 0xff6699cc, 0xff3399cc, 0xff0099cc, 0xffff66cc, 0xffcc66cc, 0xff9966cc, 0xff6666cc, 0xff3366cc, 0xff0066cc, 0xffff33cc, 0xffcc33cc, 0xff9933cc,
+	0xff6633cc, 0xff3333cc, 0xff0033cc, 0xffff00cc, 0xffcc00cc, 0xff9900cc, 0xff6600cc, 0xff3300cc, 0xff0000cc, 0xffffff99, 0xffccff99, 0xff99ff99, 0xff66ff99, 0xff33ff99, 0xff00ff99, 0xffffcc99,
+	0xffcccc99, 0xff99cc99, 0xff66cc99, 0xff33cc99, 0xff00cc99, 0xffff9999, 0xffcc9999, 0xff999999, 0xff669999, 0xff339999, 0xff009999, 0xffff6699, 0xffcc6699, 0xff996699, 0xff666699, 0xff336699,
+	0xff006699, 0xffff3399, 0xffcc3399, 0xff993399, 0xff663399, 0xff333399, 0xff003399, 0xffff0099, 0xffcc0099, 0xff990099, 0xff660099, 0xff330099, 0xff000099, 0xffffff66, 0xffccff66, 0xff99ff66,
+	0xff66ff66, 0xff33ff66, 0xff00ff66, 0xffffcc66, 0xffcccc66, 0xff99cc66, 0xff66cc66, 0xff33cc66, 0xff00cc66, 0xffff9966, 0xffcc9966, 0xff999966, 0xff669966, 0xff339966, 0xff009966, 0xffff6666,
+	0xffcc6666, 0xff996666, 0xff666666, 0xff336666, 0xff006666, 0xffff3366, 0xffcc3366, 0xff993366, 0xff663366, 0xff333366, 0xff003366, 0xffff0066, 0xffcc0066, 0xff990066, 0xff660066, 0xff330066,
+	0xff000066, 0xffffff33, 0xffccff33, 0xff99ff33, 0xff66ff33, 0xff33ff33, 0xff00ff33, 0xffffcc33, 0xffcccc33, 0xff99cc33, 0xff66cc33, 0xff33cc33, 0xff00cc33, 0xffff9933, 0xffcc9933, 0xff999933,
+	0xff669933, 0xff339933, 0xff009933, 0xffff6633, 0xffcc6633, 0xff996633, 0xff666633, 0xff336633, 0xff006633, 0xffff3333, 0xffcc3333, 0xff993333, 0xff663333, 0xff333333, 0xff003333, 0xffff0033,
+	0xffcc0033, 0xff990033, 0xff660033, 0xff330033, 0xff000033, 0xffffff00, 0xffccff00, 0xff99ff00, 0xff66ff00, 0xff33ff00, 0xff00ff00, 0xffffcc00, 0xffcccc00, 0xff99cc00, 0xff66cc00, 0xff33cc00,
+	0xff00cc00, 0xffff9900, 0xffcc9900, 0xff999900, 0xff669900, 0xff339900, 0xff009900, 0xffff6600, 0xffcc6600, 0xff996600, 0xff666600, 0xff336600, 0xff006600, 0xffff3300, 0xffcc3300, 0xff993300,
+	0xff663300, 0xff333300, 0xff003300, 0xffff0000, 0xffcc0000, 0xff990000, 0xff660000, 0xff330000, 0xff0000ee, 0xff0000dd, 0xff0000bb, 0xff0000aa, 0xff000088, 0xff000077, 0xff000055, 0xff000044,
+	0xff000022, 0xff000011, 0xff00ee00, 0xff00dd00, 0xff00bb00, 0xff00aa00, 0xff008800, 0xff007700, 0xff005500, 0xff004400, 0xff002200, 0xff001100, 0xffee0000, 0xffdd0000, 0xffbb0000, 0xffaa0000,
+	0xff880000, 0xff770000, 0xff550000, 0xff440000, 0xff220000, 0xff110000, 0xffeeeeee, 0xffdddddd, 0xffbbbbbb, 0xffaaaaaa, 0xff888888, 0xff777777, 0xff555555, 0xff444444, 0xff222222, 0xff111111
+};
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+ *           v4 +----------e4---------+ v5
+ *             /.                    /|
+ *            / .                   / |
+ *          e7  .                 e5  |                    +-----------+
+ *          /   .                 /   |                   /           /|
+ *         /    .                /    |                  /   f1      / |  <f2
+ *     v7 +----------e6---------+ v6  |                 +-----------+  |
+ *        |     .               |     e9            f5> |           |f4|
+ *        |     e8              |     |                 |           |  |
+ *        |     .               |     |                 |    f3     |  +
+ *        |     .               |     |                 |           | /
+ *        |  v0 . . . .e0 . . . | . . + v1              |           |/
+ *       e11   .                |    /                  +-----------+
+ *        |   .                e10  /                         ^
+ *        |  e3                 |  e1                         f0
+ *        | .                   | /
+ *        |.                    |/
+ *     v3 +---------e2----------+ v2
+ *
+ */
+
+ // 			auto __lbd_get_octaldigital = [](const Uint32 Path)->int {//Path is octal
+ // 				int count = 0;
+ // 				int path = Path;
+ // 				while (path > 010) {
+ // 					++count;
+ // 					path /= 010;
+ // 				}
+ // 				return count + 1;//height count is height number+1
+ // 			};
+ //		auto _lbd_path_append = [](const Uint32 Path, const int nSlot, const nDepthNumber)->Uint32 {
+ // 			/*4---------------------------------------------------------------*/
+ // 			BOOST_ASSERT(nSlot >= 0 && nSlot < 8);
+ // 			/*XXX: the max value is hard coding. */
+ // 			if (Path == 0xFFFFFFFF) {
+ // 				return nSlot;
+ // 			}
+ // 			if (Path > 0777777777) {
+ // 				return 0xFFFFFFFF;//no slot, failed
+ // 			}
+ // 			int octdigital = __lbd_get_octaldigital(Path);
+ // 			Uint32 path = Path;
+ // 			path += (nSlot * (/*追加实质是要进一位*/010 * (octdigital)));
+ // 			return path;
+ //		};
+
 // 
 // //1/////////////////////////////////////////////////////////////////////////////
 // /*again: the order of children and slot mask is very strict!*/
@@ -256,145 +526,3 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 // 	lambda_addchild(C2_VOXSLOT_BitUp3, GTypeUp3, MaterialIDUp3);
 // 	lambda_addchild(C2_VOXSLOT_BitUp4, GTypeUp4, MaterialIDUp4);
 // }
-
-//1/////////////////////////////////////////////////////////////////////////////
-static bool g_bDirtyFirst = true;
-static GLuint VBO = 0, vao_voxel = 0;
-static Shader lightingShader;
-glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
-static void _BuildVAOVoxel() {
-#ifdef DEBUG_VOXELOCTREE
-	glEnable(GL_PROGRAM_POINT_SIZE);
-	glPointSize(50);
-#endif//DEBUG_VOXELOCTREE
-
-#ifdef C2_USE_OPENGLES
-	lightingShader.create("es3voxel.vs", "es3voxel.fs");
-#else
-	lightingShader.create("330voxel.vs", "330voxel.fs");
-#endif//C2_USE_OPENGLES
-	VBO = c2GetBoxVBOFloat();
-	/*4----------------------------------------------------------------------*/
-	//voxel
-	glGenVertexArrays(1, &vao_voxel);
-	glBindVertexArray(vao_voxel);
-#ifdef USE_INTEGER
-	glVertexAttribIPointer(0, 3, GL_INT, 6 * sizeof(GLint), (void*)0);
-#else
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-#endif
-	glEnableVertexAttribArray(0);
-	// normal attribute
-#ifdef USE_INTEGER
-	glVertexAttribIPointer(1, 3, GL_INT, 6 * sizeof(GLint), (void*)(3 * sizeof(GLint)));
-#else
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-#endif
-	glEnableVertexAttribArray(1);
-}
-/*2****************************************************************************/
-static int g_nCounter = 0;
-void c2VNode::draw(const Render &Rr) const {
-	g_nCounter = 0;
-	if (0 == vao_voxel)
-		_BuildVAOVoxel();
-	BOOST_ASSERT(_nGType < C2_VOXGEOM_typeammount);
-	/*4----------------------------------------------------------------------*/
-	lightingShader.use();
-	lightingShader.setVec3("lightPos", g_LightPos);
-
-	lightingShader.setVec3("viewPos", Rr._PosView);
-	lightingShader.setMat4("projection", Rr._MatProjection);
-	lightingShader.setMat4("view", Rr._MatView);
-
-	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-	/*4----------------------------------------------------------------------*/
-	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
-	lambda_draw = [&lambda_draw](const c2VNode& Node, const glm::mat4& MatModel) {
-		BOOST_ASSERT(Node._nGType != C2_VOXGEOM_none);//FIXME: wrong assert
-		if (Node._nGType == C2_VOXGEOM_container) {
-			/*FIXME: after we do the process of collapsing, we can assert it!*/
-			//BOOST_ASSERT(Node.cont._pChildren);
-			if (!Node.cont._Children) {
-				return;
-			}
-			int count = 0;
-#define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
-			if (Node.cont._ChMask & bitSlot) {\
-				mat = glm::translate(MatModel, 3.0f*Node._nHeight*glm::vec3(x, y, z));\
-				lambda_draw(Node.cont._Children[count], mat);\
-				++count;\
-			}
-			glm::mat4 mat(1.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
-			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
-			lightingShader.setVec3("objectColor",
-					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
-		}
-		else {
-//#ifdef DEBUG_VOXELOCTREE
-#if 0
-			g_nCounter++;//DEBUG
-			mat = glm::translate(MatModel, glm::vec3(0.0f, g_nCounter*1.0f, 0.0f));
-			lightingShader.setMat4("model", mat);
-#else
-			lightingShader.setMat4("model", MatModel);
-#endif//DEBUG_VOXELOCTREE
-			glBindVertexArray(vao_voxel);
- 			glDrawArrays(GL_TRIANGLES, 0, 36);
-//			glDrawArrays(GL_LINES, 0, 36);
-//			glDrawArrays(GL_POINTS, 0, 36);
-		}
-	};
-	glm::mat4 mat(1.0f);
-	lambda_draw(*this, mat);
-}
-
-static unsigned int default_palette[256] = {
-	0x00000000, 0xffffffff, 0xffccffff, 0xff99ffff, 0xff66ffff, 0xff33ffff, 0xff00ffff, 0xffffccff, 0xffccccff, 0xff99ccff, 0xff66ccff, 0xff33ccff, 0xff00ccff, 0xffff99ff, 0xffcc99ff, 0xff9999ff,
-	0xff6699ff, 0xff3399ff, 0xff0099ff, 0xffff66ff, 0xffcc66ff, 0xff9966ff, 0xff6666ff, 0xff3366ff, 0xff0066ff, 0xffff33ff, 0xffcc33ff, 0xff9933ff, 0xff6633ff, 0xff3333ff, 0xff0033ff, 0xffff00ff,
-	0xffcc00ff, 0xff9900ff, 0xff6600ff, 0xff3300ff, 0xff0000ff, 0xffffffcc, 0xffccffcc, 0xff99ffcc, 0xff66ffcc, 0xff33ffcc, 0xff00ffcc, 0xffffcccc, 0xffcccccc, 0xff99cccc, 0xff66cccc, 0xff33cccc,
-	0xff00cccc, 0xffff99cc, 0xffcc99cc, 0xff9999cc, 0xff6699cc, 0xff3399cc, 0xff0099cc, 0xffff66cc, 0xffcc66cc, 0xff9966cc, 0xff6666cc, 0xff3366cc, 0xff0066cc, 0xffff33cc, 0xffcc33cc, 0xff9933cc,
-	0xff6633cc, 0xff3333cc, 0xff0033cc, 0xffff00cc, 0xffcc00cc, 0xff9900cc, 0xff6600cc, 0xff3300cc, 0xff0000cc, 0xffffff99, 0xffccff99, 0xff99ff99, 0xff66ff99, 0xff33ff99, 0xff00ff99, 0xffffcc99,
-	0xffcccc99, 0xff99cc99, 0xff66cc99, 0xff33cc99, 0xff00cc99, 0xffff9999, 0xffcc9999, 0xff999999, 0xff669999, 0xff339999, 0xff009999, 0xffff6699, 0xffcc6699, 0xff996699, 0xff666699, 0xff336699,
-	0xff006699, 0xffff3399, 0xffcc3399, 0xff993399, 0xff663399, 0xff333399, 0xff003399, 0xffff0099, 0xffcc0099, 0xff990099, 0xff660099, 0xff330099, 0xff000099, 0xffffff66, 0xffccff66, 0xff99ff66,
-	0xff66ff66, 0xff33ff66, 0xff00ff66, 0xffffcc66, 0xffcccc66, 0xff99cc66, 0xff66cc66, 0xff33cc66, 0xff00cc66, 0xffff9966, 0xffcc9966, 0xff999966, 0xff669966, 0xff339966, 0xff009966, 0xffff6666,
-	0xffcc6666, 0xff996666, 0xff666666, 0xff336666, 0xff006666, 0xffff3366, 0xffcc3366, 0xff993366, 0xff663366, 0xff333366, 0xff003366, 0xffff0066, 0xffcc0066, 0xff990066, 0xff660066, 0xff330066,
-	0xff000066, 0xffffff33, 0xffccff33, 0xff99ff33, 0xff66ff33, 0xff33ff33, 0xff00ff33, 0xffffcc33, 0xffcccc33, 0xff99cc33, 0xff66cc33, 0xff33cc33, 0xff00cc33, 0xffff9933, 0xffcc9933, 0xff999933,
-	0xff669933, 0xff339933, 0xff009933, 0xffff6633, 0xffcc6633, 0xff996633, 0xff666633, 0xff336633, 0xff006633, 0xffff3333, 0xffcc3333, 0xff993333, 0xff663333, 0xff333333, 0xff003333, 0xffff0033,
-	0xffcc0033, 0xff990033, 0xff660033, 0xff330033, 0xff000033, 0xffffff00, 0xffccff00, 0xff99ff00, 0xff66ff00, 0xff33ff00, 0xff00ff00, 0xffffcc00, 0xffcccc00, 0xff99cc00, 0xff66cc00, 0xff33cc00,
-	0xff00cc00, 0xffff9900, 0xffcc9900, 0xff999900, 0xff669900, 0xff339900, 0xff009900, 0xffff6600, 0xffcc6600, 0xff996600, 0xff666600, 0xff336600, 0xff006600, 0xffff3300, 0xffcc3300, 0xff993300,
-	0xff663300, 0xff333300, 0xff003300, 0xffff0000, 0xffcc0000, 0xff990000, 0xff660000, 0xff330000, 0xff0000ee, 0xff0000dd, 0xff0000bb, 0xff0000aa, 0xff000088, 0xff000077, 0xff000055, 0xff000044,
-	0xff000022, 0xff000011, 0xff00ee00, 0xff00dd00, 0xff00bb00, 0xff00aa00, 0xff008800, 0xff007700, 0xff005500, 0xff004400, 0xff002200, 0xff001100, 0xffee0000, 0xffdd0000, 0xffbb0000, 0xffaa0000,
-	0xff880000, 0xff770000, 0xff550000, 0xff440000, 0xff220000, 0xff110000, 0xffeeeeee, 0xffdddddd, 0xffbbbbbb, 0xffaaaaaa, 0xff888888, 0xff777777, 0xff555555, 0xff444444, 0xff222222, 0xff111111
-};
-
-////////////////////////////////////////////////////////////////////////////////
-/*
- *           v4 +----------e4---------+ v5
- *             /.                    /|
- *            / .                   / |
- *          e7  .                 e5  |                    +-----------+
- *          /   .                 /   |                   /           /|
- *         /    .                /    |                  /   f1      / |  <f2
- *     v7 +----------e6---------+ v6  |                 +-----------+  |
- *        |     .               |     e9            f5> |           |f4|
- *        |     e8              |     |                 |           |  |
- *        |     .               |     |                 |    f3     |  +
- *        |     .               |     |                 |           | /
- *        |  v0 . . . .e0 . . . | . . + v1              |           |/
- *       e11   .                |    /                  +-----------+
- *        |   .                e10  /                         ^
- *        |  e3                 |  e1                         f0
- *        | .                   | /
- *        |.                    |/
- *     v3 +---------e2----------+ v2
- *
- */

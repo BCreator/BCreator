@@ -107,15 +107,17 @@ struct c2VNode {
 // 	Uint8	_nLength2Root:4;
 #else
 	Uint8	_nGType; //Geometry type
- 	Uint8	_nHeight;//The height of a node is the number of edges on the longest path between that node and a leaf
 #endif
 	union {
 		struct {
 			Uint8		_ChMask;//Children slots mask indicates impact children list.
-			c2VNode*	_Children;//* NOTE * Must use "new" and "delete" operation of array!TODO: 64位机器又会变大。可能可以弄个内存池的方式，这里就只需要存ID了。
+			c2VNode*	_Children;//* NOTE * Must use "new" and "delete" operation of array!TODO: 64位机器又会变大。可能可以弄个内存池的方式，这里就只需要存ID了。wasm的环境？
 		}cont;//container
 		struct {
 			Uint8	_MaterialID;//The material of No.0 is default to debug
+			/*用八进制看待的话，刚好每一位可存八种slot，30个bit八进制表示为10个位8 + 1，
+			也就是说起码可以表达不算ROOT的十层树。十层树的最底层可有1024 * 1024 * 1024个节点。*/
+			Uint32	_Path;//octal. Left is leaf level.
 		}leaf;
 	};
 	friend const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
