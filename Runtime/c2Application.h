@@ -21,6 +21,10 @@ struct c2IAction : public BrainTree::BehaviorTree {
 /*Driving framework of the whole application*/
 C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 						const char *sWndCaption, bool isBlocked = true);
+class GLFWwindow;
+typedef void(*c2FrameFun)(GLFWwindow* pWindow, const double dElapsed, Uint64 nFixFrameStamp);
+C2API void c2SetDrawCallback(c2FrameFun DrawFun);
+C2API void c2SetUpdateFixFrameCallback(c2FrameFun DrawFun);
 
 /******************************************************************************/
 /*Consumer subscribe event And Producer publish event.*/

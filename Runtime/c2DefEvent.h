@@ -50,8 +50,8 @@ struct evttype_name : public c2IEvent {\
  异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，刻意不给用户太多选择。*/
 C2EvtTypeChunkBegin(c2SysET)
 initialized = 0,
-updatefixframe,	/*用消息方式会不会太奢侈？*/
-updateframe,	/*用消息方式会不会太奢侈？*/
+// updatefixframe,	/*用消息方式会不会太奢侈？*/
+// updateframe,	/*用消息方式会不会太奢侈？*/
 terminate,
 
 mouse_button,
@@ -85,15 +85,15 @@ C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
 GLFWwindow*	_pWnd;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
-GLFWwindow*	_pWnd;
-mutable double _dElapsed;
-C2DefOneEvtEnd
-
-C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
-GLFWwindow*	_pWnd;
-mutable double _dElapsed;
-C2DefOneEvtEnd
+// C2DefOneEvtBegin(c2SysET, c2SysEvt, updatefixframe)
+// GLFWwindow*	_pWnd;
+// mutable double _dElapsed;
+// C2DefOneEvtEnd
+// 
+// C2DefOneEvtBegin(c2SysET, c2SysEvt, updateframe)
+// GLFWwindow*	_pWnd;
+// mutable double _dElapsed;
+// C2DefOneEvtEnd
 
 C2DefOneEvtBegin(c2SysET, c2SysEvt, terminate)
 C2DefOneEvtEnd

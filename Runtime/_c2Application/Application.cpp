@@ -61,6 +61,15 @@ C2API void c2PublishEvt(const c2IEvent &Event, size_t EventSize,
 
 ////////////////////////////////////////////////////////////////////////////////
 // Application framework
+static c2FrameFun g_DrawFun = nullptr;
+static c2FrameFun g_UpdateFixFrameFun = nullptr;
+C2API void c2SetDrawCallback(c2FrameFun Fun) {
+	g_DrawFun = Fun;
+}
+C2API void c2SetUpdateFixFrameCallback(c2FrameFun Fun) {
+	g_UpdateFixFrameFun = Fun;
+}
+
 // -TODO：GLFW缺少移动设备上的一些INPUT消息，例如屏幕翻转、重力等
 void glfwSetInputCallback(GLFWwindow* window);
 static void glfwErrorCallback(int error, const char* description) {
@@ -198,21 +207,32 @@ C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 		t_tick = glfwGetTime();
 		elapsed = t_tick - t_pretick;
 		t_pretick = t_tick;
-		/*抛出fixupdate消息*/
-		static c2SysEvt::updatefixframe sysevt_updatefixframe(g_nSysETChunkOffset);
-		sysevt_updatefixframe._pWnd = window;
-		sysevt_updatefixframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
-		c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), g_nFixframeStamp);
-		/*TODO：同fix走事件投递不一样，直接用真正的同步性回调。事件体系初衷就是为逻辑等固定
-		频率性质的逻辑服务的。*/
-		/*抛出update消息*/
-		static c2SysEvt::updateframe sysevt_updateframe(g_nSysETChunkOffset);
-		sysevt_updateframe._pWnd = window;
-		sysevt_updateframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
-		c2PublishEvt(sysevt_updateframe, sizeof(sysevt_updateframe), g_nFixframeStamp);
+// 		/*抛出fixupdate消息*/
+// 		static c2SysEvt::updatefixframe sysevt_updatefixframe(g_nSysETChunkOffset);
+// 		sysevt_updatefixframe._pWnd = window;
+// 		sysevt_updatefixframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
+// 		c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), g_nFixframeStamp);
+// 		/*抛出update消息*/
+// 		/*TODO：同fix走事件投递不一样，直接用真正的同步性回调。事件体系初衷就只是为逻辑等固定
+// 		频率性质的逻辑服务的。*/
+// 		static c2SysEvt::updateframe sysevt_updateframe(g_nSysETChunkOffset);
+// 		sysevt_updateframe._pWnd = window;
+// 		sysevt_updateframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
+// 		c2PublishEvt(sysevt_updateframe, sizeof(sysevt_updateframe), g_nFixframeStamp);
 		/*--------------------------------------------------------------------*/
+		if (g_DrawFun) {
+			g_DrawFun(window, elapsed, g_nFixframeStamp);
+		}
 		/*FIXME: fixframe步进。眼下是假的，正式应改为每秒的恒定帧率*/
-		++g_nFixframeStamp;
+		static double elapsedfix = 0.0f;
+		elapsedfix += elapsed;
+		if (elapsedfix > 0.1) {//10 frames / second 
+			if (g_UpdateFixFrameFun) {
+				g_UpdateFixFrameFun(window, elapsedfix, g_nFixframeStamp);
+			}
+			elapsedfix = 0.0f;
+			++g_nFixframeStamp;
+		}
 		/*--------------------------------------------------------------------*/
 		// Rendering
 		ImGui::Render();

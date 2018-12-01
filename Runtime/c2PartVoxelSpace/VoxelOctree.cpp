@@ -22,6 +22,36 @@
 const int C2_OCTREEDEPTH = 4;
 const int C2_LUTLEAVES_SIZE = pow(2, C2_OCTREEDEPTH);
 
+//1/////////////////////////////////////////////////////////////////////////////
+static bool g_bDirtyFirst = true;
+static GLuint VBO = 0, vao_voxel = 0;
+static Shader lightingShader;
+glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
+static void _BuildVAOVoxel() {
+	//#ifdef DEBUG_VOXELOCTREE
+#if 0
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(50);
+#endif//DEBUG_VOXELOCTREE
+
+#ifdef C2_USE_OPENGLES
+	lightingShader.create("es3voxel.vs", "es3voxel.fs");
+#else
+	lightingShader.create("330voxel.vs", "330voxel.fs");
+#endif//C2_USE_OPENGLES
+	VBO = c2GetBoxVBOFloat();
+	/*4----------------------------------------------------------------------*/
+	//voxel
+	glGenVertexArrays(1, &vao_voxel);
+	glBindVertexArray(vao_voxel);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// normal attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+}
+
+//1/////////////////////////////////////////////////////////////////////////////
 void print_octree(const int nOctreeDepth, const int nDepthNumber, const int nSlot,
 	const c2VNode &Node, const std::string &sPrefix) {
 	BOOST_ASSERT(Node._nGType > C2_VOXGEOM_none && Node._nGType < C2_VOXGEOM_typeammount);
@@ -45,6 +75,31 @@ void print_octree(const int nOctreeDepth, const int nDepthNumber, const int nSlo
 	}
 	else {
 		printf(" P=%10o\r\n", Node.leaf._Path);
+	}
+}
+
+static void debug_draw() {
+	static int xMax, yMax, zMax, channel, ymax;
+	static Uint8* g_pImageData = nullptr;
+	if (!g_pImageData) {
+		g_pImageData = stbi_load("d:/qjf2017.png", &xMax, &zMax, &channel, 1);//Just read one channel
+		yMax = 256;
+		xMax = xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : xMax;
+		yMax = yMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : yMax;
+		zMax = zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : zMax;
+	}
+	int i = 0, tymax;
+	for (int iy = 0; iy < yMax; iy += 1) {//XXX: need improve. it is KISS(keep it simple and stupid) temporarily.
+		for (int iz = 0; iz < zMax; iz += 1) {
+			for (int ix = 0; ix < xMax; ix += 1) {//traverse from x->z->y(height)
+				i = iz * xMax + ix;
+				tymax = g_pImageData[i];//some position of lut will be empty. the c2VNode of this pos has been initialized with default value C2_VOXGEOM_none
+				if (iy <= tymax) {
+					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f) + glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
+					glDrawArrays(GL_TRIANGLES, 0, 36);
+				}
+			}
+		}
 	}
 }
 
@@ -215,43 +270,6 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 	return lut;
 }
 
-//1/////////////////////////////////////////////////////////////////////////////
-static bool g_bDirtyFirst = true;
-static GLuint VBO = 0, vao_voxel = 0;
-static Shader lightingShader;
-glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
-static void _BuildVAOVoxel() {
-//#ifdef DEBUG_VOXELOCTREE
-#if 0
-	glEnable(GL_PROGRAM_POINT_SIZE);
-	glPointSize(50);
-#endif//DEBUG_VOXELOCTREE
-
-#ifdef C2_USE_OPENGLES
-	lightingShader.create("es3voxel.vs", "es3voxel.fs");
-#else
-	lightingShader.create("330voxel.vs", "330voxel.fs");
-#endif//C2_USE_OPENGLES
-	VBO = c2GetBoxVBOFloat();
-	/*4----------------------------------------------------------------------*/
-	//voxel
-	glGenVertexArrays(1, &vao_voxel);
-	glBindVertexArray(vao_voxel);
-#ifdef USE_INTEGER
-	glVertexAttribIPointer(0, 3, GL_INT, 6 * sizeof(GLint), (void*)0);
-#else
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-#endif
-	glEnableVertexAttribArray(0);
-	// normal attribute
-#ifdef USE_INTEGER
-	glVertexAttribIPointer(1, 3, GL_INT, 6 * sizeof(GLint), (void*)(3 * sizeof(GLint)));
-#else
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-#endif
-	glEnableVertexAttribArray(1);
-}
-
 /*2****************************************************************************/
 /*[0] is units digit */
 static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount, const int OctNumber) {
@@ -270,47 +288,48 @@ static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount,
 nNewOctreeDepth对比原先的来解决这个问题。然而如果一个进程内有多个八叉树的话仍旧会有
 问题。后面加个专门的树类来保存这个问题。搞不好其他用了static的地方也有相似问题。*/
 inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
+//   	static glm::mat4 t(1.0f);
+//   	return t;
+
 	static int n_octdepth = 0;
-	// 	static std::hash_map<Uint32, glm::mat4> transfromlut;
-	// 	BOOST_ASSERT(n_octdepth <= 10);
-	// 	if (n_octdepth != nNewOctreeDepth) {//rebuild transform lut
-	// 		transfromlut.clear();
-	n_octdepth = nNewOctreeDepth;
-	int *leafpathpoint = new int[n_octdepth];;//there must be n(==n_octdepth) digitals in a leaf path
-// 		Uint32 maxleafpath = pow(010, n_octdepth) - 01;
-// 		/*exhaust all combination cases of leaf's path*/
-// 		for (Uint32 tleafpath = 0; tleafpath <= maxleafpath; tleafpath++) {
-// 			/*make one mat for one leaf path case*/
-	glm::mat4& tmat = glm::mat4(1.0f);
-	//			split_octnumber_digital(leafpathpoint, n_octdepth, tleafpath);//XXX: use mask LUT seek to improve efficiency.
-	split_octnumber_digital(leafpathpoint, n_octdepth, NodePath);//XXX: use mask LUT seek to improve efficiency.
-	static float stride = 0.0f;
-	for (int depth = 0; depth < n_octdepth; ++depth) {//[0] is units digit, so from root's child to leaf.
-		stride = pow(2, (n_octdepth - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
-#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
-				case casevalue:\
-					tmat = glm::translate(tmat, glm::vec3(stride*x, stride*y, stride*z));\
-					break;
-		switch (leafpathpoint[depth]) {
-			TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
-			TRANSLATE_VOXEL_4DRAW(1, 1.0f, 0.0f, 0.0f);
-			TRANSLATE_VOXEL_4DRAW(2, 0.0f, 0.0f, 1.0f);
-			TRANSLATE_VOXEL_4DRAW(3, 1.0f, 0.0f, 1.0f);
-			TRANSLATE_VOXEL_4DRAW(4, 0.0f, 1.0f, 0.0f);
-			TRANSLATE_VOXEL_4DRAW(5, 1.0f, 1.0f, 0.0f);
-			TRANSLATE_VOXEL_4DRAW(6, 0.0f, 1.0f, 1.0f);
-			TRANSLATE_VOXEL_4DRAW(7, 1.0f, 1.0f, 1.0f);
-		}
-	}
-	// 			//insert the one freshly baked mat into hash map
-	// 			std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
-	// 			ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
-	// 			BOOST_ASSERT(ipair.second);
-	// 		}
-	// 		delete[] leafpathpoint;
-	// 	}//build transform
-	// 	return transfromlut[NodePath];
-	return tmat;
+	static std::hash_map<Uint32, glm::mat4> transfromlut;
+//	BOOST_ASSERT(n_octdepth <= 10);
+ 	if (n_octdepth != nNewOctreeDepth) {//rebuild transform lut
+ 		transfromlut.clear();
+		n_octdepth = nNewOctreeDepth;
+		int *leafpathpoint = new int[n_octdepth];;//there must be n(==n_octdepth) digitals in a leaf path
+ 		Uint32 maxleafpath = pow(010, n_octdepth) - 01;
+ 		/*exhaust all combination cases of leaf's path*/
+ 		for (Uint32 tleafpath = 0; tleafpath <= maxleafpath; tleafpath++) {
+ 			/*make one mat for one leaf path case*/
+			glm::mat4& tmat = glm::mat4(1.0f);
+			split_octnumber_digital(leafpathpoint, n_octdepth, tleafpath);//XXX: use mask LUT seek to improve efficiency.
+			static float stride = 0.0f;
+			for (int depth = 0; depth < n_octdepth; ++depth) {//[0] is units digit, so from root's child to leaf.
+				stride = pow(2, (n_octdepth - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
+		#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
+						case casevalue:\
+							tmat = glm::translate(tmat, glm::vec3(stride*x, stride*y, stride*z));\
+							break;
+				switch (leafpathpoint[depth]) {
+					TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(1, 1.0f, 0.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(2, 0.0f, 0.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(3, 1.0f, 0.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(4, 0.0f, 1.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(5, 1.0f, 1.0f, 0.0f);
+					TRANSLATE_VOXEL_4DRAW(6, 0.0f, 1.0f, 1.0f);
+					TRANSLATE_VOXEL_4DRAW(7, 1.0f, 1.0f, 1.0f);
+				}
+			}
+	 		//insert the one freshly baked mat into hash map
+	 		std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
+	 		ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
+	 		BOOST_ASSERT(ipair.second);
+	 	}
+ 		delete[] leafpathpoint;
+ 	}//build transform
+	return transfromlut[NodePath];//XXX：通过hash查表仍旧很慢。
 }
 void c2VNode::draw(const Render &Rr) const {
 	/*4----------------------------------------------------------------------*/
@@ -323,25 +342,6 @@ void c2VNode::draw(const Render &Rr) const {
 			if (!Node.cont._Children) {
 				return;
 			}
-			//			int count = 0;
-			// #define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
-			// 			if (Node.cont._ChMask & bitSlot) {\
-			// 				mat = glm::translate(MatModel, 3.0f*glm::vec3(x, y, z));\
-			// 				lambda_draw(Node.cont._Children[count], mat);\
-			// 				++count;\
-			// 			}
-			// 			glm::mat4 mat(1.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
-			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
-			// 			lightingShader.setVec3("objectColor",
-			// 					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
-
 			for (int count = 0, i = 0; i < 8; ++i) {
 				if (Node.cont._ChMask & C2_VOXSLOT[i]) {
 					lambda_draw(Node.cont._Children[count], MatModel);
@@ -374,14 +374,19 @@ void c2VNode::draw(const Render &Rr) const {
 			}
 			lightingShader.setMat4("model", mat);
 #else
-//			lightingShader.setMat4("model", MatModel*_get_transform(Node.leaf._Path, C2_OCTREEDEPTH));
-			glm::mat4 tmat = _get_transform(Node.leaf._Path, C2_OCTREEDEPTH);
-			lightingShader.setMat4("model", tmat*MatModel);
+			lightingShader.setMat4("model", MatModel*_get_transform(Node.leaf._Path, C2_OCTREEDEPTH));
+// 			const glm::mat4& tmat = _get_transform(Node.leaf._Path, C2_OCTREEDEPTH);
+// 			lightingShader.setMat4("model", MatModel*tmat);
+
+// 			lightingShader.setMat4("model", MatModel*glm::mat4(1.0f));
+//			lightingShader.setMat4("model", MatModel);
+//			lightingShader.setMat4("model", glm::translate(MatModel, glm::vec3(1.0f, 0.0f, 1.0f)));
+
 #endif
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-			//			glDrawArrays(GL_LINES, 0, 36);
-			//			glDrawArrays(GL_POINTS, 0, 36);
+//			glDrawArrays(GL_LINES, 0, 36);
+//			glDrawArrays(GL_POINTS, 0, 36);
 		}
 	};//lambda_draw
 	/*4----------------------------------------------------------------------*/
@@ -403,28 +408,7 @@ void c2VNode::draw(const Render &Rr) const {
 	lambda_draw(*this, mat);
 
 #ifdef DEBUG_VOXELOCTREE
-	static int xMax, yMax, zMax, channel, ymax;
-	static Uint8* g_pImageData = nullptr;
-	if (!g_pImageData) {
-		g_pImageData = stbi_load("d:/qjf2017.png", &xMax, &zMax, &channel, 1);//Just read one channel
-		yMax = 256;
-		xMax = xMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : xMax;
-		yMax = yMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : yMax;
-		zMax = zMax > C2_LUTLEAVES_SIZE ? C2_LUTLEAVES_SIZE : zMax;
-	}
-	int i = 0, tymax;
-	for (int iy = 0; iy < yMax; iy += 1) {//XXX: need improve. it is KISS(keep it simple and stupid) temporarily.
-		for (int iz = 0; iz < zMax; iz += 1) {
-			for (int ix = 0; ix < xMax; ix += 1) {//traverse from x->z->y(height)
-				i = iz * xMax + ix;
-				tymax = g_pImageData[i];//some position of lut will be empty. the c2VNode of this pos has been initialized with default value C2_VOXGEOM_none
-				if (iy <= tymax) {
-					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f) + glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
-					glDrawArrays(GL_TRIANGLES, 0, 36);
-				}
-			}
-		}
-	}
+//	debug_draw();
 #endif
 }
 
