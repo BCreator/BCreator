@@ -14,6 +14,7 @@ int main_PhysX();
 int main_Creator();
 int main_voxel();
 int main_gl();
+void split_octnumber_digital(int DigitalArray[], const int DigitalAmount, const int OctNumber);
 
 ////////////////////////////////////////////////////////////////////////////////
 static void usage(void)
@@ -25,7 +26,15 @@ static void usage(void)
 	printf("  -n the number of windows to create\n");
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char* argv[]) {
+// 	int digitalamount = 10;
+// 	int *pathpoint= new int[digitalamount];
+// 	split_octnumber_digital(pathpoint, digitalamount, 03244545);
+// 	for (int i = 0; i < digitalamount; ++i)
+// 		printf("%o ", pathpoint[i]);
+// 	delete[] pathpoint;
+// 	return 0;
+
 //	int ch, count;
 // 	while ((ch = getopt(argc, argv, "hfn:")) != -1)
 // 	{

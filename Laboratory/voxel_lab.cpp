@@ -30,7 +30,7 @@
 static int			g_nWindWidth = 1680, g_nWindHeight = 1050;
 static Camera		camera;
 static Render		g_Render(camera, g_nWindWidth, g_nWindHeight);
-static c2VNode		g_VoxelSpace;
+static const c2VNode*	g_pVoxelSpaceRoot= nullptr;
 static c2PartLight	g_Light;
 
 /*view control*/
@@ -38,53 +38,65 @@ static float		lastX = 0;
 static float		lastY = 0;
 static bool			g_bDirtyfirstMouse = true;
 
-////////////////////////////////////////////////////////////////////////////////
-class onUpdateFixFrameVoxel : public c2IAction {
-public:
-	virtual Status update() {
-		const c2SysEvt::updatefixframe& evt = *(static_cast<const c2SysEvt::updatefixframe*>(_pEvt));
-		/*--------------------------------------------------------------------*/
-		ImGui::Begin("C2 Director");
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-			1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
-		/*--------------------------------------------------------------------*/
-		/*Camera keyboard control*/
-		float artifact_delta = static_cast<float>(evt._dElapsed);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_LEFT_SHIFT))
-			artifact_delta *= 5.0f;
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_E) == GLFW_PRESS)
-			camera.ProcessKeyboard(FORWARD, artifact_delta);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_D) == GLFW_PRESS)
-			camera.ProcessKeyboard(BACKWARD, artifact_delta);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_S) == GLFW_PRESS)
-			camera.ProcessKeyboard(LEFT, artifact_delta);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_F) == GLFW_PRESS)
-			camera.ProcessKeyboard(RIGHT, artifact_delta);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_Q) == GLFW_PRESS)
-			camera.ProcessKeyboard(UP, artifact_delta);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_A) == GLFW_PRESS)
-			camera.ProcessKeyboard(DOWN, artifact_delta);
-		g_Render.update(evt._dElapsed);
-		/*--------------------------------------------------------------------*/
-		/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
-		glViewport(0, 0, g_nWindWidth, g_nWindHeight);//FIXME:放到framebuffer resize的地方
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		g_VoxelSpace.draw(g_Render);
-		g_Light.draw(g_Render);
-		/*--------------------------------------------------------------------*/
-		return Status::Success;
-	}
-};
+static void UpdateFixFrameFun(GLFWwindow *pWnd, const double dElapsed, const Uint64 nFixFrameStamp) {
+}
+extern int g_lbd_drawcounter;
+static void DrawFun(GLFWwindow *pWnd, const double dElapsed, const Uint64 nFixFrameStamp) {
+	ImGui::Begin("C2 Director");
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+		1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Text("Camera Pos:\tx=%.3f\ty=%.3f\tz=%.3f",
+		camera.Position[0], camera.Position[1], camera.Position[2]);
+	ImGui::End();
+	/*--------------------------------------------------------------------*/
+	/*Camera keyboard control*/
+	float artifact_delta = static_cast<float>(dElapsed);
+	if (glfwGetKey(pWnd, GLFW_KEY_LEFT_SHIFT))
+		artifact_delta *= 5.0f;
+	if (glfwGetKey(pWnd, GLFW_KEY_E) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, artifact_delta);
+	if (glfwGetKey(pWnd, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, artifact_delta);
+	if (glfwGetKey(pWnd, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, artifact_delta);
+	if (glfwGetKey(pWnd, GLFW_KEY_F) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, artifact_delta);
+	if (glfwGetKey(pWnd, GLFW_KEY_Q) == GLFW_PRESS)
+		camera.ProcessKeyboard(UP, artifact_delta);
+	if (glfwGetKey(pWnd, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(DOWN, artifact_delta);
+	g_Render.update(dElapsed);
+	/*--------------------------------------------------------------------*/
+	/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
+	glViewport(0, 0, g_nWindWidth, g_nWindHeight);//FIXME:放到framebuffer resize的地方
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if (g_pVoxelSpaceRoot)	g_pVoxelSpaceRoot->draw(g_Render);
+	g_Light.draw(g_Render);
+
+//	std::cout << "g_lbd_drawcounter: " << g_lbd_drawcounter << std::endl;
+	g_lbd_drawcounter = 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 class onSysInitializedVoxel : public c2IAction {
 	virtual Status update() {
+		c2SetDrawCallback(DrawFun);
+		c2SetUpdateFixFrameCallback(UpdateFixFrameFun);
+
+		int mx, my, mz;
+		const c2VNode* plut= c2MakeVoxelLUTFromImage(mx, my, mz, "d:/qjf2017.png");
+		g_pVoxelSpaceRoot = c2BuildVoxelOctree(plut, mx, my, mz);
+
 		const c2SysEvt::initialized& evt = *(static_cast<const c2SysEvt::initialized*>(_pEvt));
 		glfwSetInputMode(evt._pWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glEnable(GL_DEPTH_TEST);
-		BOOST_LOG_TRIVIAL(info) << "C2engine intialized.";
+		BOOST_LOG_TRIVIAL(info) << "C2engine initialized.";
+#ifdef TEST_EFFICIENT
+		void _set_shader(const Render &Rr);
+//		_set_shader(g_Render);
+#endif
 		return Status::Success;
 	}
 };
@@ -184,15 +196,13 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 int main_voxel() {
 	Uint32 syset_chunkoffet = 0;
+
 	onSysInitializedVoxel initialized;
 	c2asActSubEvt(initialized, syset_chunkoffet + c2SysET::initialized,
 		sizeof(c2SysEvt::initialized));
 	onTerminateVoxel terminate;
 	c2asActSubEvt(terminate, syset_chunkoffet + c2SysET::terminate,
 		sizeof(c2SysEvt::terminate));
-	onUpdateFixFrameVoxel updatefixframe;
-	c2asActSubEvt(updatefixframe, syset_chunkoffet + c2SysET::updatefixframe,
-		sizeof(c2SysEvt::updatefixframe));
 
 	onMouseButtonVoxel mouse_button;
 	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysET::mouse_button,

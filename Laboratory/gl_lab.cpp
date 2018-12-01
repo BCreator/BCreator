@@ -33,97 +33,97 @@ static Camera camera;
 #define PI 3.14159f
 
 ////////////////////////////////////////////////////////////////////////////////
-class onUpdateFixFrameES : public c2IAction {
-public:
-	onUpdateFixFrameES() {
-		_b_showsameline = 0;
-	}
-	int _b_showsameline;
-	virtual Status update() {
-		const c2SysEvt::updatefixframe& evt = *(static_cast<const c2SysEvt::updatefixframe*>(_pEvt));
-		/*--------------------------------------------------------------------*/
-		/*test imgui*/
-		ImGui::Begin("C2 Director");
-		ImGui::Text("NLP");
-		if (ImGui::Button("open"))
-			_b_showsameline++;
-		if (_b_showsameline >= 3) {
-			ImGui::SameLine();
-			ImGui::Text("more than 3 times.");
-		}
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-					1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		bool show_demo_window = false;
-		if( show_demo_window )
-			ImGui::ShowDemoWindow(&show_demo_window);
-		ImGui::End();
-		/*--------------------------------------------------------------------*/
-		/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
-		glViewport(0, 0, g_nWindWidth, g_nWindHeight);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(g_ShaderProgramObject);
-		projection_mat = glm::perspective(glm::radians(45.0f),
-			float(g_nWindWidth) / float(g_nWindHeight), 0.1f, 100.0f);
-		glUniformMatrix4fv(projectionloc, 1, GL_FALSE, glm::value_ptr(projection_mat));
-		/*Camera keyboard control*/
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_W) == GLFW_PRESS)
-			camera.ProcessKeyboard(FORWARD, evt._dElapsed);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_S) == GLFW_PRESS)
-			camera.ProcessKeyboard(BACKWARD, evt._dElapsed);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_A) == GLFW_PRESS)
-			camera.ProcessKeyboard(LEFT, evt._dElapsed);
-		if (glfwGetKey(evt._pWnd, GLFW_KEY_D) == GLFW_PRESS)
-			camera.ProcessKeyboard(RIGHT, evt._dElapsed);
-//		view_mat = glm::mat4(1);
-//		view_mat = glm::translate(view_mat, glm::vec3(0.0f, 0.0f, -3.0f));
-		view_mat = camera.GetViewMatrix();
-		glUniformMatrix4fv(viewloc, 1, GL_FALSE, &view_mat[0][0]);
-		/*Model control*/
-		static glm::vec3 cubePositions[] = {
-			glm::vec3(0.0f,  0.0f,  0.0f),
-			glm::vec3(2.0f,  5.0f, -15.0f),
-			glm::vec3(-1.5f, -2.2f, -2.5f),
-			glm::vec3(-3.8f, -2.0f, -12.3f),
-			glm::vec3(2.4f, -0.4f, -3.5f),
-			glm::vec3(-1.7f,  3.0f, -7.5f),
-			glm::vec3(1.3f, -2.0f, -2.5f),
-			glm::vec3(1.5f,  2.0f, -2.5f),
-			glm::vec3(1.5f,  0.2f, -1.5f),
-			glm::vec3(-1.3f,  1.0f, -1.5f)
-		};
-		model_mat = glm::mat4(1);
-// 		model_mat = glm::rotate(model_mat, (float)glfwGetTime() * glm::radians(80.0f),
-// 						glm::vec3(0.5f, 1.0f, 0.0f));
-
-		float greenValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
-		glUniform3f(glGetUniformLocation(g_ShaderProgramObject, "MyColor"),
-										0.2f, greenValue, 0.3f);
-
-		/*画*/
-		/*在es下，glActiveTexture(GL_TEXTURE1); 导致GL_TEXTURE0错误无法绘制，
-		imgui（20181123日更新）内部es有关应该存在不干净的操作，而影响的。非es无此问题。*/
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture0);
-		glUniform1i(glGetUniformLocation(g_ShaderProgramObject, "Texture0"), 0);
-  		glActiveTexture(GL_TEXTURE1);
-   		glBindTexture(GL_TEXTURE_2D, texture1);
-  		glUniform1i(glGetUniformLocation(g_ShaderProgramObject, "Texture1"), 1);
-
-		glBindVertexArray(vao);
-		for (unsigned int i = 0; i < 10; i++)
-		{
-			glm::mat4 tmodel_mat(1);
-			tmodel_mat = glm::translate(model_mat, cubePositions[i]);
-			float angle = 20.0f * i;
-			tmodel_mat = glm::rotate(tmodel_mat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(modelloc, 1, GL_FALSE, glm::value_ptr(tmodel_mat));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-//		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//		glDrawElements(GL_POINTS, 6, GL_UNSIGNED_INT, 0);
-		return Status::Success;
-	}
-};
+// class onUpdateFixFrameES : public c2IAction {
+// public:
+// 	onUpdateFixFrameES() {
+// 		_b_showsameline = 0;
+// 	}
+// 	int _b_showsameline;
+// 	virtual Status update() {
+// 		const c2SysEvt::updatefixframe& evt = *(static_cast<const c2SysEvt::updatefixframe*>(_pEvt));
+// 		/*--------------------------------------------------------------------*/
+// 		/*test imgui*/
+// 		ImGui::Begin("C2 Director");
+// 		ImGui::Text("NLP");
+// 		if (ImGui::Button("open"))
+// 			_b_showsameline++;
+// 		if (_b_showsameline >= 3) {
+// 			ImGui::SameLine();
+// 			ImGui::Text("more than 3 times.");
+// 		}
+// 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+// 					1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+// 		bool show_demo_window = false;
+// 		if( show_demo_window )
+// 			ImGui::ShowDemoWindow(&show_demo_window);
+// 		ImGui::End();
+// 		/*--------------------------------------------------------------------*/
+// 		/*glfwGetFramebufferSize（window，＆width，＆height); TODO: to used in onSize*/
+// 		glViewport(0, 0, g_nWindWidth, g_nWindHeight);
+// 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+// 		glUseProgram(g_ShaderProgramObject);
+// 		projection_mat = glm::perspective(glm::radians(45.0f),
+// 			float(g_nWindWidth) / float(g_nWindHeight), 0.1f, 100.0f);
+// 		glUniformMatrix4fv(projectionloc, 1, GL_FALSE, glm::value_ptr(projection_mat));
+// 		/*Camera keyboard control*/
+// 		if (glfwGetKey(evt._pWnd, GLFW_KEY_W) == GLFW_PRESS)
+// 			camera.ProcessKeyboard(FORWARD, evt._dElapsed);
+// 		if (glfwGetKey(evt._pWnd, GLFW_KEY_S) == GLFW_PRESS)
+// 			camera.ProcessKeyboard(BACKWARD, evt._dElapsed);
+// 		if (glfwGetKey(evt._pWnd, GLFW_KEY_A) == GLFW_PRESS)
+// 			camera.ProcessKeyboard(LEFT, evt._dElapsed);
+// 		if (glfwGetKey(evt._pWnd, GLFW_KEY_D) == GLFW_PRESS)
+// 			camera.ProcessKeyboard(RIGHT, evt._dElapsed);
+// //		view_mat = glm::mat4(1);
+// //		view_mat = glm::translate(view_mat, glm::vec3(0.0f, 0.0f, -3.0f));
+// 		view_mat = camera.GetViewMatrix();
+// 		glUniformMatrix4fv(viewloc, 1, GL_FALSE, &view_mat[0][0]);
+// 		/*Model control*/
+// 		static glm::vec3 cubePositions[] = {
+// 			glm::vec3(0.0f,  0.0f,  0.0f),
+// 			glm::vec3(2.0f,  5.0f, -15.0f),
+// 			glm::vec3(-1.5f, -2.2f, -2.5f),
+// 			glm::vec3(-3.8f, -2.0f, -12.3f),
+// 			glm::vec3(2.4f, -0.4f, -3.5f),
+// 			glm::vec3(-1.7f,  3.0f, -7.5f),
+// 			glm::vec3(1.3f, -2.0f, -2.5f),
+// 			glm::vec3(1.5f,  2.0f, -2.5f),
+// 			glm::vec3(1.5f,  0.2f, -1.5f),
+// 			glm::vec3(-1.3f,  1.0f, -1.5f)
+// 		};
+// 		model_mat = glm::mat4(1);
+// // 		model_mat = glm::rotate(model_mat, (float)glfwGetTime() * glm::radians(80.0f),
+// // 						glm::vec3(0.5f, 1.0f, 0.0f));
+// 
+// 		float greenValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
+// 		glUniform3f(glGetUniformLocation(g_ShaderProgramObject, "MyColor"),
+// 										0.2f, greenValue, 0.3f);
+// 
+// 		/*画*/
+// 		/*在es下，glActiveTexture(GL_TEXTURE1); 导致GL_TEXTURE0错误无法绘制，
+// 		imgui（20181123日更新）内部es有关应该存在不干净的操作，而影响的。非es无此问题。*/
+// 		glActiveTexture(GL_TEXTURE0);
+// 		glBindTexture(GL_TEXTURE_2D, texture0);
+// 		glUniform1i(glGetUniformLocation(g_ShaderProgramObject, "Texture0"), 0);
+//   		glActiveTexture(GL_TEXTURE1);
+//    		glBindTexture(GL_TEXTURE_2D, texture1);
+//   		glUniform1i(glGetUniformLocation(g_ShaderProgramObject, "Texture1"), 1);
+// 
+// 		glBindVertexArray(vao);
+// 		for (unsigned int i = 0; i < 10; i++)
+// 		{
+// 			glm::mat4 tmodel_mat(1);
+// 			tmodel_mat = glm::translate(model_mat, cubePositions[i]);
+// 			float angle = 20.0f * i;
+// 			tmodel_mat = glm::rotate(tmodel_mat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+// 			glUniformMatrix4fv(modelloc, 1, GL_FALSE, glm::value_ptr(tmodel_mat));
+// 			glDrawArrays(GL_TRIANGLES, 0, 36);
+// 		}
+// //		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+// //		glDrawElements(GL_POINTS, 6, GL_UNSIGNED_INT, 0);
+// 		return Status::Success;
+// 	}
+// };
 
 ////////////////////////////////////////////////////////////////////////////////
 class onSysInitializedES : public c2IAction {
@@ -345,7 +345,7 @@ class onSysInitializedES : public c2IAction {
 		glBindTexture(GL_TEXTURE_2D, 0);//Rest
 
 		/*------------------------------------------------------------------------*/
-		BOOST_LOG_TRIVIAL(info) << "C2engine intialized.";
+		BOOST_LOG_TRIVIAL(info) << "C2engine initialized.";
 		return Status::Success;
 	}
  };
@@ -451,9 +451,9 @@ int main_gl() {
 	onTerminateES terminate;
 	c2asActSubEvt(terminate, syset_chunkoffet+c2SysET::terminate,
 		sizeof(c2SysEvt::terminate));
-	onUpdateFixFrameES updatefixframe;
-	c2asActSubEvt(updatefixframe, syset_chunkoffet+c2SysET::updatefixframe,
-		sizeof(c2SysEvt::updatefixframe));
+//	onUpdateFixFrameES updatefixframe;
+// 	c2asActSubEvt(updatefixframe, syset_chunkoffet+c2SysET::updatefixframe,
+// 		sizeof(c2SysEvt::updatefixframe));
 
 	onMouseButtonES mouse_button;
 	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysET::mouse_button,

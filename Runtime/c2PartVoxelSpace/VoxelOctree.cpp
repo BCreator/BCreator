@@ -240,8 +240,7 @@ void c2freeVoxelLUT(const c2VNode* pLUT) {
 	if (pLUT)	delete[] pLUT;
 }
 
-const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
-	const char* sFilePath) {
+const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax, const char* sFilePath) {
 	if (!sFilePath)
 		return nullptr;
 	/*4-----------------------------------------------------------------------*/
@@ -288,33 +287,29 @@ static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount,
 nNewOctreeDepth对比原先的来解决这个问题。然而如果一个进程内有多个八叉树的话仍旧会有
 问题。后面加个专门的树类来保存这个问题。搞不好其他用了static的地方也有相似问题。*/
 //#define USE_MAT
-#ifdef USE_MAT
-inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
-	static std::hash_map<Uint32, glm::mat4> transfromlut;
-#else
 inline static const glm::vec3& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
-	static std::hash_map<Uint32, glm::vec3> transfromlut;
-#endif
-static int n_octdepth = 0;
+//	static std::hash_map<Uint32, glm::vec3> transfromlut;
+	static glm::vec3* transfromlut = nullptr;
+	static int n_octdepth = 0;
+	BOOST_ASSERT(nNewOctreeDepth > 0);
 	BOOST_ASSERT(n_octdepth <= 10);
  	if (n_octdepth != nNewOctreeDepth) {//rebuild transform lut
- 		transfromlut.clear();
 		n_octdepth = nNewOctreeDepth;
+		Uint32 maxleafpath = pow(010, n_octdepth) - 01;
+		if (transfromlut)	delete[] transfromlut;//reset the lut
+		transfromlut = new glm::vec3[maxleafpath + 01];
 		int *leafpathpoint = new int[n_octdepth];;//there must be n(==n_octdepth) digitals in a leaf path
- 		Uint32 maxleafpath = pow(010, n_octdepth) - 01;
  		/*exhaust all combination cases of leaf's path*/
  		for (Uint32 tleafpath = 0; tleafpath <= maxleafpath; tleafpath++) {
  			/*make one mat for one leaf path case*/
-			glm::mat4& tmat = glm::mat4(1.0f);
-			glm::vec3& tvec = glm::vec3(0.0f);
+			glm::vec3 tvec(0.0f);
 			split_octnumber_digital(leafpathpoint, n_octdepth, tleafpath);//XXX: use mask LUT seek to improve efficiency.
 			static float stride = 0.0f;
 			for (int depth = 0; depth < n_octdepth; ++depth) {//[0] is units digit, so from root's child to leaf.
 				stride = pow(2, (n_octdepth - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
-#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
+				#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
 						case casevalue:\
 							tvec += glm::vec3(stride*x, stride*y, stride*z);\
-							tmat = glm::translate(tmat, glm::vec3(stride*x, stride*y, stride*z));\
 							break;
 				switch (leafpathpoint[depth]) {
 					TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
@@ -328,14 +323,10 @@ static int n_octdepth = 0;
 				}
 			}
 	 		//insert the one freshly baked mat into hash map
-#ifdef USE_MAT
-			std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
-			ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
-#else
-			std::pair<std::hash_map<Uint32, glm::vec3>::iterator, bool> ipair;
-			ipair = transfromlut.insert(std::make_pair(tleafpath, tvec));
-#endif
-			BOOST_ASSERT(ipair.second);
+			transfromlut[tleafpath] = tvec;
+// 			std::pair<std::hash_map<Uint32, glm::vec3>::iterator, bool> ipair;
+// 			ipair = transfromlut.insert(std::make_pair(tleafpath, tvec));
+// 			BOOST_ASSERT(ipair.second);
 	 	}
  		delete[] leafpathpoint;
  	}//build transform
@@ -362,43 +353,7 @@ void c2VNode::draw(const Render &Rr) const {
 			}
 		}
 		else {
-#if 0
-			glm::mat4 mat(MatModel);
-			static int pathpoint[C2_OCTREEDEPTH];
-			split_octnumber_digital(pathpoint, C2_OCTREEDEPTH, Node.leaf._Path);//XXX: use mask LUT seek to improve efficiency.
-			static float stride = 0.0f;
-			for (int depth = 0; depth < C2_OCTREEDEPTH; ++depth) {//[0] is units digit, so from root's child to leaf.
-				stride = pow(2, (C2_OCTREEDEPTH - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
-#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
-				case casevalue:\
-					mat = glm::translate(mat, glm::vec3(stride*x, stride*y, stride*z));\
-					break;
-				switch (pathpoint[depth]) {
-					TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
-					TRANSLATE_VOXEL_4DRAW(1, 1.0f, 0.0f, 0.0f);
-					TRANSLATE_VOXEL_4DRAW(2, 0.0f, 0.0f, 1.0f);
-					TRANSLATE_VOXEL_4DRAW(3, 1.0f, 0.0f, 1.0f);
-					TRANSLATE_VOXEL_4DRAW(4, 0.0f, 1.0f, 0.0f);
-					TRANSLATE_VOXEL_4DRAW(5, 1.0f, 1.0f, 0.0f);
-					TRANSLATE_VOXEL_4DRAW(6, 0.0f, 1.0f, 1.0f);
-					TRANSLATE_VOXEL_4DRAW(7, 1.0f, 1.0f, 1.0f);
-				}
-			}
-			lightingShader.setMat4("model", mat);
-#else
-
-#ifdef USE_MAT//10.5fps
-			lightingShader.setMat4("model", MatModel*_get_transform(Node.leaf._Path, C2_OCTREEDEPTH));
-#else//18.2fps
 			lightingShader.setMat4("model", glm::translate(MatModel, _get_transform(Node.leaf._Path, C2_OCTREEDEPTH)));
-#endif
-
-
-//18.5 			lightingShader.setMat4("model", MatModel*glm::mat4(1.0f));
-//30			lightingShader.setMat4("model", MatModel);
-//28			lightingShader.setMat4("model", glm::translate(MatModel, glm::vec3(0.0f, 0.0f, 0.0f)));
-#endif
-
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 //			glDrawArrays(GL_LINES, 0, 36);
 //			glDrawArrays(GL_POINTS, 0, 36);

@@ -180,6 +180,10 @@
     <None Include="..\Runtime\ThirdParty\glm\gtx\wrap.inl" />
     <None Include="..\Runtime\ThirdParty\imgui\docs\README.md" />
     <None Include="..\Runtime\ThirdParty\stb\README.md" />
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\330voxel.fs" />
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\330voxel.vs" />
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\es3voxel.fs" />
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\es3voxel.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Runtime\c2Application.h" />

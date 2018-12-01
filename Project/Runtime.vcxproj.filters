@@ -401,6 +401,18 @@
     <None Include="..\Runtime\ThirdParty\stb\README.md">
       <Filter>ThirdParty\stb</Filter>
     </None>
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\es3voxel.vs">
+      <Filter>c2PartVoxelSpace</Filter>
+    </None>
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\330voxel.fs">
+      <Filter>c2PartVoxelSpace</Filter>
+    </None>
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\330voxel.vs">
+      <Filter>c2PartVoxelSpace</Filter>
+    </None>
+    <None Include="D:\lab\Mali_OpenGL_ES_Emulator-v3.0.2.g694a9-Windows-32bit\es3voxel.fs">
+      <Filter>c2PartVoxelSpace</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp">
