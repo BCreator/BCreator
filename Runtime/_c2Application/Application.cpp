@@ -207,18 +207,6 @@ C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 		t_tick = glfwGetTime();
 		elapsed = t_tick - t_pretick;
 		t_pretick = t_tick;
-// 		/*抛出fixupdate消息*/
-// 		static c2SysEvt::updatefixframe sysevt_updatefixframe(g_nSysETChunkOffset);
-// 		sysevt_updatefixframe._pWnd = window;
-// 		sysevt_updatefixframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
-// 		c2PublishEvt(sysevt_updatefixframe, sizeof(sysevt_updatefixframe), g_nFixframeStamp);
-// 		/*抛出update消息*/
-// 		/*TODO：同fix走事件投递不一样，直接用真正的同步性回调。事件体系初衷就只是为逻辑等固定
-// 		频率性质的逻辑服务的。*/
-// 		static c2SysEvt::updateframe sysevt_updateframe(g_nSysETChunkOffset);
-// 		sysevt_updateframe._pWnd = window;
-// 		sysevt_updateframe._dElapsed = elapsed;//FIXME: elapsed此处应该要有最大值保护。
-// 		c2PublishEvt(sysevt_updateframe, sizeof(sysevt_updateframe), g_nFixframeStamp);
 		/*--------------------------------------------------------------------*/
 		if (g_DrawFun) {
 			g_DrawFun(window, elapsed, g_nFixframeStamp);

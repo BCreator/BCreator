@@ -287,13 +287,16 @@ static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount,
 /*FIXME：一旦BUILD好TRANSORM LUT之后，OCTREE深度就不可以再次修改，暂时先用
 nNewOctreeDepth对比原先的来解决这个问题。然而如果一个进程内有多个八叉树的话仍旧会有
 问题。后面加个专门的树类来保存这个问题。搞不好其他用了static的地方也有相似问题。*/
+//#define USE_MAT
+#ifdef USE_MAT
 inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
-//   	static glm::mat4 t(1.0f);
-//   	return t;
-
-	static int n_octdepth = 0;
 	static std::hash_map<Uint32, glm::mat4> transfromlut;
-//	BOOST_ASSERT(n_octdepth <= 10);
+#else
+inline static const glm::vec3& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
+	static std::hash_map<Uint32, glm::vec3> transfromlut;
+#endif
+static int n_octdepth = 0;
+	BOOST_ASSERT(n_octdepth <= 10);
  	if (n_octdepth != nNewOctreeDepth) {//rebuild transform lut
  		transfromlut.clear();
 		n_octdepth = nNewOctreeDepth;
@@ -303,12 +306,14 @@ inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int n
  		for (Uint32 tleafpath = 0; tleafpath <= maxleafpath; tleafpath++) {
  			/*make one mat for one leaf path case*/
 			glm::mat4& tmat = glm::mat4(1.0f);
+			glm::vec3& tvec = glm::vec3(0.0f);
 			split_octnumber_digital(leafpathpoint, n_octdepth, tleafpath);//XXX: use mask LUT seek to improve efficiency.
 			static float stride = 0.0f;
 			for (int depth = 0; depth < n_octdepth; ++depth) {//[0] is units digit, so from root's child to leaf.
 				stride = pow(2, (n_octdepth - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
-		#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
+#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
 						case casevalue:\
+							tvec += glm::vec3(stride*x, stride*y, stride*z);\
 							tmat = glm::translate(tmat, glm::vec3(stride*x, stride*y, stride*z));\
 							break;
 				switch (leafpathpoint[depth]) {
@@ -323,18 +328,25 @@ inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int n
 				}
 			}
 	 		//insert the one freshly baked mat into hash map
-	 		std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
-	 		ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
-	 		BOOST_ASSERT(ipair.second);
+#ifdef USE_MAT
+			std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
+			ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
+#else
+			std::pair<std::hash_map<Uint32, glm::vec3>::iterator, bool> ipair;
+			ipair = transfromlut.insert(std::make_pair(tleafpath, tvec));
+#endif
+			BOOST_ASSERT(ipair.second);
 	 	}
  		delete[] leafpathpoint;
  	}//build transform
 	return transfromlut[NodePath];//XXX：通过hash查表仍旧很慢。
 }
+int g_lbd_drawcounter = 0;
 void c2VNode::draw(const Render &Rr) const {
 	/*4----------------------------------------------------------------------*/
 	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
 	lambda_draw = [&lambda_draw](const c2VNode& Node, const glm::mat4& MatModel) {
+		g_lbd_drawcounter++;
 		BOOST_ASSERT(Node._nGType != C2_VOXGEOM_none);//FIXME: wrong assert
 		if (Node._nGType == C2_VOXGEOM_container) {
 			/*FIXME: after we do the process of collapsing, we can assert it!*/
@@ -374,14 +386,17 @@ void c2VNode::draw(const Render &Rr) const {
 			}
 			lightingShader.setMat4("model", mat);
 #else
+
+#ifdef USE_MAT//10.5fps
 			lightingShader.setMat4("model", MatModel*_get_transform(Node.leaf._Path, C2_OCTREEDEPTH));
-// 			const glm::mat4& tmat = _get_transform(Node.leaf._Path, C2_OCTREEDEPTH);
-// 			lightingShader.setMat4("model", MatModel*tmat);
+#else//18.2fps
+			lightingShader.setMat4("model", glm::translate(MatModel, _get_transform(Node.leaf._Path, C2_OCTREEDEPTH)));
+#endif
 
-// 			lightingShader.setMat4("model", MatModel*glm::mat4(1.0f));
-//			lightingShader.setMat4("model", MatModel);
-//			lightingShader.setMat4("model", glm::translate(MatModel, glm::vec3(1.0f, 0.0f, 1.0f)));
 
+//18.5 			lightingShader.setMat4("model", MatModel*glm::mat4(1.0f));
+//30			lightingShader.setMat4("model", MatModel);
+//28			lightingShader.setMat4("model", glm::translate(MatModel, glm::vec3(0.0f, 0.0f, 0.0f)));
 #endif
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);

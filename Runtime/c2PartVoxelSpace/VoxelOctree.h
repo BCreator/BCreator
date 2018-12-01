@@ -63,21 +63,6 @@ struct c2VNode {
 		reset();
 	}
 	using VNList = std::list<c2VNode>;//?why can't put in cpp with just a "class VNList" in h.
-//	c2VNode* getChild(const int nSlot) const;
-	/*GType is Geometry type of the slot(could be none when empty slot).
-	if not a leaf, material id will be ignored.*/
-// 	void encodeChildren(
-// 		const Uint8 GTypeDown1, const Uint8 GTypeDown2,
-// 		const Uint8 GTypeDown3, const Uint8 GTypeDown4,
-// 		const Uint8 GTypeUp1, const Uint8 GTypeUp2,
-// 		const Uint8 GTypeUp3, const Uint8 GTypeUp4,
-// 		/*set material id only when leaf node. No.0 is default to debug*/
-// 		const Uint8 MaterialIDDown1 = 0, const Uint8 MaterialIDDown2 = 0,
-// 		const Uint8 MaterialIDDown3 = 0, const Uint8 MaterialIDDown4 = 0,
-// 		const Uint8 MaterialIDUp1 = 0, const Uint8 MaterialIDUp2 = 0,
-// 		const Uint8 MaterialIDUp3 = 0, const Uint8 MaterialIDUp4 = 0
-// 	);
-
 	/*4-----------------------------------------------------------------------*/
 	c2VNode(const Uint8 nGeomType= C2_VOXGEOM_none) {
 		reset();
