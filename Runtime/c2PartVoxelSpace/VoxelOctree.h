@@ -1,7 +1,5 @@
 #pragma once
 
-//#define TEST_VOXELBUILD
-
 /*
 - TODO: plotting scale.
 - TODO: look up table LUT.
@@ -12,7 +10,9 @@
 - FIXME: ?big-endian & little endian
 */
 
+
 //1////////////////////////////////////////////////////////////////////////////
+#define TEST_EFFICIENT
 //const Uint16 C2_LUTLEAVES_SIZE = 1;
 
 /*Right-handed System*/
@@ -117,7 +117,7 @@ struct c2VNode {
 			Uint8	_MaterialID;//The material of No.0 is default to debug
 			/*用八进制看待的话，刚好每一位可存八种slot，30个bit八进制表示为10个位8 + 1，
 			也就是说起码可以表达不算ROOT的十层树。十层树的最底层可有1024 * 1024 * 1024个节点。*/
-			Uint32	_Path;//octal. Left is leaf level.
+			Uint32	_Path;//octal. Left is leaf level. *Node*: far to the left could be 0 and it is useful!
 		}leaf;
 	};
 	friend const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],

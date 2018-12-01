@@ -22,7 +22,8 @@
 const int C2_OCTREEDEPTH = 4;
 const int C2_LUTLEAVES_SIZE = pow(2, C2_OCTREEDEPTH);
 
-void print_octree(const int nDepthNumber, const int nSlot, const c2VNode &Node, const std::string &sPrefix) {
+void print_octree(const int nOctreeDepth, const int nDepthNumber, const int nSlot,
+	const c2VNode &Node, const std::string &sPrefix) {
 	BOOST_ASSERT(Node._nGType > C2_VOXGEOM_none && Node._nGType < C2_VOXGEOM_typeammount);
 	printf("%s+ [%d]%x t=%d d=%d", sPrefix.c_str(), nSlot, &Node, Node._nGType, nDepthNumber);
 	if (Node._nGType == C2_VOXGEOM_container) {
@@ -30,32 +31,20 @@ void print_octree(const int nDepthNumber, const int nSlot, const c2VNode &Node, 
 		std::string tsprefix = sPrefix + "|\t ";
 		printf("%s|\r\n", tsprefix.c_str());
 		for (int count = 0, i = 0; i < 8; ++i) {
-			if ( Node.cont._ChMask & C2_VOXSLOT[i] ) {
+			if (Node.cont._ChMask & C2_VOXSLOT[i]) {
 				int tchilddepth = nDepthNumber + 1;
-				print_octree(tchilddepth, i, Node.cont._Children[count], tsprefix);
+				print_octree(nOctreeDepth, tchilddepth, i, Node.cont._Children[count], tsprefix);
 				++count;
 			}
 			else {
 				printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
 			}
 		}
-		if ((C2_OCTREEDEPTH - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
-		else if ((C2_OCTREEDEPTH -nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
+		if ((nOctreeDepth - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
+		else if ((nOctreeDepth - nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
 	}
 	else {
 		printf(" P=%10o\r\n", Node.leaf._Path);
-	}
-}
-/*[0] is units digit */
-static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount, const int OctNumber) {
-	int aggregate = 0;
-	for (int i = 0; i < DigitalAmount; ++i) {
-		static int digitalmask;
-		digitalmask = pow(010, i + 1);
-		DigitalArray[i] = OctNumber - OctNumber / digitalmask * digitalmask;
-		DigitalArray[i] -= aggregate;
-		aggregate += DigitalArray[i];
-		DigitalArray[i] /= (digitalmask / 010);
 	}
 }
 
@@ -69,12 +58,12 @@ static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount,
 表面积还事体积是两种思路，但数量级总可视为一个级别。
 - 比例尺概念。
 */
-static inline int _getLUTPosition(int xMax, int yMax, int zMax, int x, int y, int z) {
+static inline int _getpos_invoxelLUT(int xMax, int yMax, int zMax, int x, int y, int z) {
 	return y * zMax*xMax + z * xMax + x;//traverse from x->z->y(height)
 };
 /*TODO: center linear order like morton order? read and build from one center pointer in multi thread.*/
 const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
-						const int xMax, const int yMax, const int zMax) {
+	const int xMax, const int yMax, const int zMax) {
 	if (!LeavesLUT) {
 		return nullptr;
 	}
@@ -85,21 +74,21 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 		const int, const int, const int)> lbd_collect1level2uplut;
 	lbd_collect1level2uplut = [&lbd_collect1level2uplut](
 		const c2VNode _LutInput[],
-		const int _xMax, const int _yMax, const int _zMax)->c2VNode*{
+		const int _xMax, const int _yMax, const int _zMax)->c2VNode* {
 		c2VNode* tpup_collectlut = new c2VNode[_xMax*_yMax*_zMax / 8];
 		static int ilut[8], upi, i, count;
 		for (int iy = 0; iy < _yMax; iy += 2) {
 			for (int iz = 0; iz < _zMax; iz += 2) {
 				for (int ix = 0; ix < _xMax; ix += 2) {//traverse from x->z->y(height)
-					ilut[0] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz);
-					ilut[1] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz);
-					ilut[2] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy,		iz + 1);
-					ilut[3] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy,		iz + 1);
-					ilut[4] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz);
-					ilut[5] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz);
-					ilut[6] = _getLUTPosition(_xMax, _yMax, _zMax, ix,		iy + 1,	iz + 1);
-					ilut[7] = _getLUTPosition(_xMax, _yMax, _zMax, ix + 1,	iy + 1,	iz + 1);
-					upi = _getLUTPosition(_xMax/2, _yMax/2, _zMax/2, ix/2, iy/2, iz/2);
+					ilut[0] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix, iy, iz);
+					ilut[1] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix + 1, iy, iz);
+					ilut[2] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix, iy, iz + 1);
+					ilut[3] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix + 1, iy, iz + 1);
+					ilut[4] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix, iy + 1, iz);
+					ilut[5] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix + 1, iy + 1, iz);
+					ilut[6] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix, iy + 1, iz + 1);
+					ilut[7] = _getpos_invoxelLUT(_xMax, _yMax, _zMax, ix + 1, iy + 1, iz + 1);
+					upi = _getpos_invoxelLUT(_xMax / 2, _yMax / 2, _zMax / 2, ix / 2, iy / 2, iz / 2);
 					count = 0;
 					static c2VNode tchildren[8];
 					for (i = 0; i < 8; ++i) {
@@ -107,10 +96,10 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 						if (_LutInput[ilut[i]]._nGType != C2_VOXGEOM_none) {
 							tpup_collectlut[upi].cont._ChMask |= C2_VOXSLOT[i];
 							tchildren[count] = _LutInput[ilut[i]];//copy from lut
- 							++count;
+							++count;
 						}
 					}
-					if (!count) { 
+					if (!count) {
 						continue;
 					}
 					tpup_collectlut[upi]._nGType = C2_VOXGEOM_container;
@@ -133,11 +122,11 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 		}
 	};/*define lbd_collect1level2uplut lambda*/
 	c2VNode* lutinput = new c2VNode[xMax*yMax*zMax];
-	std::copy(LeavesLUT, LeavesLUT + xMax*yMax*zMax, lutinput);
+	std::copy(LeavesLUT, LeavesLUT + xMax * yMax*zMax, lutinput);
 	if (xMax == 1) {
 		return lutinput;
 	}
-	c2VNode *proot= lbd_collect1level2uplut(lutinput, xMax, yMax, zMax);
+	c2VNode *proot = lbd_collect1level2uplut(lutinput, xMax, yMax, zMax);
 	if (!proot)	return nullptr;
 	/*4-----------------------------------------------------------------------*/
 	/*process leaves' path*/
@@ -147,39 +136,39 @@ const c2VNode* c2BuildVoxelOctree(const c2VNode LeavesLUT[],
 	std::function<void(c2VNode&, const Uint32, const int)> lbd_process_childrenpath;
 	lbd_process_childrenpath = [&lbd_process_childrenpath](c2VNode& Node,
 		const Uint32 Path, const int nDepthNumber) {
-			/*4-------------------------------------------------------------------*/
+		/*4-------------------------------------------------------------------*/
 		BOOST_ASSERT(Node._nGType > C2_VOXGEOM_none && Node._nGType < C2_VOXGEOM_typeammount);
-//		printf("%s+ %x type=%d depth=%d chpath=%5o", sPrefix.c_str(), &Node, Node._nGType, nDepthNumber, Path);
+		//		printf("%s+ %x type=%d depth=%d chpath=%5o", sPrefix.c_str(), &Node, Node._nGType, nDepthNumber, Path);
 		if (Node._nGType == C2_VOXGEOM_container) {
-//			printf(" chmsk= %x\r\n", (unsigned int)Node.cont._ChMask);
-//			std::string tsprefix = sPrefix + "|\t ";
-//			printf("%s|\r\n", tsprefix.c_str());
+			//			printf(" chmsk= %x\r\n", (unsigned int)Node.cont._ChMask);
+			//			std::string tsprefix = sPrefix + "|\t ";
+			//			printf("%s|\r\n", tsprefix.c_str());
 			for (int count = 0, i = 0; i < 8; ++i) {
 				if (Node.cont._ChMask & C2_VOXSLOT[i]) {
 					int tchilddepth = nDepthNumber + 1;
-//					Uint32 tchildpath = _lbd_path_append(Path, i, nDepthNumber);
+					//					Uint32 tchildpath = _lbd_path_append(Path, i, nDepthNumber);
 					Uint32 tchildpath = Path + pow(010, nDepthNumber) * i;
-//					lbd_process_childrenpath(Node.cont._Children[count], tchildpath, tsprefix, tchilddepth);
+					//					lbd_process_childrenpath(Node.cont._Children[count], tchildpath, tsprefix, tchilddepth);
 					lbd_process_childrenpath(Node.cont._Children[count], tchildpath, tchilddepth);
 					++count;
 				}
-// 				else {
-// 					printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
-// 				}
+				// 				else {
+				// 					printf("%s+ [%d] none\r\n", tsprefix.c_str(), i);
+				// 				}
 			}
-// 			int h = log(C2_LUTLEAVES_SIZE) / log(2);
-// 			if ((h - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
-// 			else if ((h - nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
+			// 			int h = log(C2_LUTLEAVES_SIZE) / log(2);
+			// 			if ((h - nDepthNumber) == 2)		printf("%s|\r\n", tsprefix.c_str());
+			// 			else if ((h - nDepthNumber) == 1)	printf("%s\r\n", tsprefix.c_str());
 		}
 		else {
 			Node.leaf._Path = Path;
-//			printf(" LPath=%6o\r\n", Node.leaf._Path);
+			//			printf(" LPath=%6o\r\n", Node.leaf._Path);
 		}
 	};
-//	lbd_process_childrenpath(*proot, 0, std::string(""), 0);
+	//	lbd_process_childrenpath(*proot, 0, std::string(""), 0);
 	lbd_process_childrenpath(*proot, 0, 0);
 #ifdef DEBUG_VOXELOCTREE
-	print_octree(0, 0, *proot, std::string(""));
+//	print_octree(C2_OCTREEDEPTH, 0, 0, *proot, std::string(""));
 #endif//DEBUG_VOXELOCTREE
 
 
@@ -197,7 +186,7 @@ void c2freeVoxelLUT(const c2VNode* pLUT) {
 }
 
 const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
-											const char* sFilePath) {
+	const char* sFilePath) {
 	if (!sFilePath)
 		return nullptr;
 	/*4-----------------------------------------------------------------------*/
@@ -216,7 +205,7 @@ const c2VNode* c2MakeVoxelLUTFromImage(int &xMax, int &yMax, int &zMax,
 				i = iz * xMax + ix;
 				tymax = data[i];//some position of lut will be empty. the c2VNode of this pos has been initialized with default value C2_VOXGEOM_none
 				if (iy <= tymax) {
-					ilut = _getLUTPosition(xMax, yMax, zMax, ix, iy, iz);
+					ilut = _getpos_invoxelLUT(xMax, yMax, zMax, ix, iy, iz);
 					lut[ilut]._nGType = C2_VOXGEOM_solid;
 				}
 			}
@@ -232,7 +221,8 @@ static GLuint VBO = 0, vao_voxel = 0;
 static Shader lightingShader;
 glm::vec3 g_LightPos = glm::vec3(-36.0f, 30.0f, -60.0f);//FIXME
 static void _BuildVAOVoxel() {
-#ifdef DEBUG_VOXELOCTREE
+//#ifdef DEBUG_VOXELOCTREE
+#if 0
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	glPointSize(50);
 #endif//DEBUG_VOXELOCTREE
@@ -261,8 +251,67 @@ static void _BuildVAOVoxel() {
 #endif
 	glEnableVertexAttribArray(1);
 }
+
 /*2****************************************************************************/
-static int g_nCounter = 0;
+/*[0] is units digit */
+static void split_octnumber_digital(int DigitalArray[], const int DigitalAmount, const int OctNumber) {
+	memset(DigitalArray, 0, DigitalAmount * sizeof(DigitalArray[0]));//the high digital may be 0
+	int aggregate = 0;
+	for (int i = 0; i < DigitalAmount; ++i) {
+		static int digitalmask;
+		digitalmask = pow(010, i + 1);
+		DigitalArray[i] = OctNumber - OctNumber / digitalmask * digitalmask;
+		DigitalArray[i] -= aggregate;
+		aggregate += DigitalArray[i];
+		DigitalArray[i] /= (digitalmask / 010);
+	}
+}
+/*FIXME：一旦BUILD好TRANSORM LUT之后，OCTREE深度就不可以再次修改，暂时先用
+nNewOctreeDepth对比原先的来解决这个问题。然而如果一个进程内有多个八叉树的话仍旧会有
+问题。后面加个专门的树类来保存这个问题。搞不好其他用了static的地方也有相似问题。*/
+inline static const glm::mat4& _get_transform(const Uint32 NodePath, const int nNewOctreeDepth) {
+	static int n_octdepth = 0;
+	// 	static std::hash_map<Uint32, glm::mat4> transfromlut;
+	// 	BOOST_ASSERT(n_octdepth <= 10);
+	// 	if (n_octdepth != nNewOctreeDepth) {//rebuild transform lut
+	// 		transfromlut.clear();
+	n_octdepth = nNewOctreeDepth;
+	int *leafpathpoint = new int[n_octdepth];;//there must be n(==n_octdepth) digitals in a leaf path
+// 		Uint32 maxleafpath = pow(010, n_octdepth) - 01;
+// 		/*exhaust all combination cases of leaf's path*/
+// 		for (Uint32 tleafpath = 0; tleafpath <= maxleafpath; tleafpath++) {
+// 			/*make one mat for one leaf path case*/
+	glm::mat4& tmat = glm::mat4(1.0f);
+	//			split_octnumber_digital(leafpathpoint, n_octdepth, tleafpath);//XXX: use mask LUT seek to improve efficiency.
+	split_octnumber_digital(leafpathpoint, n_octdepth, NodePath);//XXX: use mask LUT seek to improve efficiency.
+	static float stride = 0.0f;
+	for (int depth = 0; depth < n_octdepth; ++depth) {//[0] is units digit, so from root's child to leaf.
+		stride = pow(2, (n_octdepth - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
+#define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
+				case casevalue:\
+					tmat = glm::translate(tmat, glm::vec3(stride*x, stride*y, stride*z));\
+					break;
+		switch (leafpathpoint[depth]) {
+			TRANSLATE_VOXEL_4DRAW(0, 0.0f, 0.0f, 0.0f);
+			TRANSLATE_VOXEL_4DRAW(1, 1.0f, 0.0f, 0.0f);
+			TRANSLATE_VOXEL_4DRAW(2, 0.0f, 0.0f, 1.0f);
+			TRANSLATE_VOXEL_4DRAW(3, 1.0f, 0.0f, 1.0f);
+			TRANSLATE_VOXEL_4DRAW(4, 0.0f, 1.0f, 0.0f);
+			TRANSLATE_VOXEL_4DRAW(5, 1.0f, 1.0f, 0.0f);
+			TRANSLATE_VOXEL_4DRAW(6, 0.0f, 1.0f, 1.0f);
+			TRANSLATE_VOXEL_4DRAW(7, 1.0f, 1.0f, 1.0f);
+		}
+	}
+	// 			//insert the one freshly baked mat into hash map
+	// 			std::pair<std::hash_map<Uint32, glm::mat4>::iterator, bool> ipair;
+	// 			ipair = transfromlut.insert(std::make_pair(tleafpath, tmat));
+	// 			BOOST_ASSERT(ipair.second);
+	// 		}
+	// 		delete[] leafpathpoint;
+	// 	}//build transform
+	// 	return transfromlut[NodePath];
+	return tmat;
+}
 void c2VNode::draw(const Render &Rr) const {
 	/*4----------------------------------------------------------------------*/
 	std::function<void(const c2VNode&, const glm::mat4 &)> lambda_draw;
@@ -274,24 +323,24 @@ void c2VNode::draw(const Render &Rr) const {
 			if (!Node.cont._Children) {
 				return;
 			}
-//			int count = 0;
-// #define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
-// 			if (Node.cont._ChMask & bitSlot) {\
-// 				mat = glm::translate(MatModel, 3.0f*glm::vec3(x, y, z));\
-// 				lambda_draw(Node.cont._Children[count], mat);\
-// 				++count;\
-// 			}
-// 			glm::mat4 mat(1.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
-// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
-// 			lightingShader.setVec3("objectColor",
-// 					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
+			//			int count = 0;
+			// #define TRANSLATE_CHILD_4DRAW(bitSlot, x, y, z)	\
+			// 			if (Node.cont._ChMask & bitSlot) {\
+			// 				mat = glm::translate(MatModel, 3.0f*glm::vec3(x, y, z));\
+			// 				lambda_draw(Node.cont._Children[count], mat);\
+			// 				++count;\
+			// 			}
+			// 			glm::mat4 mat(1.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown1, 0.0f, 0.0f, 0.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown2, 1.0f, 0.0f, 0.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown3, 0.0f, 0.0f, 1.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitDown4, 1.0f, 0.0f, 1.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp1, 0.0f, 1.0f, 0.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp2, 1.0f, 1.0f, 0.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp3, 0.0f, 1.0f, 1.0f);
+			// 			TRANSLATE_CHILD_4DRAW(C2_VOXSLOT_BitUp4, 1.0f, 1.0f, 1.0f);
+			// 			lightingShader.setVec3("objectColor",
+			// 					glm::vec3(sin(Uint32(&Node)), sin(Uint32(Node.cont._Children)), cos(Uint32(&Node))));
 
 			for (int count = 0, i = 0; i < 8; ++i) {
 				if (Node.cont._ChMask & C2_VOXSLOT[i]) {
@@ -301,18 +350,13 @@ void c2VNode::draw(const Render &Rr) const {
 			}
 		}
 		else {
-//#ifdef DEBUG_VOXELOCTREE
 #if 0
-			g_nCounter++;//DEBUG
-			mat = glm::translate(MatModel, glm::vec3(0.0f, g_nCounter*1.0f, 0.0f));
-			lightingShader.setMat4("model", mat);
-#else
 			glm::mat4 mat(MatModel);
 			static int pathpoint[C2_OCTREEDEPTH];
 			split_octnumber_digital(pathpoint, C2_OCTREEDEPTH, Node.leaf._Path);//XXX: use mask LUT seek to improve efficiency.
-			static float stride= 0.0f;
+			static float stride = 0.0f;
 			for (int depth = 0; depth < C2_OCTREEDEPTH; ++depth) {//[0] is units digit, so from root's child to leaf.
-				stride = pow(2, (C2_OCTREEDEPTH-1-depth));//XXX: use mask LUT seek to improve efficiency.
+				stride = pow(2, (C2_OCTREEDEPTH - 1 - depth));//XXX: use mask LUT seek to improve efficiency.
 #define TRANSLATE_VOXEL_4DRAW(casevalue, x, y, z)\
 				case casevalue:\
 					mat = glm::translate(mat, glm::vec3(stride*x, stride*y, stride*z));\
@@ -329,14 +373,18 @@ void c2VNode::draw(const Render &Rr) const {
 				}
 			}
 			lightingShader.setMat4("model", mat);
-#endif//DEBUG_VOXELOCTREE
- 			glDrawArrays(GL_TRIANGLES, 0, 36);
-//			glDrawArrays(GL_LINES, 0, 36);
-//			glDrawArrays(GL_POINTS, 0, 36);
+#else
+//			lightingShader.setMat4("model", MatModel*_get_transform(Node.leaf._Path, C2_OCTREEDEPTH));
+			glm::mat4 tmat = _get_transform(Node.leaf._Path, C2_OCTREEDEPTH);
+			lightingShader.setMat4("model", tmat*MatModel);
+#endif
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			//			glDrawArrays(GL_LINES, 0, 36);
+			//			glDrawArrays(GL_POINTS, 0, 36);
 		}
 	};//lambda_draw
 	/*4----------------------------------------------------------------------*/
-	g_nCounter = 0;
 	if (0 == vao_voxel)
 		_BuildVAOVoxel();
 	BOOST_ASSERT(_nGType < C2_VOXGEOM_typeammount);
@@ -371,7 +419,7 @@ void c2VNode::draw(const Render &Rr) const {
 				i = iz * xMax + ix;
 				tymax = g_pImageData[i];//some position of lut will be empty. the c2VNode of this pos has been initialized with default value C2_VOXGEOM_none
 				if (iy <= tymax) {
-					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f)+glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
+					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f) + glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
 					glDrawArrays(GL_TRIANGLES, 0, 36);
 				}
 			}
