@@ -4,6 +4,17 @@
 #include"./c2PreDefined.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+/*Action体系 FIXME: EVENT改为传值的方式*/
+#include"./_c2Application/BrainTree.h"
+struct c2IEvent;
+struct c2IAction : public BrainTree::BehaviorTree {
+	//TODO：返回值的意义需要更为明确。以及未来同OneRounte的关系。
+	c2IAction() : _pEvt(nullptr) {}
+	const c2IEvent*	_pEvt;
+	virtual Status update();
+};
+
+////////////////////////////////////////////////////////////////////////////////
 #define C2EVTMSG_MAXSIZE	131072	//为单个event取数据的缓冲容器最大大小
 #define C2EVTQUEUE_INITSIZE	131072	//使用Memqueue作为事件队列，内部可自增。改进意见请见event框架相关说明。
 

@@ -37,7 +37,7 @@ const int C2_VOXSLOT[8] = {
 	C2_VOXSLOT_BitUp3,
 	C2_VOXSLOT_BitUp4
 };
-
+	
 enum {//Voxel geometry type related to geometry optimization
 	C2_VOXGEOM_none= 0,
 	C2_VOXGEOM_container,//Just a logical container concept, not a concrete voxel

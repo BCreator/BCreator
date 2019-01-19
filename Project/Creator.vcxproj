@@ -102,11 +102,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../Runtime/ThirdParty/imgui/examples/libs/gl3w;../Runtime/ThirdParty/glad;../Runtime;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GLEW;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\library\Python-3.7.1\externals\pythonx86\tools\include;D:\library\Python-3.7.1\Include;D:\development\Vox\source\glew\include;D:\development\Vox\SimpleVoxel;../Runtime/ThirdParty/imgui/examples/libs/gl3w;../Runtime/ThirdParty/glad;../Runtime/ThirdParty;../Runtime;D:\library\glfw-3.2.1\include;D:\library\boost_1_68_0</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libfbxsdk-md.lib;./Debug/Runtime.lib;glfw3.lib;opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>D:\development\Vox\SimpleVoxel.lib;libfbxsdk-md.lib;D:\development\Vox\source\freetype\libs\2015\freetype261d.lib;D:\development\Vox\source\libnoise\libs\2015\noise_d.lib;D:\development\Vox\source\AudioManager\fmod\libs\fmod_vc.lib;./Debug/Runtime.lib;D:\library\glfw-3.2.1\houstond\src\Debug\glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\library\boost_1_68_0\stage\lib;D:\library\Python-3.7.1\PCbuild\win32</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='es3Debug|Win32'">

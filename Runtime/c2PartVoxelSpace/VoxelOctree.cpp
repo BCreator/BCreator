@@ -13,6 +13,7 @@
 
 #include<GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
 #include<stb/stb_image.h>
 
 #include"VoxelOctree.h"
@@ -98,6 +99,35 @@ static void debug_draw() {
 					lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f) + glm::vec3(ix*1.0f, iy*1.0f, iz*1.0f)));
 					glDrawArrays(GL_TRIANGLES, 0, 36);
 				}
+			}
+		}
+	}
+}
+
+void draw_3darray(const Render &Rr) {
+	if (0 == vao_voxel)
+		_BuildVAOVoxel();
+	lightingShader.use();
+	lightingShader.setVec3("lightPos", g_LightPos);
+
+	lightingShader.setVec3("viewPos", Rr._PosView);
+	lightingShader.setMat4("projection", Rr._MatProjection);
+	lightingShader.setMat4("view", Rr._MatView);
+
+	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	glBindVertexArray(vao_voxel);
+	static c2VNode v[32][32][32];
+	for (int x = 0; x < 32; x++) {
+		for (int y = 0; y < 32; y++) {
+			for (int z = 0; z < 32; z++) {
+//				glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));//14fps on amd ryzen7 how slow!!! why???
+// 				static int l = glGetUniformLocation(lightingShader.ID, "model");
+// 				glUniformMatrix4fv(l, 1, GL_FALSE, &(glm::mat4(1.0f))[0][0]);//7fps
+//				lightingShader.setMat4("model", glm::mat4(1.0f));
+//				glTranslatef(x, y, z);
+				lightingShader.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)));//5fps
+				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
 		}
 	}
@@ -375,9 +405,10 @@ void c2VNode::draw(const Render &Rr) const {
 	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 	glBindVertexArray(vao_voxel);
 	glm::mat4 mat(1.0f);
-	lambda_draw(*this, mat);
+//	lambda_draw(*this, mat);
 
 #ifdef DEBUG_VOXELOCTREE
+	draw_3darray(Rr);
 //	debug_draw();
 #endif
 }

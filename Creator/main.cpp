@@ -1,3 +1,4 @@
+#include<python.h>
 #include<iostream>
 #include<stdio.h>
 
@@ -11,107 +12,98 @@
 
 #include"./GPanelAssets/GPanelAssets.h"
 
-/**************************************************************************/
-#define STB_VOXEL_RENDER_IMPLEMENTATION
-#define STBVOX_CONFIG_MODE	0
-#include<stb/stb_voxel_render.h>
+/*2****************************************************************************/
+static int	g_nWindWidth = 1680, g_nWindHeight = 1050;
+
+//1/////////////////////////////////////////////////////////////////////////////
+static void UpdateFixFrameFun(GLFWwindow *pWnd, const double dElapsed, const Uint64 nFixFrameStamp) {
+}
+static void ShowExampleAppCustomNodeGraph(bool* opened);
+static void DrawFun(GLFWwindow *pWnd, const double dElapsed, const Uint64 nFixFrameStamp) {
+	static int _b_showsameline= false;
+	ImGui::Begin("C2 Director");
+	ImGui::Text("NLP");
+	if (ImGui::Button("open"))
+		_b_showsameline++;
+	if(_b_showsameline >=3 )
+		ImGui::Text("more than 3 times.");
+	ImGui::SameLine();
+	bool tb;
+	ShowExampleAppCustomNodeGraph(&tb);
+	ImGui::End();
+	/*4-----------------------------------------------------------------------*/
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
-class btAct4test : public BrainTree::Node {
-	Status update() override {
-		BOOST_LOG_TRIVIAL(info) << "  -> printed by BrainTree::Node.";
-		return Node::Status::Success;
+static PyObject* pyVoxel_c2foo(PyObject* self, PyObject* args) {
+	return PyLong_FromLong(51);
+}
+static PyObject* pyVoxel_c2Show(PyObject* self, PyObject* args) {
+	PyObject *a;
+	if (PyArg_UnpackTuple(args, "", 1, 1, &a)) {
+		printf("c++: show(%ld)\n", PyLong_AsLong(a));
 	}
+	return PyLong_FromLong(0);
+}
+
+
+static int num = 321;
+static PyObject* _numargs1(PyObject *self, PyObject *args) {
+	if (!PyArg_ParseTuple(args, ":num"))
+		return NULL;
+	return PyLong_FromLong(num);
+}
+static PyMethodDef VoxelMethodsDef[] = {
+	{"testcfun", _numargs1, METH_VARARGS, "Return the number"},
+	{"foo", pyVoxel_c2foo, METH_VARARGS, "foo Return a number"},
+	{"show", pyVoxel_c2Show, METH_VARARGS, "Show a number"},
+	{NULL, NULL, 0, NULL}
 };
-static void ShowExampleAppCustomNodeGraph(bool* opened);
-class onUpdateFixFrame : public c2IAction {
-public:
-	onUpdateFixFrame() {
-#if 1//just test
-		auto repeater = std::make_shared<BrainTree::Repeater>(5);
-		repeater->setChild(std::make_shared<btAct4test>());
-		setRoot(repeater);
-#endif
-		_b_showsameline = 0;
-	}
-	int _b_showsameline;
-	virtual Status update() {
-		ImGui::Begin("C2 Director");
-		ImGui::Text("NLP");
-		if (ImGui::Button("open"))
-			_b_showsameline++;
-		if(_b_showsameline >=3 )
-			ImGui::Text("more than 3 times.");
-		ImGui::SameLine();
-		bool tb;
-		ShowExampleAppCustomNodeGraph(&tb);
-		ImGui::End();
-		return BehaviorTree::update();
-	}
+static PyModuleDef VoxelModuleDef = {
+	PyModuleDef_HEAD_INIT, "Voxel", NULL, -1, VoxelMethodsDef,
+	NULL, NULL, NULL, NULL
 };
+static PyObject* PyInit_Voxel(void) {
+	return PyModule_Create(&VoxelModuleDef);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 class onSysInitialized : public c2IAction {
 	virtual Status update() {
-		//TODO: I can plugin my extensions here.
-		BOOST_LOG_TRIVIAL(info) << "C2engine intialized.";
+		c2SetDrawCallback(DrawFun);
+		c2SetUpdateFixFrameCallback(UpdateFixFrameFun);
+		/*4-----------------------------------------------------------------------*/
+		/*python*/
+		PyImport_AppendInittab("Voxel", &PyInit_Voxel);
+
+//		Py_SetPythonHome(L"D:/library/Python-3.7.1/PCbuild/win32");
+		Py_SetPath(L"D:/library/Python-3.7.1/Lib");
+		PyObject* pInterpreter;
+		Py_Initialize();
+		PyRun_SimpleString("print('Hello World from Embedded Python!!!')");
+		char filename[] = "test.py";
+		FILE* fp = _Py_fopen(filename, "r");
+		PyRun_SimpleFile(fp, filename);
+		Py_Finalize();
+		/*4-----------------------------------------------------------------------*/
+		BOOST_LOG_TRIVIAL(info) << "C2engine initialized.";
 		return Status::Success;
 	}
  };
- 
+
 ////////////////////////////////////////////////////////////////////////////////
 int main() {
- //	bool b = C2RegistPartClass(GPanelAssets);
- //	if (!b)
- //		return 0;
- ////	c2::Part::ARPart ar = c2CreatePart("GPanelAssets");
+//	return mainvox();
 
 	Uint32 syset_chunkoffet = 0;
  	onSysInitialized osi;
-	c2asActSubEvt(osi, syset_chunkoffet +c2SysET::initialized,
+	c2asActSubEvt(osi, syset_chunkoffet + c2SysET::initialized,
 		sizeof(c2SysEvt::initialized));
 
-	onUpdateFixFrame ouff;
-	c2asActSubEvt(ouff, syset_chunkoffet +c2SysET::updatefixframe,
-		sizeof(c2SysEvt::updatefixframe));
+	/*2************************************************************************/
+	c2AppRun(1, g_nWindWidth, g_nWindHeight, "C2engine.Creator", false);
 
-	/**************************************************************************/
-#ifdef STB_VOXEL_RENDER_H_
-	stbvox_mesh_maker vmm;
-	stbvox_init_mesh_maker(&vmm);//主线程有个全局的g_mesh_maker
-	stbvox_init_mesh_maker(&tvmm);//carveview one maker per worker thread.
-
-	char *svshader = stbvox_get_vertex_shader();
-	char *sfshader = stbvox_get_fragment_shader();
-	stbvox_uniform_info shaderuniforminfo;
-	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_texscale);
-	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_texgen);
-	stbvox_get_uniform_info(&shaderuniforminfo, STBVOX_UNIFORM_color_table);
-	
-	//worker thread build chunk
-	stbvox_set_input_stride(&vmm, 34 * 18, 18);
-	stbvox_input_description *pmap= stbvox_get_input_description(&shaderuniforminfo);
-	pmap->filldata;
-	stbvox_reset_buffers(&vmm);
-	stbvox_set_buffer(&vmm, 0, 0, ? , ? );
-	stbvox_set_buffer(&vmm, 0, 1, ? , ? );
-	for (z = 256 - 16; z >= SKIP_TERRAIN; z -= 16) {
-		stbvox_set_input_range(&vmm, 0, 0, ? , 32, 32, ? );
-		stbvox_set_default_mesh(&vmm, 0);
-		stbvox_make_mesh(&vmm);
-	}
-	stbvox_set_mesh_coordinates(&vmm, chunk_x * 16, chunk_y * 16, 0);
-	float transform[3][3];
-	stbvox_get_transform(&vmm, transform);
-	stbvox_set_input_range(&vmm, 0, 0, 0, 32, 32, 255);
-	float bounds[2][3];
-	stbvox_get_bounds(&vmm, bounds);
-	int num_quads = stbvox_get_quad_count(&vmm, 0);
-#endif//STB_VOXEL_RENDER_H_
-
-	/**************************************************************************/
-	c2AppRun(true, 1, 1280, 720, "C2engine.Creator");
- 
  	return 0;
  }
 
