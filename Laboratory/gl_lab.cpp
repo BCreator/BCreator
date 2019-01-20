@@ -446,35 +446,35 @@ public:
 int main_gl() {
 	Uint32 syset_chunkoffet = 0;
  	onSysInitializedES initialized;
-	c2asActSubEvt(initialized, syset_chunkoffet+c2SysET::initialized,
+	c2asActSubEvt(initialized, syset_chunkoffet+c2SysEvtType::initialized,
 		sizeof(c2SysEvt::initialized));
 	onTerminateES terminate;
-	c2asActSubEvt(terminate, syset_chunkoffet+c2SysET::terminate,
+	c2asActSubEvt(terminate, syset_chunkoffet+c2SysEvtType::terminate,
 		sizeof(c2SysEvt::terminate));
 //	onUpdateFixFrameES updatefixframe;
-// 	c2asActSubEvt(updatefixframe, syset_chunkoffet+c2SysET::updatefixframe,
+// 	c2asActSubEvt(updatefixframe, syset_chunkoffet+c2SysEvtType::updatefixframe,
 // 		sizeof(c2SysEvt::updatefixframe));
 
 	onMouseButtonES mouse_button;
-	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysET::mouse_button,
+	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysEvtType::mouse_button,
 		sizeof(c2SysEvt::mouse_button));
 	onCursorMovedES cursor_moved;
-	c2asActSubEvt(cursor_moved, syset_chunkoffet + c2SysET::cursor_moved,
+	c2asActSubEvt(cursor_moved, syset_chunkoffet + c2SysEvtType::cursor_moved,
 		sizeof(c2SysEvt::cursor_moved));
 	onCursorEnterES cursor_enter;
-	c2asActSubEvt(cursor_enter, syset_chunkoffet + c2SysET::cursor_enter,
+	c2asActSubEvt(cursor_enter, syset_chunkoffet + c2SysEvtType::cursor_enter,
 		sizeof(c2SysEvt::cursor_enter));
 	onScrolledES scrolled;
-	c2asActSubEvt(scrolled, syset_chunkoffet + c2SysET::scrolled,
+	c2asActSubEvt(scrolled, syset_chunkoffet + c2SysEvtType::scrolled,
 		sizeof(c2SysEvt::scrolled));
 	onKeyES key;
-	c2asActSubEvt(key, syset_chunkoffet + c2SysET::key,
+	c2asActSubEvt(key, syset_chunkoffet + c2SysEvtType::key,
 		sizeof(c2SysEvt::key));
 	onCharInputES char_input;
-	c2asActSubEvt(char_input, syset_chunkoffet + c2SysET::char_input,
+	c2asActSubEvt(char_input, syset_chunkoffet + c2SysEvtType::char_input,
 		sizeof(c2SysEvt::char_input));
 	onCharModsInputES charmods_input;
-	c2asActSubEvt(charmods_input, syset_chunkoffet + c2SysET::charmods_input,
+	c2asActSubEvt(charmods_input, syset_chunkoffet + c2SysEvtType::charmods_input,
 		sizeof(c2SysEvt::charmods_input));
 
 	/**************************************************************************/

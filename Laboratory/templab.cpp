@@ -42,7 +42,7 @@ public:
 static void test_application() {
 	std::cout << "test_application begin......" << std::endl;
 	onSysInitialized osi;
-	c2asActSubEvt(osi, 0+c2SysET::initialized, sizeof(c2SysEvt::initialized));
+	c2asActSubEvt(osi, 0+c2SysEvtType::initialized, sizeof(c2SysEvt::initialized));
 	c2AppRun(1, 640, 480, "Temp Lab", false);
 	std::cout << "......test_application end" << std::endl;
 }

@@ -15,13 +15,6 @@ typedef void(*c2FrameFun)(GLFWwindow* pWindow, const double dElapsed, Uint64 nFi
 C2API void c2SetDrawCallback(c2FrameFun DrawFun);
 C2API void c2SetUpdateFixFrameCallback(c2FrameFun DrawFun);
 
-/******************************************************************************/
-/*Consumer subscribe event And Producer publish event.*/
-C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize);
-C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
-C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
-								const Uint64 esFixFrameStamp);
-
 ////////////////////////////////////////////////////////////////////////////////
 /*Part & Factory*/
 #include"./c2Foundation/c2Part.h"

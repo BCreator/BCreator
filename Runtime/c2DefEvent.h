@@ -18,7 +18,7 @@ struct c2IAction : public BrainTree::BehaviorTree {
 #define C2EVTMSG_MAXSIZE	131072	//为单个event取数据的缓冲容器最大大小
 #define C2EVTQUEUE_INITSIZE	131072	//使用Memqueue作为事件队列，内部可自增。改进意见请见event框架相关说明。
 
-////////////////////////////////////////////////////////////////////////////////
+//1/////////////////////////////////////////////////////////////////////////////
 /*c2IEvent没有多态，所以基于多态的特性的virtual操作就不能有（例如保存size，size放在了act里）*/
 #pragma pack(push, 1)
 struct c2IEvent {
@@ -34,6 +34,13 @@ protected://不能直接实例化使用，只是个类型
 	}
 };
 #pragma pack(pop)
+
+//1/////////////////////////////////////////////////////////////////////////////
+/*Consumer subscribe event And Producer publish event.*/
+C2API void c2asActSubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset, size_t EvtSize);
+C2API void c2asActUnsubEvt(c2IAction &Act, Uint32 esEvtTypeAddChunkOffset);
+C2API void c2PublishEvt(const c2IEvent &Event, const size_t EventSize,
+	const Uint64 esFixFrameStamp);
 
 /******************************************************************************/
 C2API Uint32 c2AppendEvtTypesChunk(Uint32 nNewChunkSize);
@@ -59,7 +66,7 @@ struct evttype_name : public c2IEvent {\
 /*System events of C2 Application
  注意通过系统事件进行用户自定义操作是假回调，我们的事件体系是基于事件队列，实质用户只有
  异步处理的机会，这导致用户可用功能并不灵活，但符合我们理念，刻意不给用户太多选择。*/
-C2EvtTypeChunkBegin(c2SysET)
+C2EvtTypeChunkBegin(c2SysEvtType)
 initialized = 0,
 terminate,
 
@@ -90,15 +97,15 @@ C2EvtTypeChunkEnd
 /******************************************************************************/
 struct GLFWwindow;
 #pragma pack(push, 1)
-C2DefOneEvtBegin(c2SysET, c2SysEvt, initialized)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, initialized)
 GLFWwindow*	_pWnd;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, terminate)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, terminate)
 C2DefOneEvtEnd
 
 /******************************************************************************/
-C2DefOneEvtBegin(c2SysET, c2SysEvt, mouse_button)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, mouse_button)
 GLFWwindow*	_pWnd;
 //Uint8		_nButton : 4;
 //Uint8		_nAction : 1;
@@ -108,24 +115,24 @@ Uint8		_nAction;
 Uint8		_nModifier;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_moved)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, cursor_moved)
 GLFWwindow*	_pWnd;
 double		_x;
 double		_y;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, cursor_enter)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, cursor_enter)
 GLFWwindow*	_pWnd;
 Uint8		_bEnter;//false is left;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, scrolled)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, scrolled)
 GLFWwindow*	_pWnd;
 double		_x;
 double		_y;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, key)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, key)
 GLFWwindow*	_pWnd;
 Uint16		_nKey;
 Uint16		_nScancode;
@@ -133,12 +140,12 @@ Uint8		_nAction;
 Uint8		_nModifier;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, char_input)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, char_input)
 GLFWwindow*	_pWnd;
 Uint32		_nCodePoint;
 C2DefOneEvtEnd
 
-C2DefOneEvtBegin(c2SysET, c2SysEvt, charmods_input)
+C2DefOneEvtBegin(c2SysEvtType, c2SysEvt, charmods_input)
 GLFWwindow*	_pWnd;
 Uint32		_nCodePoint;
 Uint8		_nModifier;

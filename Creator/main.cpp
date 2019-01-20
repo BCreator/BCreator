@@ -98,7 +98,7 @@ int main() {
 
 	Uint32 syset_chunkoffet = 0;
  	onSysInitialized osi;
-	c2asActSubEvt(osi, syset_chunkoffet + c2SysET::initialized,
+	c2asActSubEvt(osi, syset_chunkoffet + c2SysEvtType::initialized,
 		sizeof(c2SysEvt::initialized));
 
 	/*2************************************************************************/

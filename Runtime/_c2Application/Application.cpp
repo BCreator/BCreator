@@ -106,7 +106,7 @@ C2API void c2AppRun(int SwapInterval, int nWndWidth, int nWndHeight,
 						const char *sWndCaption, bool isBlocked) {
 	std::atexit(glfwTerminate);
 	/*增加系统事件chunk，必须确保system event type chunk是第一个append的*/
-	g_nSysETChunkOffset = c2AppendEvtTypesChunk(c2SysET::AMOUNT + 1);
+	g_nSysETChunkOffset = c2AppendEvtTypesChunk(c2SysEvtType::AMOUNT + 1);
 	/*------------------------------------------------------------------------*/
 	/*glfw begin*/
 	glfwSetErrorCallback(glfwErrorCallback);

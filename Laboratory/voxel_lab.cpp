@@ -198,32 +198,32 @@ int main_voxel() {
 	Uint32 syset_chunkoffet = 0;
 
 	onSysInitializedVoxel initialized;
-	c2asActSubEvt(initialized, syset_chunkoffet + c2SysET::initialized,
+	c2asActSubEvt(initialized, syset_chunkoffet + c2SysEvtType::initialized,
 		sizeof(c2SysEvt::initialized));
 	onTerminateVoxel terminate;
-	c2asActSubEvt(terminate, syset_chunkoffet + c2SysET::terminate,
+	c2asActSubEvt(terminate, syset_chunkoffet + c2SysEvtType::terminate,
 		sizeof(c2SysEvt::terminate));
 
 	onMouseButtonVoxel mouse_button;
-	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysET::mouse_button,
+	c2asActSubEvt(mouse_button, syset_chunkoffet + c2SysEvtType::mouse_button,
 		sizeof(c2SysEvt::mouse_button));
 	onCursorMovedVoxel cursor_moved;
-	c2asActSubEvt(cursor_moved, syset_chunkoffet + c2SysET::cursor_moved,
+	c2asActSubEvt(cursor_moved, syset_chunkoffet + c2SysEvtType::cursor_moved,
 		sizeof(c2SysEvt::cursor_moved));
 	onCursorEnterVoxel cursor_enter;
-	c2asActSubEvt(cursor_enter, syset_chunkoffet + c2SysET::cursor_enter,
+	c2asActSubEvt(cursor_enter, syset_chunkoffet + c2SysEvtType::cursor_enter,
 		sizeof(c2SysEvt::cursor_enter));
 	onScrolledVoxel scrolled;
-	c2asActSubEvt(scrolled, syset_chunkoffet + c2SysET::scrolled,
+	c2asActSubEvt(scrolled, syset_chunkoffet + c2SysEvtType::scrolled,
 		sizeof(c2SysEvt::scrolled));
 	onKeyVoxel key;
-	c2asActSubEvt(key, syset_chunkoffet + c2SysET::key,
+	c2asActSubEvt(key, syset_chunkoffet + c2SysEvtType::key,
 		sizeof(c2SysEvt::key));
 	onCharInputVoxel char_input;
-	c2asActSubEvt(char_input, syset_chunkoffet + c2SysET::char_input,
+	c2asActSubEvt(char_input, syset_chunkoffet + c2SysEvtType::char_input,
 		sizeof(c2SysEvt::char_input));
 	onCharModsInputVoxel charmods_input;
-	c2asActSubEvt(charmods_input, syset_chunkoffet + c2SysET::charmods_input,
+	c2asActSubEvt(charmods_input, syset_chunkoffet + c2SysEvtType::charmods_input,
 		sizeof(c2SysEvt::charmods_input));
 
 	/**************************************************************************/
