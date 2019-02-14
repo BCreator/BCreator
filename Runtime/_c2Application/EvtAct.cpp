@@ -6,8 +6,6 @@
 #include"../c2DefEvent.h"
 #include"./tsMemQueue.h"
 
-Uint32 g_nSysETChunkOffset	= 0;//必须确保system event type chunk是第一个append的
-
 ////////////////////////////////////////////////////////////////////////////////
 /*
 Consumer subscribe event And Producer publish event

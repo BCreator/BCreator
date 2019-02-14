@@ -40,7 +40,7 @@
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Runtime\ThirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\Application.cpp" />
-    <ClCompile Include="..\Runtime\_c2Application\Event.cpp" />
+    <ClCompile Include="..\Runtime\_c2Application\EvtAct.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\glfwSetInputCallback.cpp" />
     <ClCompile Include="..\Runtime\_c2Application\tsMemQueue.cpp" />
     <ClCompile Include="..\Runtime\_c2Command\Command.cpp" />

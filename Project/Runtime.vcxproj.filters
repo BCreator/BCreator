@@ -70,7 +70,7 @@
     <ClCompile Include="..\Runtime\c2PartVisual\c2PartLight.cpp">
       <Filter>c2PartVisual</Filter>
     </ClCompile>
-    <ClCompile Include="..\Runtime\_c2Application\Event.cpp">
+    <ClCompile Include="..\Runtime\_c2Application\EvtAct.cpp">
       <Filter>_c2Application</Filter>
     </ClCompile>
   </ItemGroup>
