@@ -34,7 +34,7 @@ C2API bool _c2RegistPartClass(const char *sClass, c2Part::CreationFunc C);
 #	define GLFW_INCLUDE_NONE	//FIXME: git rid
 #	define C2_USE_OPENGLES
 
-#else
+#else//XXX: 不记得写下面代码的时候为何同imgui的宏有关系，为了同imgui保持统一么？
 
 #if !defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)     \
  && !defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)     \
